@@ -1,4 +1,4 @@
-import ChildProcess from 'child_process'
+import { exec } from 'child_process'
 import languageRuntime from './config.js'
 
 const execFile = (language, file) => (
@@ -17,23 +17,4 @@ const execFile = (language, file) => (
   })
 )
 
-const execMemory = () => (
-  new Promise((resolve, reject) => {
-    const { containerName } = languageRuntime[language]
-
-    const memoryMonitoringCommand = `docker stats --no-stream ${containerName} --format "{{ json . }}"`;
-
-    ChildProcess.exec(memoryMonitoringCommand, (error, stdout, stderr) => {
-      if (error) {
-        const rejectionReason = { error, stderr };
-        reject(new Error(JSON.stringify(rejectionReason)));
-      }
-      if (stderr) {
-        reject(new Error(stderr));
-      }
-      resolve(stdout);
-    });
-  })
-);
-
-export { execFile, execMemory };
+export default execFile

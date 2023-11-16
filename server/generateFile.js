@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const dirCodesPath = path.join(__dirname, "codes");
+const dirCodesPath = path.join(__dirname, 'codes');
 
 if (!fs.existsSync(dirCodesPath)) {
   fs.mkdirSync(dirCodesPath, { recursive: true });

@@ -1,12 +1,12 @@
 import express from 'express'
 import cors from 'cors'
-import fs from 'fs'
 import { Job } from './models/job.js'
 import addJobToQueue from './jobQueue.js'
 import generateFile from './generateFile.js'
+import dotenv from 'dotenv'
 
+const port = 3000
 const app = express()
-const port= 3000
 
 app.use(cors('*'))
 app.use(express.json())
