@@ -1,7 +1,6 @@
 import ChildProcess from 'child_process'
 import languageRuntime from './config.js'
 
-const child = cp.spawn('ls', ['-lh', '/usr']);
 const execFile = (language, file) => (
   new Promise((resolve, reject) => {
     const { containerName, runtimeCommand } = languageRuntime[language]
