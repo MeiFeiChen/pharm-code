@@ -1,6 +1,6 @@
 import Queue from "bull"
 import { Job } from "./models/job.js"
-import execFile from './execFile.js'
+import {execFile, execMemory} from './execFile.js'
 import languageRuntime from './config.js'
 
 
@@ -14,35 +14,33 @@ jobQueue.process(NUM_WORKERS, async({data}) => {
   if (job === undefined) {
     throw Error(`cannot find Job with id ${jobId}`);
   }
-  const { containerName } = languageRuntime[job.language]
 
   try {
-    job['startedAt'] = new Date();
+    job.startedAt = new Date();
     const output = await execFile(job.language, job.filename)
 
-    job["completedAt"] = new Date();
-    job["output"] = output;
-    job["status"] = 'success';
+
+    job.completedAt = new Date();
+    job.output = output;
+    job.status = 'success';
     console.log(job)
 
     await job.save();
     return true;
-
   } catch (err) {
-    job["completedAt"] = new Date();
-    job["output"] = JSON.stringify(err);
-    job["status"] = "error";
+    job.completedAt = new Date();
+    job.output = JSON.stringify(err);
+    job.status = 'error';
     await job.save();
     throw Error(JSON.stringify(err));
   }
-
 })
 jobQueue.on('failed', (error) => {
   console.error(error.data.id, error.failedReason);
 })
 
-const addJobToQueue = async(jobId) => {
+const addJobToQueue = async (jobId) => {
   await jobQueue.add({ id: jobId })
 }
 
-export { addJobToQueue }
+export default addJobToQueue;

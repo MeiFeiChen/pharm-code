@@ -2,9 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import fs from 'fs'
 import { Job } from './models/job.js'
-
-import { addJobToQueue } from './jobQueue.js'
-
+import addJobToQueue from './jobQueue.js'
 import generateFile from './generateFile.js'
 
 const app = express()
