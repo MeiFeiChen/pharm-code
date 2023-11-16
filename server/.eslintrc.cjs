@@ -23,5 +23,8 @@ module.exports = {
   },
   rules: {
     semi: 0,
+    'import/no-extraneous-dependencies': 'off',
+    'import/extensions': 'off',
+    'no-console': 'off',
   },
 };

@@ -36,6 +36,6 @@ const JobSchema = mongoose.Schema({
   },
 });
 
-const Job = new mongoose.model('job', JobSchema)
+export const Job = new mongoose.model('job', JobSchema)
 
-export { Job }
+export default { Job }

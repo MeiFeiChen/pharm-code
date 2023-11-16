@@ -1,9 +1,8 @@
-import Queue from "bull"
-import { Job } from "./models/job.js"
+import Queue from 'bull'
+import Docker from 'dockerode'
+import { Job } from './models/job.js'
 import execFile from './execFile.js'
 import languageRuntime from './config.js'
-import Docker from 'dockerode'
-
 
 const jobQueue = new Queue('job-queue')
 const docker = new Docker()
