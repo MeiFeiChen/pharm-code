@@ -1,19 +1,14 @@
 import Queue from 'bull'
-import Docker from 'dockerode'
 import { Job } from './models/job.js'
 import execFile from './execFile.js'
-import languageRuntime from './config.js'
 
 const jobQueue = new Queue('job-queue')
-const docker = new Docker()
 
 const NUM_WORKERS = 5
 
 jobQueue.process(NUM_WORKERS, async ({ data }) => {
   const jobId = data.id
   const job = await Job.findById(jobId);
-  const { containerName } = languageRuntime[job.language]
-  const container = docker.getContainer(containerName)
   if (job === undefined) {
     throw Error(`cannot find Job with id ${jobId}`)
   }
@@ -27,13 +22,6 @@ jobQueue.process(NUM_WORKERS, async ({ data }) => {
     console.log(job)
 
     await job.save();
-    container.stats({ stream: false }, (err, res) => {
-      if (err) {
-        console.log('error', err)
-      } else {
-        console.log('res', res)
-      }
-    })
     return true;
   } catch (err) {
     console.log(err)

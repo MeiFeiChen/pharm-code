@@ -1,5 +1,8 @@
 import './App.css'
+import Problems from './pages/Problems';
+import Problem from './pages/Problem';
 import { useState, useCallback, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom'
 import moment from 'moment'
 import axios from 'axios';
 import CodeMirror from '@uiw/react-codemirror'
@@ -44,7 +47,7 @@ function App() {
       setJobId(null)
       setJobDetails(null)
 
-      const { data } = await axios.post('http://localhost:3000/run', payload)
+      const { data } = await axios.post(`http://localhost:3000/run`, payload)
 
       if (data.jobId) {
         setJobId(data.jobId)
@@ -52,7 +55,7 @@ function App() {
 
         // poll
         pollInterval = setInterval(async() => {
-        const {data: statusRes} = await axios.get('http://localhost:3000/status', 
+        const {data: statusRes} = await axios.get(`http://localhost:3000/status`, 
           {params: { id: data.jobId }})
           const {success, job, error} = statusRes
 
@@ -115,6 +118,11 @@ function App() {
   }, [])
 
   return (
+    <>
+    <Routes>
+      <Route path='problems' element={<Problems />}/>
+      <Route path='problems/:problemId/*' element={<Problem />}/>
+    </Routes>
     <div className='App'>
       <h2>Online Code Compiler</h2>
       <div>
@@ -162,6 +170,7 @@ function App() {
       </header>
        
     </div>
+    </>
   )
 }
 

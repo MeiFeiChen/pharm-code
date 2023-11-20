@@ -2,3 +2,4 @@
 node_modules
 dockerfile
 codes
+public/dist
