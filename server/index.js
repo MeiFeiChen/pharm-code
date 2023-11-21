@@ -2,10 +2,12 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
+import path from 'path'
 import { Job } from './models/job.js'
 import addJobToQueue from './jobQueue.js'
 import { generateFile } from './generateFile.js'
 import problemRouter from './routers/problemRouter.js'
+
 
 dotenv.config()
 
@@ -20,7 +22,6 @@ app.use(express.json())
 app.use(express.static('./public/dist'))
 
 app.use('/api/problems', problemRouter)
-
 
 app.get('/status', async (req, res) => {
   const jobId = req.query.id;
@@ -55,6 +56,16 @@ app.post('/run', async (req, res) => {
   const jobId = job['_id'];
   addJobToQueue(jobId);
   res.status(201).json({ jobId });
+})
+
+// front end page
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/dist/index.html'), (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send(err);
+    }
+  })
 })
 
 app.listen(port, () => {

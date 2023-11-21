@@ -1,5 +1,5 @@
 import axios from "axios";
-export const domain = 'http://localhost:3000'
+export const domain = 'https://ameliachen.site'
 
 
 export const problemsRequest = axios.create({
