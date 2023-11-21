@@ -46,7 +46,7 @@ const execFile = async (submittedId, language, code, index, inputs, timeLimit) =
       const timeoutError = new TimeLimitExceededError('Time Limit Exceeded')
       exec(`docker kill ${submittedId}${containerName}${index}`)
       return reject(timeoutError)
-    }, timeLimit + 5000)
+    }, timeLimit + 10000)
   })
 }
 
@@ -89,10 +89,10 @@ problemQueue.process(NUM_WORKERS, async ({ data }) => {
     }, [0, 0])
     const avgTimeMemory = [sumTimeMemory[0] / results.length, sumTimeMemory[1] / results.length]
     console.log(avgTimeMemory)
-    const runTime = avgTimeMemory[0] // seconds
-    const memory = avgTimeMemory[1] / 1024 // kb -> mb
+    const runTime = (avgTimeMemory[0] * 1000).toFixed(1) // milliseconds
+    const memory = (avgTimeMemory[1] / 1024).toFixed(1) // kb -> mb
     // Check if the time and memory are within the limits.
-    if (runTime > problem.time_limit / 1000
+    if (runTime > problem.time_limit
     || memory > problem.memory_limit) {
       throw new TimeLimitExceededError('Time Limit Exceeded')
     }

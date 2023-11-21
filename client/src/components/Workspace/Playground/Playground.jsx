@@ -1,5 +1,6 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import Split from 'react-split'
+import { useNavigate } from 'react-router'
 import PropTypes from 'prop-types'
 import PreferenceNav from './PreferenceNav'
 import CodeMirror from '@uiw/react-codemirror'
@@ -7,7 +8,7 @@ import { vscodeDark} from '@uiw/codemirror-theme-vscode'
 import { javascript } from '@codemirror/lang-javascript';
 import { python } from '@codemirror/lang-python'
 import EditorFooter from './EditorFooter'
-import { apiProblemSubmission } from '../../../api'
+import { apiProblemSubmission, apiProblemSubmissionItem } from '../../../api'
 
 const languageExtension = {
   js: [javascript()], 
@@ -24,33 +25,79 @@ function Playground({ problem }) {
   const [code, setCode] = useState('')
   const [activeTestCaseId, setActiveTestCaseId] = useState(0)
 
-  const [submittedId, setSubmittedId] = useState(null);
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const defaultLang = localStorage.getItem('default-language') || 'js'
+    setLanguage(defaultLang)
+  }, [])
 
   const handleLanguageExtension = (language) => {
     setLanguage(language)
     setExtension(languageExtension[language])
   }
+  const setDefaultLanguage = () => {
+    localStorage.setItem("default-language", language)
+    console.log(`${language} set as default!`)
+  };
+  
   const onCodeChange = useCallback((val) => {
     console.log(val)
     setCode(val)
   }, [])
+
+  let pollInterval
 
   const handleSubmit = async() => {
     const payload = {
       language, 
       code
     }
-    const { data } = await apiProblemSubmission(problem.id, payload)
-    if (data.submittedId) {
-      setSubmittedId(data.submittedId)
-    }
-    // poll 
+    try {
+      const { data } = await apiProblemSubmission(problem.id, payload)
+      const submittedId = data.submittedId
+      console.log('data', data)
+    
+      if (submittedId) {
+        console.log(submittedId)
+    
+        // Poll
+        pollInterval = setInterval(async () => {
+          console.log(problem.id, submittedId);
+    
+          const { data, errors } = await apiProblemSubmissionItem(problem.id, submittedId)
+          console.log('response', data)
 
+          if (errors) {
+            clearInterval(pollInterval)
+          }
+          
+          if (data.data.status === 'pending'){
+            console.log('pending')
+            return 
+          } 
+          clearInterval(pollInterval)
+          if (data.data.status === 'success') {
+            return navigate(`/problems/${[problem.id]}/submission`, {state: { submissionResult: data.data}})
+          }
+                  
+        }, 1000)
+
+      } else {
+        // setOutput(retry again)
+      }
+    } catch (error) {
+      console.error('Error submitting problem:', error);
+    }
+    
+    
   }
   return (
     <div className='flex flex-col bg-dark-layer-1 relative overflow-x-hidden'>
       <PreferenceNav 
-        handleLanguageExtension={handleLanguageExtension}/>
+        handleLanguageExtension={handleLanguageExtension}
+        setDefaultLanguage={setDefaultLanguage}
+        language={language}/>
       <Split className='h-[calc(100vh-94px)]' direction='vertical' sizes={[60, 40]} minSize={60}>
         <div className='w-full overflow-auto'>
         <CodeMirror
@@ -73,7 +120,7 @@ function Playground({ problem }) {
 						{problem.exampleCases?.map((example, index) => (
 							<div
 								className='mr-2 items-start mt-2 '
-								key={example.id}
+								key={index}
 								onClick={() => setActiveTestCaseId(index)}
 							>
 								<div className='flex flex-wrap items-center gap-y-4'>

@@ -30,7 +30,7 @@ export default function ProblemTable() {
       ) : (
         // Data loaded
         <tbody className='text-white'>
-          {problems.map((problem) => {
+          { problems?.map((problem) => {
             const difficultyColor =
               problem.difficulty === 'easy'
                 ? 'text-dark-green-s'

@@ -1,6 +1,11 @@
 import addProblemToQueue from '../config/problemQueue.js'
 import {
-  createSubmission, getSubmissionResult, getSubmissionsResults, getProblems, getProblem, getTestCases
+  createSubmission,
+  getSubmissionResult,
+  getSubmissionsResults,
+  getProblems,
+  getProblem,
+  getTestCases
 } from '../models/problemModel.js'
 import { generateFile } from '../generateFile.js'
 
@@ -60,7 +65,7 @@ export const getSubmission = async (req, res) => {
   const userId = 1
   try {
     const data = await getSubmissionResult(submittedId, problemIid, userId)
-    if (!data) return res.status(400).json({ err: "could't fund data" })
+    if (!data) return res.status(400).json({ errors: "could't find data" })
     return res.status(200).json({ data })
   } catch (err) {
     console.error(err)
@@ -76,7 +81,7 @@ export const getSubmissions = async (req, res) => {
   const userId = 1
   try {
     const data = await getSubmissionsResults(problemIid, userId)
-    if (!data.length) return res.status(400).json({ err: "could't fund data" })
+    if (!data.length) return res.status(400).json({ errors: "could't fund data" })
     return res.status(200).json({ data })
   } catch (err) {
     if (err instanceof Error) {

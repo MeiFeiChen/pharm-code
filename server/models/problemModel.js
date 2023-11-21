@@ -48,7 +48,6 @@ export async function getTestCases(problemId, fieldName) {
 export async function createSubmissionsResult(submittedId, result, runtime, memory) {
   const client = await pool.connect()
   // update submission
-  console.log('here')
   try {
     await client.query('BEGIN')
     const status = (result === 'AC') ? 'success' : 'failed'
@@ -78,8 +77,8 @@ export async function getSubmissionResult(submittedId, problemId, userId) {
       submission_results.result, 
       submission_results.runtime, 
       submission_results.memory
-      FROM submissions
-    JOIN submission_results
+    FROM submissions
+    LEFT JOIN submission_results
     ON submissions.id = submission_results.submission_id
     WHERE submissions.id = $1 AND problem_id = $2 AND user_id = $3
   `, [submittedId, problemId, userId])
@@ -98,6 +97,7 @@ export async function getSubmissionsResults(problemId, userId) {
     JOIN submission_results
     ON submissions.id = submission_results.submission_id
     WHERE problem_id = $1 AND user_id = $2
+    ORDER BY submissions.submitted_at DESC
   `, [problemId, userId])
   const results = rows
   return results

@@ -1,20 +1,23 @@
 import { AiOutlineFullscreen, AiOutlineFullscreenExit, AiOutlineSetting } from "react-icons/ai"
 import PropTypes from 'prop-types'
+import handleResult from "../../../../../server/middleware/validator"
 
 PreferenceNav.propTypes = {
   handleLanguageExtension: PropTypes.func.isRequired,
+  setDefaultLanguage: PropTypes.func.isRequired, 
+  language: PropTypes.string.isRequired
 }
 
-function PreferenceNav({ handleLanguageExtension }) {
-  
+function PreferenceNav({ handleLanguageExtension, setDefaultLanguage, language}) {
   return (
     <div className='flex items-center justify-between bg-dark-layer-2 h-11 w-full '>
       {/* language */}
 			<div className='flex items-center text-white'>
         <select
+          value={language}
           className=
-          {`cursor-pointer items-center rounded focus:outline-none bg-dark-fill-3 
-            text-dark-label-2 hover:bg-dark-fill-2  px-2 py-1.5 font-medium`}
+            {`cursor-pointer items-center rounded focus:outline-none bg-dark-fill-3 
+              text-dark-label-2 hover:bg-dark-fill-2  px-2 py-1.5 font-medium h-8 `}
           onChange={(e) => {
             handleLanguageExtension(e.target.value)
           }}
@@ -22,7 +25,17 @@ function PreferenceNav({ handleLanguageExtension }) {
           <option value='js'>Javascript</option>
           <option value='py'>Python</option>
         </select>
+        <button 
+          className=
+              {`cursor-pointer items-center rounded focus:outline-none bg-dark-fill-3
+                flex justify-center text-dark-label-2 hover:bg-dark-fill-2  px-2 py-1.5
+                font-medium h-8 ml-3`}
+          onClick={setDefaultLanguage}>
+              Set Default
+        </button>
+        
 			</div>
+      
 
       {/* Setting */}
 			<div className='flex items-center m-2'>

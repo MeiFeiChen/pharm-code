@@ -15,10 +15,12 @@ const app = express()
 app.use(morgan('dev'))
 app.use(cors('*'))
 app.options('*', cors())
+
 app.use(express.json())
 app.use(express.static('./public/dist'))
 
 app.use('/api/problems', problemRouter)
+
 
 app.get('/status', async (req, res) => {
   const jobId = req.query.id;

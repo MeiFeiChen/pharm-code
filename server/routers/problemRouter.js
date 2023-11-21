@@ -6,10 +6,13 @@ import { submitProblem, getSubmission, getSubmissions, getProblemsPage, getProbl
 const problemRouter = express.Router()
 
 problemRouter.get('/', getProblemsPage)
-problemRouter.get('/:id',
-  param('id').isInt().not().isEmpty(), 
+
+problemRouter.get(
+  '/:id',
+  param('id').isInt().not().isEmpty(),
   handleResult,
-  getProblemPage)
+  getProblemPage
+)
 
 problemRouter.post(
   '/:id/submit',

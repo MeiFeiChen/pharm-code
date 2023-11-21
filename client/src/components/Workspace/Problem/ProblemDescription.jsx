@@ -34,7 +34,7 @@ export default function ProblemDescription( { problem } ) {
 			<div className='flex px-0 py-4 h-[calc(100vh-94px)] overflow-y-auto'>
 				<div className='px-5 w-full'>
 					{/* Problem heading */}
-					<div className=''>
+					
 						<div className='flex space-x-4'>
 							<div className='flex-1 mr-2 text-lg text-white font-medium'>{problem.id}. {problem.title}</div>
 						</div>
@@ -45,7 +45,7 @@ export default function ProblemDescription( { problem } ) {
 							>
 								{problem.difficulty}
 							</div>
-              <div className='rounded p-[3px] ml-4 text-lg transition-colors duration-200 text-green-s text-dark-green-s'>
+              <div className='rounded p-[3px] ml-4 text-lg text-dark-green-s'>
 								<BsCheck2Circle />
 							</div>
 						</div>
@@ -82,7 +82,7 @@ export default function ProblemDescription( { problem } ) {
 						</div>
 
 						{/* Constraints */}
-						<div className='my-5'>
+						<div className='my-5 pb-4'>
 							<div className='text-white text-sm font-medium'>Constraints:</div>
 							<ul className='text-white ml-5 list-disc'>
 								<li className='mt-2 text-sm'>
@@ -101,7 +101,7 @@ export default function ProblemDescription( { problem } ) {
 							</ul>
 						</div>
 					</div>
-				</div>
+				
 			</div>
 		</div>
 	)

@@ -12,7 +12,7 @@ import Playground from './Playground/Playground'
 
 export default function WorkSpace() {  
   const { problemId } = useParams()
-  const [problem, setProblem] = useState([])
+  const [problem, setProblem] = useState({})
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -34,12 +34,12 @@ export default function WorkSpace() {
       <div>
       <Routes>
         <Route path='' element={<ProblemDescription problem={problem}/>}/>
-        <Route path='submission' element={<ProblemSubmission />}/>
+        <Route path='submission/*' element={<ProblemSubmission />}/>
         <Route path='discussion' element={<ProblemDiscussion />}/>
       </Routes>
       </div>
       
-      <Playground problem={ problem }/>
+      <Playground problem={ problem } key='problem'/>
       
 
     </Split>
