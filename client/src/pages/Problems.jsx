@@ -1,4 +1,4 @@
-import TopBar from "../components/Topbar";
+import TopBar from "../components/TopBar";
 import ProblemTable from "../components/problemsTable/ProblemTable";
 
 export default function Problems() {
