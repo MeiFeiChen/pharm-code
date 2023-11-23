@@ -1,4 +1,4 @@
-import pool from '../config/database.js'
+import pool from '../../config/database.js'
 
 export async function getProblems() {
   const { rows } = await pool.query(`
@@ -10,18 +10,18 @@ export async function getProblems() {
 
 export async function getProblem(problemId) {
   const { rows } = await pool.query(`
-  SELECT * FROM problems
-  WHERE id = $1
+    SELECT * FROM problems
+    WHERE id = $1
   `, [problemId])
   const problem = rows[0]
   return problem
 }
 
-export async function createSubmission(problemId, userId, language, status, filename) {
+export async function createSubmission(problemId, userId, language, status, code) {
   const { rows } = await pool.query(`
-    INSERT INTO submissions(problem_id, user_id, language, status, file_name)
+    INSERT INTO submissions(problem_id, user_id, language, status, code)
     VALUES ($1, $2, $3, $4, $5) returning id
-    `, [problemId, userId, language, status, filename])
+    `, [problemId, userId, language, status, code])
   const submittedId = rows[0].id
   return submittedId
 }
@@ -45,7 +45,7 @@ export async function getTestCases(problemId, fieldName) {
   return testCases
 }
 
-export async function createSubmissionsResult(submittedId, result, runtime, memory) {
+export async function createSubmissionsResult(submittedId, result, runtime, memory, error) {
   const client = await pool.connect()
   // update submission
   try {
@@ -57,9 +57,9 @@ export async function createSubmissionsResult(submittedId, result, runtime, memo
       WHERE id = $2
     `, [status, submittedId])
     await client.query(`
-      INSERT INTO submission_results(submission_id, result, runtime, memory)
-      VALUES ($1, $2, $3, $4)
-    `, [submittedId, result, runtime, memory])
+      INSERT INTO submission_results(submission_id, result, runtime, memory, error)
+      VALUES ($1, $2, $3, $4, $5)
+    `, [submittedId, result, runtime, memory, error])
     await client.query('COMMIT')
     console.log('successfully inserted the submission result')
   } catch (err) {
@@ -76,7 +76,8 @@ export async function getSubmissionResult(submittedId, problemId, userId) {
       submissions.*,  
       submission_results.result, 
       submission_results.runtime, 
-      submission_results.memory
+      submission_results.memory,
+      submission_results.error
     FROM submissions
     LEFT JOIN submission_results
     ON submissions.id = submission_results.submission_id
@@ -92,7 +93,8 @@ export async function getSubmissionsResults(problemId, userId) {
       submissions.*,  
       submission_results.result, 
       submission_results.runtime, 
-      submission_results.memory
+      submission_results.memory, 
+      submission_results.error
       FROM submissions
     JOIN submission_results
     ON submissions.id = submission_results.submission_id

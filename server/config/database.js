@@ -9,11 +9,26 @@ dotenv.config({ path: path.resolve(dirname, '../.env') });
 
 const { Pool } = pg;
 
-const pool = new Pool({
-  user: process.env.POSTGRES_USER,
-  host: process.env.POSTGRES_HOST,
-  database: process.env.POSTGRES_DATABASE,
-  password: process.env.POSTGRES_PASSWORD,
-});
+// eslint-disable-next-line import/no-mutable-exports
+let pool
+
+if (process.env.ENV === 'develop') {
+  pool = new Pool({
+    user: process.env.POSTGRES_USER,
+    host: process.env.POSTGRES_HOST,
+    database: process.env.POSTGRES_DATABASE,
+    password: process.env.POSTGRES_PASSWORD,
+  });
+} else {
+  pool = new Pool({
+    user: process.env.POSTGRES_USER,
+    host: process.env.POSTGRES_HOST,
+    database: process.env.POSTGRES_DATABASE,
+    password: process.env.POSTGRES_PASSWORD,
+    ssl: {
+      rejectUnauthorized: false
+    }
+  })
+}
 
 export default pool

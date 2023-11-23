@@ -1,4 +1,4 @@
-import addProblemToQueue from '../config/problemQueue.js'
+import addProblemToQueue from '../../config/problemQueue.js'
 import {
   createSubmission,
   getSubmissionResult,
@@ -6,8 +6,7 @@ import {
   getProblems,
   getProblem,
   getTestCases
-} from '../models/problemModel.js'
-import { generateFile } from '../generateFile.js'
+} from './problemModel.js'
 
 export const getProblemsPage = async (req, res) => {
   try {
@@ -37,16 +36,15 @@ export const submitProblem = async (req, res) => {
   const { id: problemId } = req.params
   const { language, code } = req.body
 
-  if (code === undefined) {
+  if (!code) {
     return res.status(400).json({ success: false, error: 'Empty code body' })
   }
   try {
-    // generate file and insert submission data to db
-    const filename = await generateFile(language, code)
-    const submittedId = await createSubmission(userId, problemId, language, 'pending', filename)
+    // store data to db
+    const submittedId = await createSubmission(userId, problemId, language, 'pending', code)
     // add job to queue
     addProblemToQueue(submittedId, language, code)
-    return res.status(201).json({ submittedId })
+    return res.status(201).json({ success: true, submittedId })
   } catch (err) {
     console.error(err)
     if (err instanceof Error) {
@@ -65,7 +63,6 @@ export const getSubmission = async (req, res) => {
   const userId = 1
   try {
     const data = await getSubmissionResult(submittedId, problemIid, userId)
-    if (!data) return res.status(400).json({ errors: "could't find data" })
     return res.status(200).json({ data })
   } catch (err) {
     console.error(err)
@@ -81,7 +78,7 @@ export const getSubmissions = async (req, res) => {
   const userId = 1
   try {
     const data = await getSubmissionsResults(problemIid, userId)
-    if (!data.length) return res.status(400).json({ errors: "could't fund data" })
+    if (!data.length) return res.status(400).json({ errors: "could't find data" })
     return res.status(200).json({ data })
   } catch (err) {
     if (err instanceof Error) {

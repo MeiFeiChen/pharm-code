@@ -1,49 +1,47 @@
 import { MdMemory, MdOutlineTimer } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react"
+import { redirect, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { TEXT_COLOR, STATUS, COMPILE_LANGUAGE } from '../../../constant';
+import { formatTimestamp } from '../../../config';
 
 SubmissionTable.propTypes = {
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setHeaderResult: PropTypes.func.isRequired
 };
 
-function SubmissionTable({ results }) {
-  const navigate = useNavigate();
+function SubmissionTable({ results, setHeaderResult }) {
+  const navigate = useNavigate()
+  const [highlightIndex, setHighlightIndex] = useState(null)
+  console.log(highlightIndex)
+  
 
-  const handleClick = (problemId, submittedId) => {
-    navigate(`/problems/${problemId}/submission/${submittedId}`);
+  const handleClick = (result, index) => {
+    navigate(`/problems/${result.problem_id}/submission/${result.id}`)
+    setHeaderResult(result)
+    setHighlightIndex(index)
   };
 
   return (
     <tbody className="rounded">
-      { results.map((result) => {
-        const statusColor =
-          result.status === 'success' ? 'text-dark-green-s' : 'text-dark-pink';
-        const status =
-          result.result === 'AC'
-            ? 'Accepted'
-            : result.result === 'RE'
-            ? 'Runtime Error'
-            : result.result === 'TLE'
-            ? 'Time Limit Error'
-            : 'Wrong Answer';
-        const compileLanguage =
-          result.language === 'js' ? 'Javascript' : 'Python';
-
+      { results?.map((result, index) => {
         return (
           <tr
             className={`${
-              result.id % 2 === 1 ? 'bg-dark-layer-1' : 'bg-dark-layer-2'
+              index === highlightIndex ? 'bg-dark-layer-3' :
+              index % 2 === 1 ? 'bg-dark-layer-1' : 'bg-dark-layer-2'
             } cursor-pointer`}
-            onClick={() => handleClick(result.problem_id, result.id)}
+            onClick={() => handleClick(result, index)}
             key={result.id}
           >
+
             <th className="px-4 py-1 font-medium whitespace-nowrap">
-              <p className={`text-sm ${statusColor}`}>{status}</p>
-              <span className="text-[10px]">{result.submitted_at}</span>
+              <p className={`text-sm ${TEXT_COLOR[result.status]}`}>{STATUS[result.result]}</p>
+              <span className="text-[10px]">{formatTimestamp(result.submitted_at)}</span>
             </th>
             <td className="text-sm px-3 py-1">
-              <span className="px-2 py-1 rounded-full bg-zinc-700 text-white">
-                {compileLanguage}
+              <span className="px-2 py-1 rounded-full bg-zinc-700 text-gray-400">
+                {COMPILE_LANGUAGE[result.language]}
               </span>
             </td>
             <td className="text-sm px-1 py-1">

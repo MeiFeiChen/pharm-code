@@ -1,7 +1,13 @@
 import express from 'express'
 import { param } from 'express-validator'
-import handleResult from '../middleware/validator.js'
-import { submitProblem, getSubmission, getSubmissions, getProblemsPage, getProblemPage } from '../controllers/problemController.js'
+import handleResult from '../../middleware/validator.js'
+import {
+  submitProblem,
+  getSubmission,
+  getSubmissions,
+  getProblemsPage,
+  getProblemPage
+} from './problemController.js'
 
 const problemRouter = express.Router()
 
@@ -35,6 +41,5 @@ problemRouter.get(
   handleResult,
   getSubmissions
 )
-
 
 export default problemRouter

@@ -8,7 +8,8 @@ import { fileURLToPath } from 'url'
 // import addJobToQueue from './jobQueue.js'
 // import { generateFile } from './generateFile.js'
 
-import problemRouter from './routers/problemRouter.js'
+import problemRouter from './api/problems/problemRouter.js'
+import userRouter from './api/user/userRouter.js'
 
 dotenv.config()
 
@@ -25,6 +26,7 @@ app.options('*', cors())
 app.use(express.json())
 app.use(express.static('./public/dist'))
 
+app.use('/api/user', userRouter)
 app.use('/api/problems', problemRouter)
 
 // app.get('/status', async (req, res) => {

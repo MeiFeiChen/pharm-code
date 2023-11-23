@@ -34,7 +34,8 @@ export default function WorkSpace() {
       <div>
       <Routes>
         <Route path='' element={<ProblemDescription problem={problem}/>}/>
-        <Route path='submission/*' element={<ProblemSubmission />}/>
+        <Route path={`submission/:submittedId?`} 
+          element={<ProblemSubmission />}/>
         <Route path='discussion' element={<ProblemDiscussion />}/>
       </Routes>
       </div>

@@ -17,6 +17,8 @@ const languageExtension = {
 
 Playground.propTypes = {
   problem: PropTypes.object.isRequired,
+  code: PropTypes.string.isRequired, 
+  setCode: PropTypes.func.isRequired
 }
 
 function Playground({ problem }) {
@@ -44,9 +46,8 @@ function Playground({ problem }) {
   const onCodeChange = useCallback((val) => {
     console.log(val)
     setCode(val)
-  }, [])
+  }, [setCode])
 
-  let pollInterval
 
   const handleSubmit = async() => {
     const payload = {
@@ -60,9 +61,10 @@ function Playground({ problem }) {
     
       if (submittedId) {
         console.log(submittedId)
+
     
         // Poll
-        pollInterval = setInterval(async () => {
+        const pollInterval = setInterval(async () => {
           console.log(problem.id, submittedId);
     
           const { data, errors } = await apiProblemSubmissionItem(problem.id, submittedId)
@@ -77,11 +79,17 @@ function Playground({ problem }) {
             return 
           } 
           clearInterval(pollInterval)
-          if (data.data.status === 'success') {
-            return navigate(`/problems/${[problem.id]}/submission`, {state: { submissionResult: data.data}})
-          }
+          clearTimeout(pollTimeOut)
+
+          
+          return navigate(`/problems/${[problem.id]}/submission`, {state: { submissionResult: data.data}})
                   
         }, 1000)
+        
+        const pollTimeOut = setTimeout(() => {
+          console.log('Timeout reached. Stopping poll.');
+          clearInterval(pollInterval);
+        }, 15000); 
 
       } else {
         // setOutput(retry again)

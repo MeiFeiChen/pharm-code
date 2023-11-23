@@ -17,23 +17,15 @@ const generateFile = (format, content) => {
     const filename = `${jobId}.${format}`
     const filepath = path.join(dirCodesPath, filename)
     fs.writeFileSync(filepath, content)
-    return filename
-  } catch (error) {
-    console.error('Error generating file:', error.message);
-    throw error
-  }
-}
-
-const generateTempFile = (format, content) => {
-  try {
-    const filename = `temp_script.${format}`
-    const filepath = path.join(dirCodesPath, filename)
-    fs.writeFileSync(filepath, content)
     return filepath
   } catch (error) {
     console.error('Error generating file:', error.message);
-    throw error
+    return error
   }
 }
 
-export { generateFile, generateTempFile }
+const removeFile = (filepath) => {
+  fs.unlink(filepath, (err) => err)
+}
+
+export { generateFile, removeFile }
