@@ -3,6 +3,12 @@ export const TEXT_COLOR = {
   'failed': 'text-dark-pink'
 }
 
+export const TEXT_COLOR_DIFFICULTY = {
+  'easy': 'text-dark-green-s', 
+  'medium': 'text-dark-yellow', 
+  'hard': 'text-dark-pink'
+}
+
 export const STATUS = {
   'AC': 'Accepted', 
   'TLE': 'Time Limit Error', 

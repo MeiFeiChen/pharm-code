@@ -3,6 +3,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    'node_modules/flowbite-react/lib/esm/**/*.js',
   ],
   theme: {
     extend: {
@@ -24,10 +25,11 @@ export default {
 				"dark-pink": "rgb(255 55 95)",
 				"olive": "rgb(0, 184, 163)",
 				"dark-green-s": "rgb(44 187 93)",
+        "light-green-s": "rgb(80 200 120)",
 				"dark-blue-s": "rgb(10 132 255)",
 			},
 		},
   },
-  plugins: [],
+  plugins: ['flowbite/plugin'],
 }
 

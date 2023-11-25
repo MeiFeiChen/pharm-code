@@ -1,8 +1,13 @@
 import express from 'express'
 import { body } from 'express-validator'
 import handleResult from '../../middleware/validator.js'
-import { signIn, signUp } from './userController.js'
-
+import {
+  signIn,
+  signUp,
+  getUserSubmissions,
+  getUserProfile
+} from './userController.js'
+import verifyAuth from '../../middleware/auth.js'
 
 const userRouter = express.Router()
 
@@ -16,5 +21,7 @@ userRouter.post('/signup', [
 
 userRouter.post('/signin', signIn)
 
+userRouter.get('/submissions', verifyAuth, getUserSubmissions)
+userRouter.get('/profile', verifyAuth, getUserProfile)
 
 export default userRouter

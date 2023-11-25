@@ -1,6 +1,5 @@
 import { AiOutlineFullscreen, AiOutlineFullscreenExit, AiOutlineSetting } from "react-icons/ai"
 import PropTypes from 'prop-types'
-import handleResult from "../../../../../server/middleware/validator"
 
 PreferenceNav.propTypes = {
   handleLanguageExtension: PropTypes.func.isRequired,

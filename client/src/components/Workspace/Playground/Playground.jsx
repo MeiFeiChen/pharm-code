@@ -9,6 +9,7 @@ import { javascript } from '@codemirror/lang-javascript';
 import { python } from '@codemirror/lang-python'
 import EditorFooter from './EditorFooter'
 import { apiProblemSubmission, apiProblemSubmissionItem } from '../../../api'
+import { getAuthToken } from '../../../utils'
 
 const languageExtension = {
   js: [javascript()], 
@@ -17,8 +18,6 @@ const languageExtension = {
 
 Playground.propTypes = {
   problem: PropTypes.object.isRequired,
-  code: PropTypes.string.isRequired, 
-  setCode: PropTypes.func.isRequired
 }
 
 function Playground({ problem }) {
@@ -54,8 +53,12 @@ function Playground({ problem }) {
       language, 
       code
     }
+    const token = getAuthToken()
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    }
     try {
-      const { data } = await apiProblemSubmission(problem.id, payload)
+      const { data } = await apiProblemSubmission(problem.id, payload, config)
       const submittedId = data.submittedId
       console.log('data', data)
     
@@ -67,7 +70,7 @@ function Playground({ problem }) {
         const pollInterval = setInterval(async () => {
           console.log(problem.id, submittedId);
     
-          const { data, errors } = await apiProblemSubmissionItem(problem.id, submittedId)
+          const { data, errors } = await apiProblemSubmissionItem(problem.id, submittedId, config)
           console.log('response', data)
 
           if (errors) {

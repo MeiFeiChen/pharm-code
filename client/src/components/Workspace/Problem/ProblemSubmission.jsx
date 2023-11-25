@@ -8,7 +8,8 @@ import { IoBugOutline } from "react-icons/io5";
 import SubmissionTable from "../SubmissionTable/SubmissionTable"
 import { apiProblemSubmissionItems } from "../../../api"
 import { TEXT_COLOR, COMPILE_LANGUAGE, STATUS } from "../../../constant"
-import { formatTimestamp } from '../../../config';
+import { formatTimestamp } from '../../../dateconfig';
+import { getAuthToken } from "../../../utils"
 
 
 
@@ -24,8 +25,12 @@ export default function ProblemSubmission() {
 
   useEffect(() => {
     const fetchData = async() => {
+      const token = getAuthToken()
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      }
       try {
-        const { data } = await apiProblemSubmissionItems(problemId)
+        const { data } = await apiProblemSubmissionItems(problemId, config)
         if (!submittedId) setHeaderResult(data.data[0])
         setResults(data.data)
       } catch(error) {
@@ -60,7 +65,7 @@ export default function ProblemSubmission() {
             </div>
           </div>
           <div className="">
-            <div className='flex justify-around h-[230px] overflow-y-auto'>
+            <div className='flex justify-around h-[220px] overflow-y-auto'>
                {/* Accepted result */}
                { headerResult.result === 'AC' && (
                 <>
@@ -108,7 +113,7 @@ export default function ProblemSubmission() {
                           <div>Error</div>
                         </div>
                         <div className="whitespace-pre-line">
-                          <small>{headerResult.error}</small>
+                          <small>{headerResult.error.trim()}</small>
                         </div>
                       </pre>
                     </div>

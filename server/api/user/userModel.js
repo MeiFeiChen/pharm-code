@@ -44,6 +44,28 @@ export async function findUser(identifier) {
     WHERE identifier = $1
   `, [identifier])
   const user = rows[0]
-  console.log(user)
   return user
+}
+
+export async function getSubmissionsByUserId(userId) {
+  const { rows } = await pool.query(`
+    SELECT problem_id, TO_JSON(ARRAY_AGG(status)) AS statuses
+    FROM (
+        SELECT problem_id, status
+        FROM submissions
+        WHERE user_id = $1 AND status <> 'pending'
+        GROUP BY problem_id, status
+    ) AS queries
+    GROUP BY problem_id
+  `, [userId])
+  return rows
+}
+
+export async function getProfile(userId) {
+  const { rows } = await pool.query(`
+    SELECT * FROM user_details
+    WHERE user_id = $1
+  `, [userId])
+  const profile = rows[0]
+  return profile
 }

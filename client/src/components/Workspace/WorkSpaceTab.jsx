@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom"
 import { useParams, useLocation } from 'react-router-dom'
+import { useContext } from "react"
+import { AuthContext } from "../../context"
 
 
 export default function WorkSpaceTab() {
+  const { isLogin } = useContext(AuthContext)
   const { problemId } = useParams()
   const location = useLocation()
  
@@ -21,7 +24,8 @@ export default function WorkSpaceTab() {
           Description
         </div>
       </Link>
-      <Link to={`/problems/${problemId}/submission`} className="flex-1">
+      { isLogin && (
+        <Link to={`/problems/${problemId}/submission`} className="flex-1">
         <div className={`
           ${
             isSubmissionTabActive ? 'bg-dark-layer-1' : 'bg-dark-layer-2'
@@ -30,6 +34,7 @@ export default function WorkSpaceTab() {
             Submission
         </div>
       </Link>
+      )}
       <Link to={`/problems/${problemId}/discussion`} className="flex-1">
       <div className={`
           ${

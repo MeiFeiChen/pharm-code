@@ -2,10 +2,30 @@ import pool from '../../config/database.js'
 
 export async function getProblems() {
   const { rows } = await pool.query(`
-    SELECT * FROM problems
+    SELECT 
+      problems.*,
+      problems_pass_rate.successful_submissions,
+      problems_pass_rate.total_submissions,
+      problems_pass_rate.pass_rate
+    FROM 
+      problems
+    LEFT JOIN 
+      (
+        SELECT 
+        problem_id,
+        COUNT(CASE WHEN status = 'success' THEN 1 END) as successful_submissions,
+        COUNT(CASE WHEN status IN ('success', 'failed') THEN 1 END) as total_submissions,
+        COALESCE(
+            COUNT(CASE WHEN status = 'success' THEN 1 END)::decimal / COUNT(CASE WHEN status IN ('success', 'failed') THEN 1 END),
+            0
+        ) as pass_rate
+        FROM submissions
+        GROUP BY problem_id
+      ) AS problems_pass_rate 
+    ON 
+      problems_pass_rate.problem_id = problems.id
   `)
-  const results = rows
-  return results
+  return rows
 }
 
 export async function getProblem(problemId) {

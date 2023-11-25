@@ -1,11 +1,14 @@
-import { BsChevronUp } from "react-icons/bs";
+import { BsChevronUp } from "react-icons/bs"
 import PropTypes from 'prop-types'
+import { AuthContext } from "../../../context"
+import { useContext } from "react"
 
 EditorFooter.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
 }
 
 function EditorFooter( { handleSubmit }) {
+  const { isLogin } = useContext(AuthContext)
   return (
     <div className='flex bg-dark-layer-1 absolute bottom-0 z-10 w-full overflow-x-auto'>
 			<div className='mx-5 my-[10px] flex justify-between w-full'>
@@ -24,12 +27,17 @@ function EditorFooter( { handleSubmit }) {
 					>
 						Run
 					</button>
-					<button
-						className='px-3 py-1.5 font-medium items-center transition-all focus:outline-none inline-flex text-sm text-white bg-dark-green-s hover:bg-green-3 rounded-lg'
-						onClick={ handleSubmit }
-					>
-						Submit
-					</button>
+
+          <button
+            className={`
+            px-3 py-1.5 font-medium items-center transition-all 
+            focus:outline-none inline-flex text-sm text-white rounded-lg
+            ${!isLogin ? 'bg-dark-gray-6 cursor-not-allowed' : 'bg-dark-green-s hover:bg-light-green-s'}
+            `}
+          >
+            Submit
+          </button>
+          
 				</div>
 			</div>
 		</div>

@@ -8,6 +8,7 @@ import {
   getProblemsPage,
   getProblemPage
 } from './problemController.js'
+import verifyAuth from '../../middleware/auth.js'
 
 const problemRouter = express.Router()
 
@@ -24,6 +25,7 @@ problemRouter.post(
   '/:id/submit',
   param('id').isInt().not().isEmpty(),
   handleResult,
+  verifyAuth,
   submitProblem
 )
 
@@ -32,6 +34,7 @@ problemRouter.get(
   param('id').isInt().not().isEmpty(),
   param('submittedId').isInt().not().isEmpty(),
   handleResult,
+  verifyAuth,
   getSubmission
 )
 
@@ -39,6 +42,7 @@ problemRouter.get(
   '/:id/submissions',
   param('id').isInt().not().isEmpty(),
   handleResult,
+  verifyAuth,
   getSubmissions
 )
 

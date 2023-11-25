@@ -1,9 +1,10 @@
 import { MdMemory, MdOutlineTimer } from 'react-icons/md';
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { redirect, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { TEXT_COLOR, STATUS, COMPILE_LANGUAGE } from '../../../constant';
-import { formatTimestamp } from '../../../config';
+import { formatTimestamp } from '../../../dateconfig';
+import { getAuthToken } from '../../../utils';
 
 SubmissionTable.propTypes = {
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -14,7 +15,8 @@ function SubmissionTable({ results, setHeaderResult }) {
   const navigate = useNavigate()
   const [highlightIndex, setHighlightIndex] = useState(null)
   console.log(highlightIndex)
-  
+ 
+
 
   const handleClick = (result, index) => {
     navigate(`/problems/${result.problem_id}/submission/${result.id}`)

@@ -5,13 +5,14 @@ import {
   getSubmissionsResults,
   getProblems,
   getProblem,
-  getTestCases
+  getTestCases,
 } from './problemModel.js'
 
 export const getProblemsPage = async (req, res) => {
   try {
-    const problems = await getProblems();
-    return res.status(200).json(problems);
+    const problems = await getProblems()
+    // const passRate = await getProblemsPassRate()
+    return res.status(200).json(problems)
   } catch (err) {
     console.error(err.message);
     return res.status(500).json({ errors: 'Get problems failed' });
@@ -32,7 +33,7 @@ export const getProblemPage = async (req, res) => {
 }
 
 export const submitProblem = async (req, res) => {
-  const userId = 1
+  const { userId } = res.locals
   const { id: problemId } = req.params
   const { language, code } = req.body
 
@@ -60,7 +61,8 @@ export const submitTest = async(req, res) => {
 
 export const getSubmission = async (req, res) => {
   const { id: problemIid, submittedId } = req.params
-  const userId = 1
+  const { userId } = res.locals
+
   try {
     const data = await getSubmissionResult(submittedId, problemIid, userId)
     return res.status(200).json({ data })
@@ -75,7 +77,7 @@ export const getSubmission = async (req, res) => {
 
 export const getSubmissions = async (req, res) => {
   const { id: problemIid } = req.params
-  const userId = 1
+  const { userId } = res.locals
   try {
     const data = await getSubmissionsResults(problemIid, userId)
     if (!data.length) return res.status(400).json({ errors: "could't find data" })

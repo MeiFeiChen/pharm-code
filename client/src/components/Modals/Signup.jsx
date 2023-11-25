@@ -3,27 +3,35 @@ import { authModalState } from "../../atoms/authModalAtom"
 import { ErrorMessage, Form, Formik, useField } from 'formik'
 import * as yup from 'yup'
 import { apiUserSignUp } from "../../api"
+import { Zoom, ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import { setAuthToken } from "../../utils"
+import { AuthContext } from "../../context"
+import { useContext } from "react"
 
 const validate = yup.object({
-  name: yup.string().required('欄位不得為空'),
-  email: yup.string().email('Email 格式錯誤').required('欄位不得為空'), 
-  password: yup.string().min(6, '長度不可小於6').required('欄位不得為空')
+  name: yup.string().required('Field cannot be empty'),
+  email: yup.string().email('Invalid email format').required('Field cannot be empty'), 
+  password: yup.string().min(6, 'Length cannot be less than 6').required('Field cannot be empty')
 })
 
 
-
 function Signup() {
+  const { setUser } = useContext(AuthContext)
   const setAuthModalState = useSetRecoilState(authModalState)
-  const handleClick = (type) => {
-    setAuthModalState((prev) => ({ ...prev, type }))
-  }
+  const handleClick = (type) => setAuthModalState((prev) => ({ ...prev, type }))
   const submitHandler = async (payload) => {
     try {
-      const response = await apiUserSignUp(payload)
+      const data = await apiUserSignUp(payload)
+      // 跳轉頁面(關閉視窗和換Navbar的內容？)
+      console.log(response)
+      setAuthToken(data.data.access_token)
+      setUser(data.data.user.id)
+      setAuthModalState((prev) => ({...prev, isOpen: false}))
     } catch (error) {
-  
+      console.error(error)
+      toast.error(error.response.data.errors, { position: "top-center", autoClose: 500, theme: "dark" })  
     }
-  
   }
   return (
     <Formik
@@ -87,6 +95,16 @@ function Signup() {
 			>
 				Register
 			</button>
+      <ToastContainer
+        transition={Zoom}
+        position="top-center"
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+        theme="dark"
+        />
 	
 			<div className='text-sm font-medium text-gray-300'>
 				Already have an account?{" "}
@@ -94,8 +112,6 @@ function Signup() {
 					Log In
 				</a>
 			</div>
-
-
     </Form>
     </Formik>
   )
@@ -106,7 +122,7 @@ function InputField({...props}) {
   return (
     <>
       <input {...props} {...field}/>
-      <div className='h-[8px]'>
+      <div className='h-[5px]'>
         <ErrorMessage component='small' className='text-red-300' name={field.name}/>
       </div>
     </>

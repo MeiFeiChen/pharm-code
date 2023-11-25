@@ -15,12 +15,15 @@ const userRequest = axios.create({
 // problems
 export const apiProblemsItem = () => problemsRequest.get('')
 export const apiProblemItem = (id) => problemsRequest.get(`/${id}`)
+
 // submission
-export const apiProblemSubmission = (id, payload) => problemsRequest.post(`/${id}/submit`, payload)
-export const apiProblemSubmissionItem = (id, submittedId) => problemsRequest.get(`/${id}/submissions/${submittedId}`)
-export const apiProblemSubmissionItems = (id) => problemsRequest.get(`/${id}/submissions`)
+export const apiProblemSubmission = (id, payload, config) => problemsRequest.post(`/${id}/submit`, payload, config)
+export const apiProblemSubmissionItem = (id, submittedId, config) => problemsRequest.get(`/${id}/submissions/${submittedId}`, config)
+export const apiProblemSubmissionItems = (id, config) => problemsRequest.get(`/${id}/submissions`, config)
 
 
 // user
 export const apiUserSignIn = (payload) => userRequest.post('/signin', payload)
 export const apiUserSignUp = (payload) => userRequest.post('/signup', payload)
+export const apiUserSubmissionItems = (config) => userRequest.get('/submissions', config)
+export const apiUserProfile = (config) => userRequest.get('/profile', config)
