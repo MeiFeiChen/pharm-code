@@ -37,7 +37,7 @@ export async function getProblem(problemId) {
   return problem
 }
 
-export async function createSubmission(problemId, userId, language, status, code) {
+export async function createSubmission(userId, problemId, language, status, code) {
   const { rows } = await pool.query(`
     INSERT INTO submissions(problem_id, user_id, language, status, code)
     VALUES ($1, $2, $3, $4, $5) returning id

@@ -34,6 +34,7 @@ function EditorFooter( { handleSubmit }) {
             focus:outline-none inline-flex text-sm text-white rounded-lg
             ${!isLogin ? 'bg-dark-gray-6 cursor-not-allowed' : 'bg-dark-green-s hover:bg-light-green-s'}
             `}
+            onClick={ handleSubmit }
           >
             Submit
           </button>
