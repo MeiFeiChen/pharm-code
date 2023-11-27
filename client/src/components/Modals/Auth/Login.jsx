@@ -19,7 +19,7 @@ const validate = yup.object({
 
 
 function Login() {
-  const { setIsLogin } = useContext(AuthContext)
+  const { setIsLogin, setUserProfile } = useContext(AuthContext)
   const setAuthModalState = useSetRecoilState(authModalState)
 
 
@@ -33,6 +33,7 @@ function Login() {
       const { data } = await apiUserSignIn(payload)
       // 跳轉頁面(關閉視窗和換Navbar的內容？)
       setAuthToken(data.data.access_token) // 存jwt至local storage
+      setUserProfile(data.data.user)
       setIsLogin(true)
       setAuthModalState((prev) => ({...prev, isOpen: false}))
     } catch (error) {

@@ -5,18 +5,28 @@ import { Link, useParams } from "react-router-dom"
 import { useSetRecoilState } from "recoil"
 import { formatTimestamp } from "../../../dateconfig"
 import { AuthContext } from "../../../context"
-import { useContext } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { postModalState } from "../../../atoms/postModalAtom"
-import PropTypes from 'prop-types'
+import { apiPostItems } from "../../../api"
+import { PostContext } from "../../../context"
 
-DiscussionPosts.propTypes = {
-  posts: PropTypes.array.isRequired,
-  setPost: PropTypes.func.isRequired
-}
-
-function DiscussionPosts({ posts }) {
+function DiscussionPosts() {
+  const { newPostId } = useContext(PostContext)
   const setPostModalState = useSetRecoilState(postModalState)
   const { isLogin } = useContext(AuthContext)
+  const { problemId } = useParams()
+  const [ posts, setPosts] = useState(null)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await apiPostItems(problemId)
+        setPosts(data.data)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+    fetchData()
+  }, [problemId, newPostId])
 
   return (
     <div className='px-5 w-full'>

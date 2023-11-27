@@ -89,7 +89,7 @@ problemRouter.get(
 
 // create a message in a post
 problemRouter.post(
-  '/:id/discussion/:postId',
+  '/:id/discussion/:postId/messages',
   param('id').isInt().not().isEmpty(),
   param('postId').isInt().not().isEmpty(),
   handleResult,

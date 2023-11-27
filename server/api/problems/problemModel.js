@@ -183,8 +183,14 @@ export async function getSinglePost(problemId, postId) {
 
 export async function getMessages(problemId, postId) {
   const { rows } = await pool.query(`
-    SELECT * FROM messages
+    SELECT 
+      user_details.name,
+      messages.* 
+    FROM messages
+    LEFT JOIN user_details
+    ON messages.user_id = user_details.user_id
     WHERE problem_id = $1 AND post_id = $2
+    ORDER BY messages.created_at DESC
   `, [problemId, postId])
   return rows
 }
@@ -192,7 +198,17 @@ export async function getMessages(problemId, postId) {
 export async function createMessage(problemId, userId, postId, content) {
   const { rows } = await pool.query(`
     INSERT INTO messages(problem_id, post_id, user_id, content)
-    VALUES ($1, $2, $3, $4) returning id
-  `, [problemId, userId, postId, content])
-  return rows
+    VALUES ($1, $2, $3, $4) returning *
+  `, [problemId, postId, userId, content])
+  const data = rows[0]
+  return data
+}
+
+export async function getUserName(userId) {
+  const { rows } = await pool.query(`
+    SELECT name FROM user_details
+    WHERE user_id = $1
+  `, [userId])
+  const { name } = rows[0]
+  return name
 }

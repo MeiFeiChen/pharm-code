@@ -15,7 +15,7 @@ function PostModal() {
     <div className='w-full sm:w-[90%]  absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]  flex justify-center items-center'>
       <div className='relative w-full h-full mx-auto flex items-center justify-center'>
         {/* Modal content */}
-        <div className='bg-white rounded-lg shadow relative w-full dark:bg-zinc-800 mx-6'>
+        <div className='bg-white rounded-lg shadow relative w-full dark:bg-zinc-800'>
         
           <CreatePost />
         </div>

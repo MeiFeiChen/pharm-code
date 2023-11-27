@@ -21,7 +21,7 @@ const problemQueue = new Bull('problem-queue', {
 })
 
 const NUM_WORKERS = 5
-const execFile = async (submittedId, language, filepath, index, inputs, timeLimit) => {
+const execFile = async (submittedId, language, filepath, index, input, timeLimit) => {
   // generate a temporary file
   const { imageName, containerName, runtimeCommand } = languageRuntime[language]
   const tempFileName = path.basename(filepath)
@@ -30,7 +30,6 @@ const execFile = async (submittedId, language, filepath, index, inputs, timeLimi
   // use container to run the process
   return new Promise((resolve, reject) => {
     const volumePath = '/app'
-    const input = inputs.replace(/ /g, '\n')
 
     const command = `echo "${input}" | docker run -i --rm --name ${submittedId}${containerName}${index} -v ${tempFileDir}:${volumePath} ${imageName}:latest timeout ${timeLimit / 1000} /usr/bin/time -f '%e %M' ${runtimeCommand} ${volumePath}/${tempFileName}`
     exec(command, (error, stdout, stderr) => {
@@ -78,7 +77,6 @@ problemQueue.process(NUM_WORKERS, async ({ data }) => {
     })
     // calculate the average time and memory
     const results = await Promise.all(execFilePromises)
-    
     console.log(results)
 
     const sumTimeMemory = results.reduce((acc, item) => {

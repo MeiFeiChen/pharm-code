@@ -11,7 +11,8 @@ import {
   getSinglePost,
   createPost,
   getMessages,
-  createMessage
+  createMessage,
+  getUserName
 } from './problemModel.js'
 
 export const getProblemsPage = async (req, res) => {
@@ -157,11 +158,19 @@ export const createPostMessage = async (req, res) => {
   const { id: problemId, postId } = req.params
   const { userId } = res.locals
   const { content } = req.body
+  console.log(problemId, postId, userId, content)
   try {
+    const io = req.app.get('socketio')
+    const name = await getUserName(userId)
     const data = await createMessage(problemId, userId, postId, content)
 
-    return res.status(200).json(data)
+    io.in(postId).emit('message', {
+      ...data, name
+    })
+
+    return res.status(200).json({ success: true, id: data.id })
   } catch (err) {
+    console.error(err)
     if (err instanceof Error) {
       return res.status(500).json({ errors: err.message })
     }

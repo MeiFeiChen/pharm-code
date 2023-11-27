@@ -9,7 +9,7 @@ import { useSetRecoilState } from "recoil"
 import { authModalState } from "../atoms/authModalAtom"
 
 TopBar.propTypes = {
-  problemPage: PropTypes.bool.isRequired,
+  problemPage: PropTypes.bool,
 }
 
 export default function TopBar({ problemPage }) {

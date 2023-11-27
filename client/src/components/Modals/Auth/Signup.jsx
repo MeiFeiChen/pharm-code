@@ -17,7 +17,7 @@ const validate = yup.object({
 
 
 function Signup() {
-  const { setIsLogin } = useContext(AuthContext)
+  const { setIsLogin, setUserProfile } = useContext(AuthContext)
   const setAuthModalState = useSetRecoilState(authModalState)
   const handleClick = (type) => setAuthModalState((prev) => ({ ...prev, type }))
   const submitHandler = async (payload) => {
@@ -26,10 +26,11 @@ function Signup() {
       // 跳轉頁面(關閉視窗和換Navbar的內容？)
       setAuthToken(data.data.access_token) // 存jwt至local storage
       setIsLogin(true)
+      setUserProfile(data.data.user)
       setAuthModalState((prev) => ({...prev, isOpen: false}))
     } catch (error) {
       console.error(error)
-      toast.error(error.response.data.errors, { position: "top-center", autoClose: 500, theme: "dark" })  
+      toast.error(error.response.data.errors, { position: "top-center", autoClose: 1000, theme: "dark" })  
     }
   }
   return (

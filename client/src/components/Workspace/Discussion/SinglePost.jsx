@@ -3,56 +3,82 @@ import { useNavigate, useParams } from "react-router-dom"
 import { formatTimestamp } from "../../../dateconfig"
 import { BiMessage } from "react-icons/bi"
 import { useEffect, useState } from "react"
-import { apiPostItem, apiPostMessageItem } from "../../../api"
-import Markdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+import { apiLeavePostMessage, apiPostItem, apiPostMessageItem } from "../../../api"
 import MDEditor from '@uiw/react-md-editor'
 import { AuthContext } from "../../../context"
 import { useContext } from "react"
+import { getAuthToken } from "../../../utils"
+import { Zoom, ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import { socket } from "../../../socket"
 
 
 function SinglePost() {
-  const { isLogin } = useContext(AuthContext)
+  const { isLogin, setIsLogin, setUserProfile } = useContext(AuthContext)
   const { problemId, postId } = useParams()
-  console.log(problemId, postId)
+  const [ content, setContent ] = useState('')
   const navigate = useNavigate()
   const [ post, setPost ] =  useState(null)
-  const [ messages, setMessages ] = useState([])
+  const [ messages, setMessages ] = useState(null)
+
+  const handleMessage = (newMessage) => {
+    console.log('Received message:', newMessage)
+    setMessages((prevMessages) => [newMessage, ...prevMessages])
+  }
 
   useEffect(() => {
-    const fetchPostData = async () => {
-      try {
-        const { data } = await apiPostItem(problemId, postId);
-        setPost(data.data);
-      } catch (error) {
-        console.error('Error fetching post data:', error);
-      }
-    };
-  
-    fetchPostData();
-  }, [problemId, postId]);
+    socket.connect()
+    socket.on('connect', () => {
+      console.log(`Connected to the socket as a consumer, ${postId}`)
+      socket.emit('joinPost', postId)
+    })
+    
+    socket.on('message', handleMessage)
+
+    return () => {
+      socket.off('message', handleMessage)
+      socket.disconnect()
+    }
+  }, [postId])
   
   useEffect(() => {
     const fetchMessageData = async () => {
       try {
-        const { data } = await apiPostMessageItem(problemId, postId);
-        setMessages(data.data);
+        const postData = await apiPostItem(problemId, postId)
+        const messagesData = await apiPostMessageItem(problemId, postId)
+        setPost(postData.data.data)
+        setMessages(messagesData.data.data)
       } catch (error) {
-        console.error('Error fetching message data:', error);
+        console.error('Error fetching message data:', error)
       }
-    };
+    }
   
-    fetchMessageData();
-  }, [problemId, postId]);
-
-  console.log(post, setMessages)
-  
-  
+    fetchMessageData()
+  }, [problemId, postId])
 
 
   const handleButtonClick = () => {
-    navigate(`/problems/${problemId}/discussion`);
+    navigate(`/problems/${problemId}/discussion`)
   }
+
+  const handleSubmit = async() => {
+    const requestBody = { content }
+    const token = getAuthToken()
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+    try {
+      await apiLeavePostMessage(problemId, postId, requestBody, config)
+      toast.success('Leave a Comment Successfully')
+      setContent('') 
+    } catch (error) {
+      console.error(error)
+      setIsLogin(false)
+      setUserProfile(null)
+    }
+  }
+
+  
 
   return (
     <div className='px-5 w-full'>
@@ -87,12 +113,14 @@ function SinglePost() {
             <div className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">{post.title}</div>
           </div>
           {/* 內文 */}
-          <div className="py-5 text-sm text-white"  style={{ whiteSpace: 'pre-line' }}>
-          <Markdown
-            remarkPlugins={[remarkGfm]}
-          >
-            {post.content}
-          </Markdown>
+          <div className="py-3 text-sm text-white">
+          <MDEditor.Markdown 
+                source={post.content}
+                className="bg-transparent" />
+          </div>
+          <div className="flex items-center justify-end text-gray-400 text-sm ml-auto">
+              <BiMessage className='mt-1'/>
+              <div className='ml-1'>{messages.length}</div>
           </div>
         </>
         )}
@@ -101,10 +129,12 @@ function SinglePost() {
       <div className="container w-full">
         <div className="flex flex-col">
           <MDEditor
-            value={'j'}
-            // onChange={}
+            value={content}
+            onChange={setContent}
             highlightEnable={false}
-            height={200}
+            preview="edit"
+            height={125}
+            
           />
         </div>
 
@@ -113,20 +143,53 @@ function SinglePost() {
             className={`
               px-3 py-1.5 font-medium transition-all 
               focus:outline-none inline-flex text-sm text-white rounded-lg
-              ${!isLogin ? 'bg-dark-gray-6 cursor-not-allowed' : 'bg-dark-green-s hover:bg-light-green-s'}
+              ${(!isLogin || !content.trim()) ? 'bg-dark-gray-6 cursor-not-allowed' : 'bg-dark-green-s hover:bg-light-green-s'}
             `}
-            // onClick={handleSubmit}
-            disabled={!isLogin}
+            onClick={ handleSubmit }
+            disabled={(!isLogin || !content.trim())}
           >
             Comment
           </button>
+          <ToastContainer
+            transition={Zoom}
+            position="top-center"
+            autoClose={1000}
+            hideProgressBar={true}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            draggable
+            theme="colored"
+          />
         </div>
      </div>
 
       <div>
-        {messages?.map((message) => (
-          <div key={message.id}>
+        {messages?.map((message, index) => (
+          <div 
+            key={message.id} 
+            className={`rounded-lg p-3 ${index % 2 === 1 ? 'bg-dark-fill-3' : ''}`}
+          >
+            <div  className='flex items-center pb-2'>
+              <img className="w-6 h-6 rounded mr-2" src="/avatar.png" alt="Default avatar" />
+              <div className='text-sm font-bold dark:text-white'>
+                {message.name}
+              </div>
+              <div className='text-sm text-gray-400'>
+              ．
+              </div>
+              <div className='text-sm text-gray-400'>
+                {formatTimestamp(message.created_at)}
+              </div>
+            </div>
+
+            <div className="text-sm text-white">
+              <MDEditor.Markdown 
+                source={message.content} 
+                className="bg-transparent" />
+            </div>
           </div>
+
         ))}
 
       </div>

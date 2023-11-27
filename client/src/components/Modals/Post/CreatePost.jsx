@@ -1,20 +1,23 @@
 import { IoClose } from "react-icons/io5"
 import { useSetRecoilState } from "recoil"
 import { postModalState } from "../../../atoms/postModalAtom"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import MDEditor from '@uiw/react-md-editor'
 import { BsSend } from "react-icons/bs"
 import { getAuthToken } from "../../../utils"
 import { apiPostSend } from "../../../api"
 import { useParams } from "react-router-dom"
+import { PostContext } from "../../../context"
 
 function CreatePost() {
+  const { setNewPostId } = useContext(PostContext)
   const [content, setContent] = useState('')
   const [title, setTitle] = useState('')
   const { problemId } = useParams()
   const closeModal = useCloseModal()
+  const setPostModal = useSetRecoilState(postModalState)
 
-  const isButtonDisabled = !title.trim() && !content.trim()
+  const isButtonDisabled = !title.trim() || !content.trim()
 
   const handleSubmit = async(event) => {
     event.preventDefault()
@@ -27,6 +30,8 @@ function CreatePost() {
     try {
       const { data } = await apiPostSend(problemId, requestBody, config)
       console.log(data)
+      setNewPostId(data.postId)
+      setPostModal((prev) => ({ ...prev, isOpen: false }))
     } catch (error) {
       console.error(error)
     }
@@ -42,11 +47,11 @@ function CreatePost() {
           Create a New Post
       </h3>
       <button
-              type='button'
-              className='bg-transparent  rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-700 hover:text-white text-white'
-              onClick={closeModal}
-            >
-              <IoClose className="h-5 w-5"/>
+        type='button'
+        className='bg-transparent  rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-700 hover:text-white text-white'
+        onClick={closeModal}
+      >
+        <IoClose className="h-5 w-5"/>
       </button>
       
       
@@ -66,7 +71,7 @@ function CreatePost() {
             placeholder="Enter your title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            required/>
+            required />
         </div>
         <div className="container w-full">
           <MDEditor

@@ -4,9 +4,9 @@ import dotenv from 'dotenv'
 import morgan from 'morgan'
 import path from 'path'
 import { fileURLToPath } from 'url'
-// import { Job } from './models/job.js'
-// import addJobToQueue from './jobQueue.js'
-// import { generateFile } from './generateFile.js'
+import OpenAI from 'openai'
+import { Server } from 'socket.io'
+import { createServer } from 'http'
 
 import problemRouter from './api/problems/problemRouter.js'
 import userRouter from './api/user/userRouter.js'
@@ -15,6 +15,29 @@ dotenv.config()
 
 const port = 3000
 const app = express()
+const server = createServer(app)
+
+const io = new Server(server, {
+  cors: {
+    origin: '*'
+  }
+})
+
+io.on('connection', (socket) => {
+  console.log('a user connected')
+  socket.on('joinPost', (postId) => {
+    socket.join(postId)
+    console.log(`Server: User joined ${postId}`)
+  })
+
+  socket.on('disconnect', () => {
+    console.log('user disconnect')
+  })
+})
+
+app.set('socketio', io)
+
+const openai = new OpenAI({ apiKey: process.env.SECRET_KEY });
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -26,47 +49,24 @@ app.options('*', cors())
 app.use(express.json())
 app.use(express.static('./public/dist'))
 
-
 app.use('/api/user', userRouter)
 app.use('/api/problems', problemRouter)
 
-// app.get('/status', async (req, res) => {
-//   const jobId = req.query.id;
+app.use('/api/openai', async (req, res) => {
+  const completion = await openai.chat.completions.create({
+    messages: [{
+      role: 'assistant', content: `輸入a和b，輸出a+b結果
+        Input: 一行兩個正整數a和b
+        Output: 一行一個正整數 給我javascript或python的做法`
+    }],
+    model: 'gpt-3.5-turbo',
+  })
+  res.send(completion)
 
-//   if (jobId === undefined) {
-//     return res
-//       .status(400)
-//       .json({ success: false, error: 'missing id query param' });
-//   }
-
-//   const job = await Job.findById(jobId);
-
-//   if (job === undefined) {
-//     return res.status(400).json({ success: false, error: "couldn't find job" });
-//   }
-
-//   return res.status(200).json({ success: true, job })
-// })
-
-// app.post('/run', async (req, res) => {
-//   const { language = 'js', code } = req.body;
-//   console.log(req.body)
-//   console.log(language, 'Length:', code.length);
-
-//   if (code === undefined) {
-//     return res.status(400).json({ success: false, error: 'Empty code body!' });
-//   }
-//   // need to generate a c++ file with content from the request
-//   const filename = await generateFile(language, code)
-//   // write into DB
-//   const job = await new Job({ language, filename }).save()
-//   const jobId = job['_id'];
-//   addJobToQueue(jobId);
-//   res.status(201).json({ jobId });
-// })
+  console.log(completion.choices[0]);
+})
 
 // front end page
-
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/dist/index.html'), (err) => {
     if (err) {
@@ -76,6 +76,6 @@ app.get('/*', (req, res) => {
   })
 })
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is listening on port ${port}....`)
 })

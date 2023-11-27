@@ -5,10 +5,12 @@ import { useContext } from "react"
 
 EditorFooter.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  code: PropTypes.string.isRequired
 }
 
-function EditorFooter( { handleSubmit }) {
+function EditorFooter( { handleSubmit, code }) {
   const { isLogin } = useContext(AuthContext)
+
   return (
     <div className='flex bg-dark-layer-1 absolute bottom-0 w-full overflow-x-auto'>
 			<div className='mx-5 my-[10px] flex justify-between w-full'>
@@ -32,10 +34,10 @@ function EditorFooter( { handleSubmit }) {
             className={`
             px-3 py-1.5 font-medium items-center transition-all 
             focus:outline-none inline-flex text-sm text-white rounded-lg
-            ${!isLogin ? 'bg-dark-gray-6 cursor-not-allowed' : 'bg-dark-green-s hover:bg-light-green-s'}
+            ${(!isLogin || !code) ? 'bg-dark-gray-6 cursor-not-allowed' : 'bg-dark-green-s hover:bg-light-green-s'}
             `}
             onClick={ handleSubmit }
-            disabled= { !isLogin }
+            disabled= { !isLogin || !code }
           >
             Submit
           </button>

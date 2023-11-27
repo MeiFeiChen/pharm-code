@@ -9,7 +9,7 @@ import { getAuthToken } from '../../utils'
 
 
 export default function ProblemTable() {
-  const { isLogin, setIsLogin } = useContext(AuthContext)
+  const { isLogin, setIsLogin, setUserProfile } = useContext(AuthContext)
   const [problems, setProblems] = useState([])
   const [loading, setLoading] = useState(true)
   const [solvedProblem, setSolvedProblem] = useState({})
@@ -36,29 +36,27 @@ export default function ProblemTable() {
         const { data } = await apiUserSubmissionItems(config)
         if (data.length) {
           const transformedData = data.reduce((acc, item) => {
-            if (item.statuses.includes('success')) {
-              acc.solved.push(item.problem_id);
-            } else {
-              acc.attempt.push(item.problem_id);
-            }
-            return acc;
-          }, { solved: [], attempt: [] });
+          const key = item.statuses.includes('success') ? 'solved' : 'attempt'
+          acc[key].push(item.problem_id)
+          return acc;
+          }, { solved: [], attempt: [] })
           setSolvedProblem(transformedData)
         }
       } catch (err) {
-        console.error('Error fetching user submission data', err);
-        setIsLogin(false);
-        setSolvedProblem({});
+        console.error('Error fetching user submission data', err)
+        setIsLogin(false)
+        setUserProfile(null)
+        setSolvedProblem({})
       } 
     }
     if (isLogin) {
-      const token = getAuthToken();
+      const token = getAuthToken()
       const config = {
         headers: { Authorization: `Bearer ${token}` },
-      };
-      fetchUserSubmissionData(config);
+      }
+      fetchUserSubmissionData(config)
     }
-  }, [isLogin, setIsLogin])
+  }, [isLogin, setSolvedProblem, setIsLogin, setUserProfile])
 
   return (
     <>

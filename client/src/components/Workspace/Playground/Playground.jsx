@@ -10,6 +10,7 @@ import { python } from '@codemirror/lang-python'
 import EditorFooter from './EditorFooter'
 import { apiProblemSubmission, apiProblemSubmissionItem } from '../../../api'
 import { getAuthToken } from '../../../utils'
+import { socket } from '../../../socket'
 
 const languageExtension = {
   js: [javascript()], 
@@ -116,7 +117,7 @@ function Playground({ problem }) {
             onChange={onCodeChange}
 					/>
         </div>
-        <div className='w-full px-5 overflow-auto'>
+        <div className='w-full px-5 pb-[52px] overflow-auto'>
           {/* testCase heading */}
           <div className='flex h-10 items-center space-x-6'>
 						<div className='relative flex h-full flex-col justify-center cursor-pointer'>
@@ -155,7 +156,7 @@ function Playground({ problem }) {
 					</div>
         </div>
       </Split>
-      <EditorFooter handleSubmit={ handleSubmit }/>
+      <EditorFooter handleSubmit={ handleSubmit } code={ code }/>
     </div>
   )
 }

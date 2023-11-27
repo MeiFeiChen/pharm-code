@@ -1,5 +1,5 @@
 import { useLocation, useParams } from "react-router-dom"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import WorkSpaceTab from "../WorkSpaceTab"
 import { MdOutlineTimer, MdMemory } from "react-icons/md"
 import { BsCheck2Circle } from "react-icons/bs"
@@ -10,10 +10,11 @@ import { apiProblemSubmissionItems } from "../../../api"
 import { TEXT_COLOR, COMPILE_LANGUAGE, STATUS } from "../../../constant"
 import { formatTimestamp } from '../../../dateconfig';
 import { getAuthToken } from "../../../utils"
-
+import { AuthContext } from "../../../context"
 
 
 export default function ProblemSubmission() {
+  const { isLogin } = useContext(AuthContext)
   const location = useLocation()
   const { problemId, submittedId } = useParams()
   
@@ -39,9 +40,14 @@ export default function ProblemSubmission() {
         setLoading(false)
       }
     }
-    fetchData()
+    if (isLogin) {
+        fetchData()
+    } else {
+      setResults([])
+      setHeaderResult(null)
+    } 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [problemId, recentResult])
+  }, [problemId, recentResult, isLogin])
   console.log(headerResult)
 
   
@@ -79,7 +85,7 @@ export default function ProblemSubmission() {
                           <div>Runtime</div>
                         </div>
                         <strong className='px-[3px] text-white text-2xl'>{headerResult.runtime}</strong><small>ms</small><br />
-                        <small className="text-white"><span className="text-dark-green-s">Beats <span className='font-bold'>71.87% </span></span>of users with {headerResult.language === 'js'? 'Javascript': 'Python'}</small>
+                        <small className="text-white"><span className="text-dark-green-s">Beats <span className='font-bold'>71.87% </span></span>of users with {COMPILE_LANGUAGE[headerResult.language]}</small>
                       </pre>
                     </div>
                   </div>
@@ -93,7 +99,7 @@ export default function ProblemSubmission() {
                           <div>Memory</div>
                         </div>
                         <strong className='px-[3px] text-white text-2xl'>{headerResult.memory}</strong><small>MB</small><br />
-                        <small className="text-white"><span className="text-dark-green-s">Beats <span className='font-bold'>71.87% </span></span>of users with {headerResult.language === 'js'? 'Javascript': 'Python'}</small>
+                        <small className="text-white"><span className="text-dark-green-s">Beats <span className='font-bold'>71.87% </span></span>of users with {COMPILE_LANGUAGE[headerResult.language]}</small>
                       </pre>
                     </div>
                   </div>
