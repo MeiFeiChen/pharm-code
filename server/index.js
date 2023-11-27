@@ -26,6 +26,7 @@ app.options('*', cors())
 app.use(express.json())
 app.use(express.static('./public/dist'))
 
+
 app.use('/api/user', userRouter)
 app.use('/api/problems', problemRouter)
 

@@ -1,4 +1,5 @@
 import addProblemToQueue from '../../config/problemQueue.js'
+
 import {
   createSubmission,
   getSubmissionResult,
@@ -6,6 +7,11 @@ import {
   getProblems,
   getProblem,
   getTestCases,
+  getPosts,
+  getSinglePost,
+  createPost,
+  getMessages,
+  createMessage
 } from './problemModel.js'
 
 export const getProblemsPage = async (req, res) => {
@@ -87,5 +93,78 @@ export const getSubmissions = async (req, res) => {
       return res.status(500).json({ errors: err.message })
     }
     return res.status(500).json({ errors: 'get submissions failed' })
+  }
+}
+
+/* ---- Discussion ---- */
+export const getDiscussion = async (req, res) => {
+  const { id: problemIid } = req.params
+  try {
+    const data = await getPosts(problemIid)
+    return res.status(200).json({ data })
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(500).json({ errors: err.message })
+    }
+    return res.status(500).json({ errors: 'get posts failed' })
+  }
+}
+
+export const createDiscussion = async (req, res) => {
+  const { id: problemId } = req.params
+  const { userId } = res.locals
+  const { title, content } = req.body
+
+  try {
+    const postId = await createPost(problemId, userId, title, content)
+    return res.status(201).json({ success: true, postId })
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(500).json({ errors: err.message })
+    }
+    return res.status(500).json({ errors: 'create a post failed' })
+  }
+}
+
+export const getPost = async (req, res) => {
+  const { id: problemId, postId } = req.params
+  try {
+    const data = await getSinglePost(problemId, postId)
+    console.log(data)
+    return res.status(200).json({ data })
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(500).json({ errors: err.message })
+    }
+    return res.status(500).json({ errors: 'get messages failed' })
+  }
+}
+
+export const getPostMessage = async (req, res) => {
+  const { id: problemId, postId } = req.params
+  try {
+    const data = await getMessages(problemId, postId)
+    return res.status(200).json({ data })
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(500).json({ errors: err.message })
+    }
+    return res.status(500).json({ errors: 'get messages failed' })
+  }
+}
+
+export const createPostMessage = async (req, res) => {
+  const { id: problemId, postId } = req.params
+  const { userId } = res.locals
+  const { content } = req.body
+  try {
+    const data = await createMessage(problemId, userId, postId, content)
+
+    return res.status(200).json(data)
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(500).json({ errors: err.message })
+    }
+    return res.status(500).json({ errors: 'create messages failed' })
   }
 }

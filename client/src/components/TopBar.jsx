@@ -17,6 +17,7 @@ export default function TopBar({ problemPage }) {
   const { isLogin, userProfile } = useContext(AuthContext)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   const [isToggleOpen, setIsToggleOpen] = useState(false)
+
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);

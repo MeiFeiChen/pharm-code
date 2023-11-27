@@ -1,12 +1,12 @@
 import { useSetRecoilState } from "recoil"
-import { authModalState } from "../../atoms/authModalAtom"
+import { authModalState } from "../../../atoms/authModalAtom"
 import { ErrorMessage, Form, Formik, useField } from 'formik'
 import * as yup from 'yup'
-import { apiUserSignUp } from "../../api"
+import { apiUserSignUp } from "../../../api"
 import { Zoom, ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import { setAuthToken } from "../../utils"
-import { AuthContext } from "../../context"
+import { setAuthToken } from "../../../utils"
+import { AuthContext } from "../../../context"
 import { useContext } from "react"
 
 const validate = yup.object({
@@ -17,16 +17,15 @@ const validate = yup.object({
 
 
 function Signup() {
-  const { setUser } = useContext(AuthContext)
+  const { setIsLogin } = useContext(AuthContext)
   const setAuthModalState = useSetRecoilState(authModalState)
   const handleClick = (type) => setAuthModalState((prev) => ({ ...prev, type }))
   const submitHandler = async (payload) => {
     try {
-      const data = await apiUserSignUp(payload)
+      const { data } = await apiUserSignUp(payload)
       // 跳轉頁面(關閉視窗和換Navbar的內容？)
-      console.log(response)
-      setAuthToken(data.data.access_token)
-      setUser(data.data.user.id)
+      setAuthToken(data.data.access_token) // 存jwt至local storage
+      setIsLogin(true)
       setAuthModalState((prev) => ({...prev, isOpen: false}))
     } catch (error) {
       console.error(error)

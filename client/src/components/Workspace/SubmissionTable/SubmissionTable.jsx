@@ -14,7 +14,7 @@ SubmissionTable.propTypes = {
 function SubmissionTable({ results, setHeaderResult }) {
   const navigate = useNavigate()
   const [highlightIndex, setHighlightIndex] = useState(null)
-  console.log(highlightIndex)
+  console.log('highlightIndex: ', highlightIndex)
  
 
 

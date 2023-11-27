@@ -1,10 +1,6 @@
 import TopBar from "../components/TopBar";
 import ProblemTable from "../components/problemsTable/ProblemTable";
-import PropTypes from 'prop-types'
 
-Problems.propTypes = {
-  solvedProblem: PropTypes.object.isRequired,
-}
 
 export default function Problems() {
 

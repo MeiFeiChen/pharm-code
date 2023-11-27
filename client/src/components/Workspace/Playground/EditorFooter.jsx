@@ -10,7 +10,7 @@ EditorFooter.propTypes = {
 function EditorFooter( { handleSubmit }) {
   const { isLogin } = useContext(AuthContext)
   return (
-    <div className='flex bg-dark-layer-1 absolute bottom-0 z-10 w-full overflow-x-auto'>
+    <div className='flex bg-dark-layer-1 absolute bottom-0 w-full overflow-x-auto'>
 			<div className='mx-5 my-[10px] flex justify-between w-full'>
 				<div className='mr-2 flex flex-1 flex-nowrap items-center space-x-4'>
 					<button className='px-3 py-1.5 font-medium items-center transition-all inline-flex bg-dark-fill-3 text-sm hover:bg-dark-fill-2 text-dark-label-2 rounded-lg pl-3 pr-2'>
@@ -35,6 +35,7 @@ function EditorFooter( { handleSubmit }) {
             ${!isLogin ? 'bg-dark-gray-6 cursor-not-allowed' : 'bg-dark-green-s hover:bg-light-green-s'}
             `}
             onClick={ handleSubmit }
+            disabled= { !isLogin }
           >
             Submit
           </button>

@@ -1,5 +1,6 @@
 import pool from '../../config/database.js'
 
+/* ---- Problems ---- */
 export async function getProblems() {
   const { rows } = await pool.query(`
     SELECT 
@@ -28,6 +29,7 @@ export async function getProblems() {
   return rows
 }
 
+/* ---- Problem ---- */
 export async function getProblem(problemId) {
   const { rows } = await pool.query(`
     SELECT * FROM problems
@@ -37,6 +39,7 @@ export async function getProblem(problemId) {
   return problem
 }
 
+/* ---- Submit & Submission ---- */
 export async function createSubmission(userId, problemId, language, status, code) {
   const { rows } = await pool.query(`
     INSERT INTO submissions(problem_id, user_id, language, status, code)
@@ -61,8 +64,7 @@ export async function getTestCases(problemId, fieldName) {
     SELECT test_input, expected_output FROM problem_test_cases
     WHERE problem_id = $1 AND field_name = $2;
   `, [problemId, fieldName])
-  const testCases = rows
-  return testCases
+  return rows
 }
 
 export async function createSubmissionsResult(submittedId, result, runtime, memory, error) {
@@ -121,6 +123,76 @@ export async function getSubmissionsResults(problemId, userId) {
     WHERE problem_id = $1 AND user_id = $2
     ORDER BY submissions.submitted_at DESC
   `, [problemId, userId])
-  const results = rows
-  return results
+  return rows
+}
+
+/* ---- Discussion ---- */
+
+export async function getPosts(problemId) {
+  const { rows } = await pool.query(`
+  SELECT
+    posts.id AS post_id,
+    user_details.name,
+    posts.problem_id,
+    posts.title,
+    posts.content,
+    posts.created_at AS post_created_at,
+    posts.updated_at AS post_updated_at,
+    COUNT(messages.id) AS message_count
+  FROM
+    posts
+  LEFT JOIN
+    messages ON posts.id = messages.post_id
+  LEFT JOIN
+    user_details ON posts.user_id = user_details.user_id
+  WHERE posts.problem_id = $1
+  GROUP BY 
+    posts.id, user_details.name, posts.problem_id, posts.title, posts.content, posts.created_at, posts.updated_at
+  ORDER BY post_created_at DESC
+  `, [problemId])
+  return rows
+}
+
+export async function createPost(problemId, userId, title, content) {
+  const { rows } = await pool.query(`
+    INSERT INTO posts(problem_id, user_id, title, content)
+    VALUES ($1, $2, $3, $4) returning id
+  `, [problemId, userId, title, content])
+  const result = rows[0]
+  return result
+}
+export async function getSinglePost(problemId, postId) {
+  const { rows } = await pool.query(`
+    SELECT
+      posts.id AS post_id,
+      user_details.name,
+      posts.problem_id,
+      posts.title,
+      posts.content,
+      posts.created_at AS post_created_at,
+      posts.updated_at AS post_updated_at
+    FROM
+      posts
+    LEFT JOIN
+      user_details ON posts.user_id = user_details.user_id
+    WHERE posts.problem_id = $1 AND posts.id = $2
+  `, [problemId, postId])
+  const data = rows[0]
+  return data
+}
+
+export async function getMessages(problemId, postId) {
+  const { rows } = await pool.query(`
+    SELECT * FROM messages
+    WHERE problem_id = $1 AND post_id = $2
+  `, [problemId, postId])
+  return rows
+}
+
+export async function createMessage(problemId, userId, postId, content) {
+  const { rows } = await pool.query(`
+    INSERT INTO messages(problem_id, post_id, user_id, content)
+    VALUES ($1, $2, $3, $4) returning id
+  `, [problemId, userId, postId, content])
+  return rows
 }

@@ -1,5 +1,4 @@
-import AuthModal from "../components/Modals/AuthModal"
-import Navbar from "../components/Navbar/Navbar"
+import AuthModal from "../components/Modals/Auth/AuthModal"
 import { useRecoilValue } from "recoil"
 import { authModalState } from "../atoms/authModalAtom"
 

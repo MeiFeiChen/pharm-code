@@ -49,20 +49,17 @@ function Playground({ problem }) {
 
 
   const handleSubmit = async() => {
-    const payload = {
-      language, 
-      code
-    }
+    const requestBody = { language, code }
     const token = getAuthToken()
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     }
     try {
-      const { data } = await apiProblemSubmission(problem.id, payload, config)
+      const { data } = await apiProblemSubmission(problem.id, requestBody, config)
       const submittedId = data.submittedId
       console.log('data', data)
     
-      if (submittedId) {
+      if ( submittedId ) {
         console.log(submittedId)
 
     

@@ -6,7 +6,12 @@ import {
   getSubmission,
   getSubmissions,
   getProblemsPage,
-  getProblemPage
+  getProblemPage,
+  getDiscussion,
+  createDiscussion,
+  getPost,
+  getPostMessage,
+  createPostMessage
 } from './problemController.js'
 import verifyAuth from '../../middleware/auth.js'
 
@@ -44,6 +49,52 @@ problemRouter.get(
   handleResult,
   verifyAuth,
   getSubmissions
+)
+
+// discussion
+// get all the posts in the discussion
+problemRouter.get(
+  '/:id/discussion',
+  param('id').isInt().not().isEmpty(),
+  handleResult,
+  getDiscussion
+)
+
+// create a post in a discussion
+problemRouter.post(
+  '/:id/discussion',
+  param('id').isInt().not().isEmpty(),
+  handleResult,
+  verifyAuth,
+  createDiscussion
+)
+
+// get single post
+problemRouter.get(
+  '/:id/discussion/:postId',
+  param('id').isInt().not().isEmpty(),
+  param('postId').isInt().not().isEmpty(),
+  handleResult,
+  getPost
+)
+
+// get all the message of a post
+problemRouter.get(
+  '/:id/discussion/:postId/messages',
+  param('id').isInt().not().isEmpty(),
+  param('postId').isInt().not().isEmpty(),
+  handleResult,
+  getPostMessage
+)
+
+// create a message in a post
+problemRouter.post(
+  '/:id/discussion/:postId',
+  param('id').isInt().not().isEmpty(),
+  param('postId').isInt().not().isEmpty(),
+  handleResult,
+  verifyAuth,
+  createPostMessage
 )
 
 export default problemRouter

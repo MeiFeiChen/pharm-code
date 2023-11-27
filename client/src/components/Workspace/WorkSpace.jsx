@@ -34,12 +34,10 @@ export default function WorkSpace() {
       <div>
       <Routes>
         <Route path='' element={<ProblemDescription problem={problem}/>}/>
-        <Route path={`submission/:submittedId?`} 
-          element={<ProblemSubmission />}/>
-        <Route path='discussion' element={<ProblemDiscussion />}/>
+        <Route path={`submission/:submittedId?`} element={<ProblemSubmission />}/>
+        <Route path='discussion/*' element={<ProblemDiscussion />}/>
       </Routes>
       </div>
-      
       <Playground problem={ problem } key='problem'/>
       
 

@@ -8,6 +8,7 @@ import Auth from './pages/Auth'
 import { AuthContext } from './context'
 import { getAuthToken } from './utils'
 import { apiUserProfile } from './api'
+import Post from './pages/Post'
 
 
 
@@ -49,6 +50,7 @@ function App() {
         
       </Routes>
       <Auth />
+      
     
     
     </RecoilRoot>

@@ -22,6 +22,13 @@ export const apiProblemSubmissionItem = (id, submittedId, config) => problemsReq
 export const apiProblemSubmissionItems = (id, config) => problemsRequest.get(`/${id}/submissions`, config)
 
 
+// discussion
+export const apiPostSend = (id, payload, config) => problemsRequest.post(`/${id}/discussion`, payload, config)
+export const apiPostItems = (id) => problemsRequest.get(`/${id}/discussion`)
+// single post
+export const apiPostItem = (id, postId) => problemsRequest.get(`/${id}/discussion/${postId}`)
+export const apiPostMessageItem = (id, postId) => problemsRequest.get(`/${id}/discussion/${postId}/messages`)
+
 // user
 export const apiUserSignIn = (payload) => userRequest.post('/signin', payload)
 export const apiUserSignUp = (payload) => userRequest.post('/signup', payload)

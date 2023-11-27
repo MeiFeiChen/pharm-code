@@ -173,3 +173,8 @@ code {
 	color: white;
 	font-size: 1rem;
 }
+
+/* fix code editor style */
+.w-md-editor-text {
+  min-height: 100% !important;
+}
