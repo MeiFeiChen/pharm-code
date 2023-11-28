@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useContext } from 'react'
 import Split from 'react-split'
 import { useNavigate } from 'react-router'
 import PropTypes from 'prop-types'
@@ -11,6 +11,7 @@ import EditorFooter from './EditorFooter'
 import { apiProblemSubmission, apiProblemSubmissionItem } from '../../../api'
 import { getAuthToken } from '../../../utils'
 import { socket } from '../../../socket'
+import { CodeContext } from '../../../context'
 
 const languageExtension = {
   js: [javascript()], 
@@ -22,9 +23,10 @@ Playground.propTypes = {
 }
 
 function Playground({ problem }) {
+  const { code, setCode } = useContext(CodeContext)
   const [language, setLanguage] = useState('js')
   const [extension, setExtension] = useState([javascript({ jsx: true })])
-  const [code, setCode] = useState('')
+  // const [code, setCode] = useState('')
   const [activeTestCaseId, setActiveTestCaseId] = useState(0)
 
   const navigate = useNavigate()

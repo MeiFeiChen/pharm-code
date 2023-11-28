@@ -22,7 +22,7 @@ function PreferenceNav({ handleLanguageExtension, setDefaultLanguage, language})
           }}
         >
           <option value='js'>Javascript</option>
-          <option value='py'>Python</option>
+          <option value='py'>Python 3</option>
         </select>
         <button 
           className=

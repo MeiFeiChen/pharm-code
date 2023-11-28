@@ -1,28 +1,20 @@
-import { MdMemory, MdOutlineTimer } from 'react-icons/md';
-import { useEffect, useState } from "react"
-import { redirect, useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { TEXT_COLOR, STATUS, COMPILE_LANGUAGE } from '../../../constant';
-import { formatTimestamp } from '../../../dateconfig';
-import { getAuthToken } from '../../../utils';
+import { MdMemory, MdOutlineTimer } from 'react-icons/md'
+import { useNavigate, useParams } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import { TEXT_COLOR, STATUS, COMPILE_LANGUAGE } from '../../../constant'
+import { formatTimestamp } from '../../../dateconfig'
 
 SubmissionTable.propTypes = {
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
-  setHeaderResult: PropTypes.func.isRequired
-};
+}
 
-function SubmissionTable({ results, setHeaderResult }) {
+function SubmissionTable({ results }) {
   const navigate = useNavigate()
-  const [highlightIndex, setHighlightIndex] = useState(null)
-  console.log('highlightIndex: ', highlightIndex)
- 
+  const { submittedId } = useParams()
 
-
-  const handleClick = (result, index) => {
+  const handleClick = (result) => {
     navigate(`/problems/${result.problem_id}/submission/${result.id}`)
-    setHeaderResult(result)
-    setHighlightIndex(index)
-  };
+  }
 
   return (
     <tbody className="rounded">
@@ -30,7 +22,7 @@ function SubmissionTable({ results, setHeaderResult }) {
         return (
           <tr
             className={`${
-              index === highlightIndex ? 'bg-dark-layer-3' :
+              result.id === submittedId ? 'bg-dark-layer-3' :
               index % 2 === 1 ? 'bg-dark-layer-1' : 'bg-dark-layer-2'
             } cursor-pointer`}
             onClick={() => handleClick(result, index)}
@@ -38,7 +30,7 @@ function SubmissionTable({ results, setHeaderResult }) {
           >
 
             <th className="px-4 py-1 font-medium whitespace-nowrap">
-              <p className={`text-sm ${TEXT_COLOR[result.status]}`}>{STATUS[result.result]}</p>
+              <p className={`text-sm ${TEXT_COLOR[result.status]}`}>{STATUS[result.status]}</p>
               <span className="text-[10px]">{formatTimestamp(result.submitted_at)}</span>
             </th>
             <td className="text-sm px-3 py-1">

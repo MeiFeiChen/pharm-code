@@ -14,10 +14,10 @@ export async function getProblems() {
       (
         SELECT 
         problem_id,
-        COUNT(CASE WHEN status = 'success' THEN 1 END) as successful_submissions,
-        COUNT(CASE WHEN status IN ('success', 'failed') THEN 1 END) as total_submissions,
+        COUNT(CASE WHEN status = 'AC' THEN 1 END) as successful_submissions,
+        COUNT(CASE WHEN status IN ('AC', 'WA', 'TLE', 'RE') THEN 1 END) as total_submissions,
         COALESCE(
-            COUNT(CASE WHEN status = 'success' THEN 1 END)::decimal / COUNT(CASE WHEN status IN ('success', 'failed') THEN 1 END),
+            COUNT(CASE WHEN status = 'AC' THEN 1 END)::decimal / COUNT(CASE WHEN status IN ('AC', 'WA', 'TLE', 'RE') THEN 1 END),
             0
         ) as pass_rate
         FROM submissions
@@ -72,12 +72,6 @@ export async function createSubmissionsResult(submittedId, result, runtime, memo
   // update submission
   try {
     await client.query('BEGIN')
-    const status = (result === 'AC') ? 'success' : 'failed'
-    await client.query(`
-      UPDATE submissions
-      SET status = $1
-      WHERE id = $2
-    `, [status, submittedId])
     await client.query(`
       INSERT INTO submission_results(submission_id, result, runtime, memory, error)
       VALUES ($1, $2, $3, $4, $5)
@@ -92,36 +86,111 @@ export async function createSubmissionsResult(submittedId, result, runtime, memo
   }
 }
 
+export async function createAcSubmission(submittedId, result, language, runTime, memory) {
+  const client = await pool.connect()
+  try {
+    await client.query('BEGIN')
+    await client.query(`
+        UPDATE submissions
+        SET status = $1
+        WHERE id = $2
+    `, [result, submittedId])
+    await client.query(`
+      INSERT INTO ac_results(submission_id, language, runtime, memory)
+      VALUES ($1, $2, $3, $4)
+    `, [submittedId, language, runTime, memory])
+    await client.query('COMMIT')
+    console.log(`submitted ID ${submittedId}: successfully updated status and inserted the accepted result`)
+  } catch (err) {
+    await client.query('ROLLBACK')
+    throw err
+  } finally {
+    client.release()
+  }
+}
+
+export async function createWaReSubmission(submittedId, result, error) {
+  const client = await pool.connect()
+  try {
+    await client.query('BEGIN')
+    const errorJson = JSON.stringify(error)
+    await client.query(`
+        UPDATE submissions
+        SET status = $1
+        WHERE id = $2
+    `, [result, submittedId])
+    await client.query(`
+      INSERT INTO wa_re_results(submission_id, error)
+      VALUES ($1, $2)
+    `, [submittedId, errorJson])
+    await client.query('COMMIT')
+    console.log(`submitted ID ${submittedId}: successfully updated status and inserted the WA/RE result`)
+  } catch (err) {
+    console.log(err)
+    await client.query('ROLLBACK')
+    throw err
+  } finally {
+    client.release()
+  }
+}
+
 export async function getSubmissionResult(submittedId, problemId, userId) {
   const { rows } = await pool.query(`
     SELECT 
-      submissions.*,  
-      submission_results.result, 
-      submission_results.runtime, 
-      submission_results.memory,
-      submission_results.error
+      submissions.*,
+      ac_results.memory,
+      ac_results.runtime,
+      wa_re_results.error
     FROM submissions
-    LEFT JOIN submission_results
-    ON submissions.id = submission_results.submission_id
-    WHERE submissions.id = $1 AND problem_id = $2 AND user_id = $3
+    LEFT JOIN ac_results ON submissions.id = ac_results.submission_id
+    LEFT JOIN wa_re_results ON submissions.id = wa_re_results.submission_id
+    WHERE submissions.id = $1 AND submissions.problem_id = $2 AND submissions.user_id = $3
   `, [submittedId, problemId, userId])
   const result = rows[0]
-  return result
+  if (result.status !== 'AC') return { ...result, percentage: {} }
+  const data = await pool.query(`
+    WITH RankedSubmissions AS (
+      SELECT
+        submission_id,
+        runtime,
+        memory,
+        RANK() OVER (ORDER BY runtime) AS runtime_rank,
+        RANK() OVER (ORDER BY memory) AS memory_rank,
+        COUNT(*) OVER () AS total_submissions
+      FROM
+        ac_results 
+      WHERE language = $1
+    )
+    SELECT
+      submission_id,
+      runtime_rank,
+      memory_rank,
+      (1 - runtime_rank::float / total_submissions) * 100 AS runtime_rank_ratio_percentage,
+      (1 - memory_rank::float / total_submissions) * 100 AS memory_rank_ratio_percentage
+    FROM
+      RankedSubmissions
+    WHERE
+      submission_id = $2   
+  `, [result.language, submittedId])
+  const {
+    runtime_rank_ratio_percentage: runtimeRankRatio,
+    memory_rank_ratio_percentage: memoryRankRatio
+  } = data.rows[0]
+  return { ...result, percentage: { runtimeRankRatio, memoryRankRatio } }
 }
 
 export async function getSubmissionsResults(problemId, userId) {
   const { rows } = await pool.query(`
     SELECT 
-      submissions.*,  
-      submission_results.result, 
-      submission_results.runtime, 
-      submission_results.memory, 
-      submission_results.error
-      FROM submissions
-    JOIN submission_results
-    ON submissions.id = submission_results.submission_id
-    WHERE problem_id = $1 AND user_id = $2
-    ORDER BY submissions.submitted_at DESC
+      submissions.*,
+      ac_results.memory,
+      ac_results.runtime,
+      wa_re_results.error
+    FROM submissions
+    LEFT JOIN ac_results ON submissions.id = ac_results.submission_id
+    LEFT JOIN wa_re_results ON submissions.id = wa_re_results.submission_id
+    WHERE submissions.problem_id = $1 AND submissions.user_id = $2
+    ORDER BY submissions.id DESC;
   `, [problemId, userId])
   return rows
 }

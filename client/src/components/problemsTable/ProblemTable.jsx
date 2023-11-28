@@ -89,15 +89,21 @@ export default function ProblemTable() {
                   </Link>
                 </td>
                 <td className={`px-6 py-4 ${TEXT_COLOR_DIFFICULTY[problem.difficulty]}`}>{problem.difficulty}</td>
-                {/* 要換成實際通過率 */}
+                {/* 通過率 */}
                 <td className='px-6 py-4 text-[10px]'>
                 { problem.pass_rate ? (
-                  <Progress 
-                    progress={ Math.floor(problem.pass_rate * 100)}
-                    progressLabelPosition="inside"
-                    color="green" 
-                    labelProgress
-                  />
+                  <div className='flex items-center'>
+                    <Progress 
+                      progress={ Math.floor(problem.pass_rate * 100)}
+                      progressLabelPosition="inside"
+                      color="green" 
+                      labelProgress
+                      style={{ width: '60%' }}
+                    />
+                    <div className='ml-2'>
+                      {problem.successful_submissions}/{ problem.total_submissions}
+                    </div>
+                  </div>
                 ): (
                   <div>no record</div>
                 )}

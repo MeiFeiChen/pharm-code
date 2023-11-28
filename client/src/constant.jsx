@@ -1,6 +1,8 @@
 export const TEXT_COLOR = {
-  'success': 'text-dark-green-s', 
-  'failed': 'text-dark-pink'
+  'AC': 'text-dark-green-s', 
+  'WA': 'text-dark-pink',
+  'TLE': 'text-dark-pink',
+  'RE': 'text-dark-pink'
 }
 
 export const TEXT_COLOR_DIFFICULTY = {

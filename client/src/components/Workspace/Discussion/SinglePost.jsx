@@ -11,6 +11,7 @@ import { getAuthToken } from "../../../utils"
 import { Zoom, ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { socket } from "../../../socket"
+import rehypeSanitize from "rehype-sanitize"
 
 
 function SinglePost() {
@@ -25,17 +26,19 @@ function SinglePost() {
     console.log('Received message:', newMessage)
     setMessages((prevMessages) => [newMessage, ...prevMessages])
   }
+  const handleConnect = () => {
+    console.log(`Connected to the socket as a consumer, ${postId}`)
+      socket.emit('joinPost', postId)
+  }
 
   useEffect(() => {
     socket.connect()
-    socket.on('connect', () => {
-      console.log(`Connected to the socket as a consumer, ${postId}`)
-      socket.emit('joinPost', postId)
-    })
+    socket.on('connect', handleConnect)
     
     socket.on('message', handleMessage)
 
     return () => {
+      socket.off('connect', handleConnect)
       socket.off('message', handleMessage)
       socket.disconnect()
     }
@@ -77,7 +80,7 @@ function SinglePost() {
       setUserProfile(null)
     }
   }
-
+  
   
 
   return (
@@ -133,8 +136,11 @@ function SinglePost() {
             onChange={setContent}
             highlightEnable={false}
             preview="edit"
-            height={125}
-            
+            height={150}
+            visibleDragbar={false}
+            previewOptions={{
+              rehypePlugins: [[rehypeSanitize]],
+            }}
           />
         </div>
 

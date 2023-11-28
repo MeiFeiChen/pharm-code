@@ -93,7 +93,7 @@ export default function TopBar({ problemPage }) {
                     z-40 group-hover:scale-100 scale-0 
                     transition-all duration-300 ease-in-out'
                   >
-                    <p className="text-sm">{userProfile.email}</p>
+                    <p className="text-sm">{userProfile?.email}</p>
                   </div>
                 </div>
                 <Logout />

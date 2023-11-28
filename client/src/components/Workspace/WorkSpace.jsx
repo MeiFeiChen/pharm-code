@@ -7,10 +7,12 @@ import ProblemSubmission from './Problem/ProblemSubmission'
 import ProblemDiscussion from './Problem/ProblemDiscussion'
 import { Route, Routes } from 'react-router-dom'
 import Playground from './Playground/Playground'
+import { CodeContext } from "../../context"
 
 
 
 export default function WorkSpace() {  
+  const [ code, setCode ] = useState('')
   const { problemId } = useParams()
   const [problem, setProblem] = useState({})
   const [loading, setLoading] = useState(true)
@@ -30,17 +32,19 @@ export default function WorkSpace() {
   }, [problemId])
 
   return (
+    <CodeContext.Provider value={{code, setCode}}>
     <Split className='split' minSize={0}>
       <div>
-      <Routes>
-        <Route path='' element={<ProblemDescription problem={problem}/>}/>
-        <Route path={`submission/:submittedId?`} element={<ProblemSubmission />}/>
-        <Route path='discussion/*' element={<ProblemDiscussion />}/>
-      </Routes>
+        
+        <Routes>
+          <Route path='' element={<ProblemDescription problem={problem}/>}/>
+          <Route path={`submission/:submittedId?`} element={<ProblemSubmission />}/>
+          <Route path='discussion/*' element={<ProblemDiscussion />}/>
+        </Routes>
+        
       </div>
       <Playground problem={ problem } key='problem'/>
-      
-
     </Split>
+    </CodeContext.Provider>
   )
 }
