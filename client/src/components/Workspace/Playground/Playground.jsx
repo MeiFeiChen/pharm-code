@@ -12,6 +12,7 @@ import { apiProblemSubmission, apiProblemSubmissionItem } from '../../../api'
 import { getAuthToken } from '../../../utils'
 import { socket } from '../../../socket'
 import { CodeContext } from '../../../context'
+import { toast, Zoom } from 'react-toastify'
 
 const languageExtension = {
   js: [javascript()], 
@@ -64,7 +65,14 @@ function Playground({ problem }) {
     
       if ( submittedId ) {
         console.log(submittedId)
-
+        const pollTimeOut = setTimeout(() => {
+          console.log('Timeout reached. Stopping poll.');
+          clearInterval(pollInterval);
+        }, 15000)
+        const id = toast.loading("Please wait...", {
+          draggable: true,
+          transition: Zoom
+        })
     
         // Poll
         const pollInterval = setInterval(async () => {
@@ -72,9 +80,20 @@ function Playground({ problem }) {
     
           const { data, errors } = await apiProblemSubmissionItem(problem.id, submittedId, config)
           console.log('response', data)
+          
 
           if (errors) {
             clearInterval(pollInterval)
+            toast.update(id, { 
+              render: "Error", 
+              type: "error", 
+              isLoading: false, 
+              autoClose: 1000,
+              theme: 'dark',
+              hideProgressBar: true,
+              closeOnClick: true,
+              draggable: true
+              })
           }
           
           if (data.data.status === 'pending'){
@@ -83,22 +102,27 @@ function Playground({ problem }) {
           } 
           clearInterval(pollInterval)
           clearTimeout(pollTimeOut)
-
-          
+          toast.update(id, { 
+            render: "Success", 
+            type: "success", 
+            isLoading: false, 
+            autoClose: 1000,
+            theme: 'dark',
+            hideProgressBar: true,
+            closeOnClick: true,
+            draggable: true
+            })
+            setCode('')
           return navigate(`/problems/${[problem.id]}/submission`, {state: { submissionResult: data.data}})
                   
         }, 1000)
         
-        const pollTimeOut = setTimeout(() => {
-          console.log('Timeout reached. Stopping poll.');
-          clearInterval(pollInterval);
-        }, 15000); 
 
       } else {
         // setOutput(retry again)
       }
     } catch (error) {
-      console.error('Error submitting problem:', error);
+      console.error('Error submitting problem:', error)
     }
     
     

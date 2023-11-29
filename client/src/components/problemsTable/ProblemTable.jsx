@@ -29,6 +29,7 @@ export default function ProblemTable() {
     }
     fetchData()
   }, [])
+  
 
   useEffect(() => {
     const fetchUserSubmissionData = async (config) => {
@@ -36,7 +37,7 @@ export default function ProblemTable() {
         const { data } = await apiUserSubmissionItems(config)
         if (data.length) {
           const transformedData = data.reduce((acc, item) => {
-          const key = item.statuses.includes('success') ? 'solved' : 'attempt'
+          const key = item.statuses.includes('AC') ? 'solved' : 'attempt'
           acc[key].push(item.problem_id)
           return acc;
           }, { solved: [], attempt: [] })

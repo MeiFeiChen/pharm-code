@@ -11,10 +11,12 @@ export default function Problem() {
   const [ newPostId, setNewPostId ] = useState(0)
 
   return (
+    <div className='overflow-hidden'>
     <PostContext.Provider value={{ newPostId, setNewPostId }}>
       <TopBar problemPage/>
       <WorkSpace problemId={problemId}/>
       <Post />
     </PostContext.Provider>
+    </div>
   )
 }

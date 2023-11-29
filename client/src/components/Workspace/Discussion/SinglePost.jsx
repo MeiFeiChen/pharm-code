@@ -8,7 +8,7 @@ import MDEditor from '@uiw/react-md-editor'
 import { AuthContext } from "../../../context"
 import { useContext } from "react"
 import { getAuthToken } from "../../../utils"
-import { Zoom, ToastContainer, toast } from "react-toastify"
+import { Zoom, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { socket } from "../../../socket"
 import rehypeSanitize from "rehype-sanitize"
@@ -34,7 +34,6 @@ function SinglePost() {
   useEffect(() => {
     socket.connect()
     socket.on('connect', handleConnect)
-    
     socket.on('message', handleMessage)
 
     return () => {
@@ -72,7 +71,15 @@ function SinglePost() {
     }
     try {
       await apiLeavePostMessage(problemId, postId, requestBody, config)
-      toast.success('Leave a Comment Successfully')
+      toast.success('Leave a Comment Successfully', { 
+        position: "top-center", 
+        autoClose: 500, 
+        theme: "dark",
+        hideProgressBar: true,
+        closeOnClick: true, 
+        draggable: true,
+        transition: Zoom
+      })  
       setContent('') 
     } catch (error) {
       console.error(error)
@@ -80,7 +87,6 @@ function SinglePost() {
       setUserProfile(null)
     }
   }
-  
   
 
   return (
@@ -156,17 +162,7 @@ function SinglePost() {
           >
             Comment
           </button>
-          <ToastContainer
-            transition={Zoom}
-            position="top-center"
-            autoClose={1000}
-            hideProgressBar={true}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            draggable
-            theme="colored"
-          />
+       
         </div>
      </div>
 

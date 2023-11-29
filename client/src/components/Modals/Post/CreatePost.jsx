@@ -8,6 +8,7 @@ import { getAuthToken } from "../../../utils"
 import { apiPostSend } from "../../../api"
 import { useParams } from "react-router-dom"
 import { PostContext } from "../../../context"
+import { toast, Zoom } from "react-toastify"
 
 function CreatePost() {
   const { setNewPostId } = useContext(PostContext)
@@ -31,9 +32,25 @@ function CreatePost() {
       const { data } = await apiPostSend(problemId, requestBody, config)
       console.log(data)
       setNewPostId(data.postId)
+      toast.success('Successfully posted', {  
+        autoClose: 1000, 
+        theme: "dark",
+        hideProgressBar: true,
+        closeOnClick: true, 
+        draggable: true,
+        transition: Zoom
+      })  
       setPostModal((prev) => ({ ...prev, isOpen: false }))
     } catch (error) {
       console.error(error)
+      toast.error('failed to post', {  
+        autoClose: 1000, 
+        theme: "dark",
+        hideProgressBar: true,
+        closeOnClick: true, 
+        draggable: true,
+        transition: Zoom
+      }) 
     }
   }
 

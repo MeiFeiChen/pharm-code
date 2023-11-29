@@ -3,7 +3,7 @@ import { authModalState } from "../../../atoms/authModalAtom"
 import { ErrorMessage, Form, Formik, useField } from 'formik'
 import * as yup from 'yup'
 import { apiUserSignIn } from "../../../api"
-import { Zoom, ToastContainer, toast } from "react-toastify"
+import { Zoom, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { setAuthToken } from "../../../utils"
 import { useContext } from "react"
@@ -36,10 +36,26 @@ function Login() {
       setUserProfile(data.data.user)
       setIsLogin(true)
       setAuthModalState((prev) => ({...prev, isOpen: false}))
+      toast.success('Log in successfully', {  
+        autoClose: 1000, 
+        theme: "dark",
+        hideProgressBar: true,
+        closeOnClick: true, 
+        draggable: true,
+        transition: Zoom
+      })  
     } catch (error) {
       setAuthToken(null)
       console.error(error)
-      toast.error(error.response.data.errors, { position: "top-center", autoClose: 500, theme: "dark" })  
+      toast.error(error.response.data.errors, { 
+        position: "top-center", 
+        autoClose: 500, 
+        theme: "dark",
+        hideProgressBar: true,
+        closeOnClick: true, 
+        draggable: true,
+        transition: Zoom
+      })  
     }
   }
   return (
@@ -96,16 +112,7 @@ function Login() {
 					Forgot Password?
 				</a>
 			</button>
-      <ToastContainer
-        transition={Zoom}
-        position="top-center"
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        draggable
-        theme="dark"
-      />
+      
 			<div className='text-sm font-medium text-gray-300'>
 				Not Registered?{" "}
 				<a href='#' className='text-blue-700 hover:underline' onClick={() => handleClick("register")}>

@@ -3,7 +3,7 @@ import { authModalState } from "../../../atoms/authModalAtom"
 import { ErrorMessage, Form, Formik, useField } from 'formik'
 import * as yup from 'yup'
 import { apiUserSignUp } from "../../../api"
-import { Zoom, ToastContainer, toast } from "react-toastify"
+import { Zoom, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { setAuthToken } from "../../../utils"
 import { AuthContext } from "../../../context"
@@ -28,9 +28,26 @@ function Signup() {
       setIsLogin(true)
       setUserProfile(data.data.user)
       setAuthModalState((prev) => ({...prev, isOpen: false}))
+      toast.success('Register successfully', { 
+        position: "top-center", 
+        autoClose: 1000, 
+        theme: "dark",
+        hideProgressBar: true,
+        closeOnClick: true, 
+        draggable: true,
+        transition: Zoom
+      })  
     } catch (error) {
       console.error(error)
-      toast.error(error.response.data.errors, { position: "top-center", autoClose: 1000, theme: "dark" })  
+      toast.error(error.response.data.errors, { 
+        position: "top-center", 
+        autoClose: 500, 
+        theme: "dark",
+        hideProgressBar: true,
+        closeOnClick: true, 
+        draggable: true,
+        transition: Zoom
+      })  
     }
   }
   return (
@@ -95,16 +112,6 @@ function Signup() {
 			>
 				Register
 			</button>
-      <ToastContainer
-        transition={Zoom}
-        position="top-center"
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        draggable
-        theme="dark"
-        />
 	
 			<div className='text-sm font-medium text-gray-300'>
 				Already have an account?{" "}

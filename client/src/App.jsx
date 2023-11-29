@@ -8,6 +8,8 @@ import Auth from './pages/Auth'
 import { AuthContext } from './context'
 import { getAuthToken } from './utils'
 import { apiUserProfile } from './api'
+import Chat from './components/Modals/ChatBot/ChatBot'
+import { ToastContainer } from 'react-toastify'
 
 
 function App() {
@@ -23,11 +25,13 @@ function App() {
         setUserProfile(data.data)
         setIsLogin(true)
       } catch (err) {
+        setUserProfile(null)
         setIsLogin(false)
         console.error('error fetching user submission data', err)
       }
     }
     const token = getAuthToken()
+
     if (token) {
       const config = {
         headers: { Authorization: `Bearer ${token}` },
@@ -44,10 +48,13 @@ function App() {
       <Routes>
         <Route path='problems' element={<Problems />}/>
         <Route path='problems/:problemId/*' element={<Problem />}/>
-        {/* <Route path='auth' element={< Auth/>}/> */}
+        <Route path='chat' element={<Chat />} /> 
         
       </Routes>
       <Auth />
+      <ToastContainer 
+        position="top-center"/>
+      
       
     
     
