@@ -72,8 +72,8 @@ problemQueue.process(NUM_WORKERS, async ({ data }) => {
       )
       // compare result with test case
       console.log('expectedOutput', expectedOutput, 'output.stdout', output)
-      if (expectedOutput !== output.stdout.replace(/\n/g, '')) {
-        const realOutput = output.stdout.replace(/\n/g, '')
+      const realOutput = output.stdout.replace(/\n/g, '')
+      if (expectedOutput !== realOutput) {
         return { WA: { testInput, expectedOutput, realOutput } }
       }
       console.log(output.stderr.split(/[\s\n]+/))
@@ -87,12 +87,21 @@ problemQueue.process(NUM_WORKERS, async ({ data }) => {
           return number;
         })
 
-      return { AC: { time: timeAndMemory[0], memory: timeAndMemory[1] } }
+      return {
+        AC: {
+          time: timeAndMemory[0],
+          memory: timeAndMemory[1],
+          testInput,
+          expectedOutput,
+          realOutput
+        }
+      }
     })
     // calculate the average time and memory
     const results = await Promise.all(execFilePromises)
     // Check if there are any WA results
     const hasWaResults = results.some((result) => Object.keys(result)[0] === 'WA')
+
     if (hasWaResults) {
       const error = new WrongAnswerError()
       error.message = results

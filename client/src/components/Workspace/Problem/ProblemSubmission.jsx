@@ -167,21 +167,21 @@ export default function ProblemSubmission() {
                            <div className='px-3'>
                              <small>Input:</small>
                              <MDEditor.Markdown 
-                               source={item.WA.testInput}
+                               source={item.WA?.testInput || item.AC?.testInput}
                                className="bg-transparent"
                              />
                            </div>
                            <div className="px-3">
                              <small>Expected Output:</small>
                              <MDEditor.Markdown 
-                               source={item.WA.expectedOutput}
+                               source={item.WA?.expectedOutput || item.AC?.expectedOutput}
                                className="bg-transparent"
                              />
                            </div>
                            <div className="px-3">
                              <small>Your Output:</small>
                              <MDEditor.Markdown 
-                               source={item.WA.realOutput}
+                               source={item.WA?.realOutput || item.AC?.realOutput}
                                className="bg-transparent"
                              />
                            </div>
