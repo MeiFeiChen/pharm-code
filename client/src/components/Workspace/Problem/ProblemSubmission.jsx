@@ -1,5 +1,5 @@
 import { useLocation, useParams } from "react-router-dom"
-import { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import WorkSpaceTab from "../WorkSpaceTab"
 import { MdOutlineTimer, MdMemory } from "react-icons/md"
 import { BsCheck2Circle } from "react-icons/bs"
@@ -161,34 +161,64 @@ export default function ProblemSubmission() {
                   { headerResult.status === 'WA' && (
                    <>
                      <div className="flex-1">
-                       <div className='example-card'>
-                       { headerResult.error.map((item, index) => (
-                         <pre key={index}>
-                           <div className='px-3'>
-                             <small>Input:</small>
-                             <MDEditor.Markdown 
-                               source={item.WA?.testInput || item.AC?.testInput}
-                               className="bg-transparent"
-                             />
-                           </div>
-                           <div className="px-3">
-                             <small>Expected Output:</small>
-                             <MDEditor.Markdown 
-                               source={item.WA?.expectedOutput || item.AC?.expectedOutput}
-                               className="bg-transparent"
-                             />
-                           </div>
-                           <div className="px-3">
-                             <small>Your Output:</small>
-                             <MDEditor.Markdown 
-                               source={item.WA?.realOutput || item.AC?.realOutput}
-                               className="bg-transparent"
-                             />
-                           </div>
-                         </pre>
-                       ))}
-                       </div>
-                     </div>
+                      <div className='example-card'>
+                        {headerResult.error.map((item, index) => (
+                          <React.Fragment key={index}>
+                            {item.WA && (
+                              <pre style={{ backgroundColor: "hsla(0, 100%, 50%, 0.1)" }}>
+                                <div className='px-3'>
+                                  <small>Input:</small>
+                                  <MDEditor.Markdown 
+                                    source={item.WA.testInput}
+                                    className="bg-transparent"
+                                  />
+                                </div>
+                                <div className="px-3">
+                                  <small>Expected Output:</small>
+                                  <MDEditor.Markdown 
+                                    source={item.WA.expectedOutput}
+                                    className="bg-transparent"
+                                  />
+                                </div>
+                                <div className="px-3">
+                                  <small>Your Output:</small>
+                                  <MDEditor.Markdown 
+                                    source={item.WA.realOutput}
+                                    className="bg-transparent"
+                                  />
+                                </div>
+                                </pre>
+                              )}
+                            {item.AC && (
+                              <pre style={{ backgroundColor: "hsla(168,100%,50%,0.1)" }}>
+                                <div className='px-3'>
+                                  <small>Input:</small>
+                                  <MDEditor.Markdown 
+                                    source={item.AC.testInput}
+                                    className="bg-transparent"
+                                  />
+                                </div>
+                                <div className="px-3">
+                                  <small>Expected Output:</small>
+                                  <MDEditor.Markdown 
+                                    source={item.AC.expectedOutput}
+                                    className="bg-transparent"
+                                  />
+                                </div>
+                                <div className="px-3">
+                                  <small>Your Output:</small>
+                                  <MDEditor.Markdown 
+                                    source={item.AC.realOutput}
+                                    className="bg-transparent"
+                                  />
+                                </div>
+                              </pre>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </div>
+
+                    </div>
                    </>
                   )}
                   { headerResult.status === 'TLE' && (

@@ -97,6 +97,18 @@ body {
 	}
 }
 
+@layer components {
+	.editorFooterBtn {
+		@apply relative rounded px-3 py-1.5 font-medium items-center transition-all focus:outline-none inline-flex  ml-auto p-1 mr-2 hover:bg-dark-fill-3;
+	}
+
+	.editorFooterBtn-tooltip {
+		@apply absolute w-auto p-2 text-sm m-2  min-w-max translate-x-3  right-0 bottom-3 z-50 rounded-md shadow-md
+		text-dark-layer-2 bg-gray-200  origin-center  transition-all duration-100 ease-linear scale-100;
+	}
+}
+
+
 /* dark  scrollbar */
 ::-webkit-scrollbar {
 	width: 0.5rem;
@@ -178,3 +190,4 @@ code {
 .w-md-editor-text {
   min-height: 100% !important;
 }
+

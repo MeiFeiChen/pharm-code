@@ -93,7 +93,7 @@ export default function ProblemDescription( { problem } ) {
                   <strong>Time limit: </strong> <code> {problem.time_limit} </code> ms
 								</li>
 								<li className='mt-2 text-sm'>
-                  <strong>I/O mode: </strong> {problem.IO_Mode}
+                  <strong>I/O mode: </strong> {problem.io_mode}
 								</li>
 								<li className='mt-2 text-sm'>
 									<strong>Only one valid answer exists.</strong>

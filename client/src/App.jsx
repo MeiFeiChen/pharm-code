@@ -8,7 +8,7 @@ import Auth from './pages/Auth'
 import { AuthContext } from './context'
 import { getAuthToken } from './utils'
 import { apiUserProfile } from './api'
-import Chat from './components/Modals/ChatBot/ChatBot'
+import Chat from './pages/Chat'
 import { ToastContainer } from 'react-toastify'
 
 

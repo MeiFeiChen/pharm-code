@@ -11,6 +11,10 @@ const userRequest = axios.create({
   baseURL: `${domain}/api/user`
 })
 
+const assistanceRequest = axios.create({
+  baseURL: `${domain}/api/assistance`
+})
+
 
 // problems
 export const apiProblemsItem = () => problemsRequest.get('')
@@ -36,3 +40,6 @@ export const apiUserSignIn = (payload) => userRequest.post('/signin', payload)
 export const apiUserSignUp = (payload) => userRequest.post('/signup', payload)
 export const apiUserSubmissionItems = (config) => userRequest.get('/submissions', config)
 export const apiUserProfile = (config) => userRequest.get('/profile', config)
+
+// assistance
+export const apiAssistanceItem = (payload) => assistanceRequest.post('', payload)

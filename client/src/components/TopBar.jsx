@@ -83,20 +83,20 @@ export default function TopBar({ problemPage }) {
   
         {/* Avatar && Sign out*/}
         {isLogin && (
-              <>
-              <div className='cursor-pointer group relative ml-3 flex-shrink-0'>
-                  <img src='/avatar.png' alt='Avatar' width={30} height={30} className='rounded-full' />
-                  <div
-                    className='
-                    absolute top-10 left-2/4 -translate-x-2/4  
-                    mx-auto bg-dark-layer-1 text-brand-orange p-2 rounded shadow-lg
-                    z-40 group-hover:scale-100 scale-0 
-                    transition-all duration-300 ease-in-out'
-                  >
-                    <p className="text-sm">{userProfile?.email}</p>
-                  </div>
-                </div>
-                <Logout />
+          <>
+          <div className='cursor-pointer group relative ml-3 flex-shrink-0'>
+            <img src='/avatar.png' alt='Avatar' width={30} height={30} className='rounded-full' />
+            <div
+              className='
+              absolute top-10 left-2/4 -translate-x-2/4  
+              mx-auto bg-dark-layer-1 text-brand-orange p-2 rounded shadow-lg
+              z-40 group-hover:scale-100 scale-0 
+              transition-all duration-300 ease-in-out'
+            >
+              <p className="text-sm">{userProfile?.email}</p>
+            </div>
+          </div>
+          <Logout />
               </>
         )}
 

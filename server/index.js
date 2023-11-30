@@ -4,12 +4,11 @@ import dotenv from 'dotenv'
 import morgan from 'morgan'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import OpenAI from 'openai'
 import { Server } from 'socket.io'
 import { createServer } from 'http'
-
 import problemRouter from './api/problems/problemRouter.js'
 import userRouter from './api/user/userRouter.js'
+import openAIRouter from './api/openai/openAIRouter.js'
 
 dotenv.config()
 
@@ -37,8 +36,6 @@ io.on('connection', (socket) => {
 
 app.set('socketio', io)
 
-const openai = new OpenAI({ apiKey: process.env.SECRET_KEY });
-
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
@@ -51,20 +48,7 @@ app.use(express.static('./public/dist'))
 
 app.use('/api/user', userRouter)
 app.use('/api/problems', problemRouter)
-
-app.use('/api/openai', async (req, res) => {
-  const completion = await openai.chat.completions.create({
-    messages: [{
-      role: 'assistant', content: `輸入a和b，輸出a+b結果
-        Input: 一行兩個正整數a和b
-        Output: 一行一個正整數 給我javascript或python的做法`
-    }],
-    model: 'gpt-3.5-turbo',
-  })
-  res.send(completion)
-
-  console.log(completion.choices[0]);
-})
+app.use('/api/assistance', openAIRouter)
 
 // front end page
 app.get('/*', (req, res) => {
