@@ -12,7 +12,7 @@ export default function WorkSpaceTab() {
 
   return (
     <div className='w-full bg-dark-layer-2'>
-      <div className="flex h-[35px] w-full bg-[#373637] text-dark-gray-6 overflow-x-hidden  mt-2 overflow-y-hidden rounded-t-lg border-b border-b-dark-fill-3">
+      <div className="flex h-[35px] w-full bg-[#373637] text-dark-gray-6 overflow-x-hidden  mt-2 overflow-y-hidden rounded-t-lg border-b border-b-dark-fill-3 font-medium">
       <Link to={`/problems/${problemId}`} className="">
         <div className={`
           ${

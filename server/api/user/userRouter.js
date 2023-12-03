@@ -5,7 +5,8 @@ import {
   signIn,
   signUp,
   getUserSubmissions,
-  getUserProfile
+  getUserProfile,
+  getUserProfileDetails
 } from './userController.js'
 import verifyAuth from '../../middleware/auth.js'
 
@@ -24,6 +25,6 @@ userRouter.post('/signin', signIn)
 userRouter.get('/submissions', verifyAuth, getUserSubmissions)
 userRouter.get('/profile', verifyAuth, getUserProfile)
 
-userRouter.get('profile/submission')
+userRouter.get('/profile/details', verifyAuth, getUserProfileDetails)
 
 export default userRouter

@@ -4,7 +4,10 @@ import {
   createUser,
   findUser,
   getSubmissionsByUserId,
-  getProfile
+  getProfile,
+  getUserSubmissionsDetails,
+  getUserDiscussionPosts,
+  getTotalProblemsByDifficulty
 } from './userModel.js'
 
 const COOKIE_OPTIONS = {
@@ -95,6 +98,59 @@ export const getUserProfile = async (req, res) => {
   try {
     const userProfile = await getProfile(userId)
     return res.status(200).json({ data: userProfile })
+  } catch (err) {
+    console.error(err)
+    if (err instanceof Error) {
+      return res.status(400).json({ errors: err.message })
+    }
+    return res.status(500).json({ errors: 'get user profile failed' })
+  }
+}
+
+export const getUserProfileDetails = async (req, res) => {
+  const { userId } = res.locals
+  try {
+    const [totalProblemsByDifficulty, submissions, posts] = await Promise.all([
+      getTotalProblemsByDifficulty(),
+      getUserSubmissionsDetails(userId),
+      getUserDiscussionPosts(userId)
+    ])
+    const languageAC = {}
+    const difficultyAC = {}
+
+    submissions.forEach((submission) => {
+      const {
+        language, status, problem_id: problemId, difficulty
+      } = submission
+      // language state
+      if (!languageAC[language]) languageAC[language] = []
+      if (status === 'AC' && !languageAC[language].includes(problemId)) {
+        languageAC[language].push(problemId)
+      }
+      // difficulty state
+      if (!difficultyAC[difficulty]) difficultyAC[difficulty] = []
+      if (status === 'AC' && !difficultyAC[difficulty].includes(problemId)) {
+        difficultyAC[difficulty].push(problemId)
+      }
+    })
+
+    const difficultyACRatio = totalProblemsByDifficulty.reduce((acc, cur) => {
+      if (!acc[cur.difficulty]) {
+        acc[cur.difficulty] = {
+          total: Number(cur.problem_count),
+          solved: difficultyAC[cur.difficulty]?.length
+        }
+      }
+      return acc
+    }, {})
+    console.log(difficultyACRatio)
+
+    return res.status(200).json({
+      languageAC,
+      difficultyACRatio,
+      submissions,
+      posts
+    })
   } catch (err) {
     console.error(err)
     if (err instanceof Error) {

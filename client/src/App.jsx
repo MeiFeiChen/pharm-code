@@ -17,8 +17,6 @@ function App() {
   const [isLogin, setIsLogin] = useState(false)
   const [userProfile, setUserProfile] = useState(null)
 
-
-
   useEffect(() => {
     const fetchData = async (config) => {
       try {

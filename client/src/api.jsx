@@ -40,6 +40,7 @@ export const apiUserSignIn = (payload) => userRequest.post('/signin', payload)
 export const apiUserSignUp = (payload) => userRequest.post('/signup', payload)
 export const apiUserSubmissionItems = (config) => userRequest.get('/submissions', config)
 export const apiUserProfile = (config) => userRequest.get('/profile', config)
+export const apiUserProfileDetail = (config) => userRequest.get('/profile/details', config)
 
 // assistance
 export const apiAssistanceItem = (payload) => assistanceRequest.post('', payload)

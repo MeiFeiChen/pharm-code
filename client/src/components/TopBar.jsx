@@ -85,7 +85,9 @@ export default function TopBar({ problemPage }) {
         {isLogin && (
           <>
           <div className='cursor-pointer group relative ml-3 flex-shrink-0'>
+            <Link to='/profile'>
             <img src='/avatar.png' alt='Avatar' width={30} height={30} className='rounded-full' />
+            </Link>
             <div
               className='
               absolute top-10 left-2/4 -translate-x-2/4  

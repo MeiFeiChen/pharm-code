@@ -1,9 +1,12 @@
 import WorkSpaceTab from "../WorkSpaceTab"
-import { useState, useEffect } from "react"
-import { BsCheck2Circle } from "react-icons/bs"
+import { useState, useEffect, useContext } from "react"
+import { BsCircle, BsCheck2Circle } from "react-icons/bs"
 import PropTypes from 'prop-types'
 import MDEditor from '@uiw/react-md-editor'
-
+import { apiProblemsItem, apiUserSubmissionItems } from '../../../api'
+import { TEXT_COLOR_DIFFICULTY } from '../../../constant'
+import { AuthContext } from '../../../context'
+import { getAuthToken } from '../../../utils'
 
 ProblemDescription.propTypes = {
   problem: PropTypes.object.isRequired,
@@ -12,7 +15,9 @@ ProblemDescription.propTypes = {
 export default function ProblemDescription( { problem } ) {
   // const { problemId } = useParams()
   // const [problem, setProblem] = useState([])
-  const [problemDifficultyClass, setProblemDifficultyClass] = useState("");
+  const [problemDifficultyClass, setProblemDifficultyClass] = useState("")
+  const { isLogin, setIsLogin, setUserProfile } = useContext(AuthContext)
+  const [solvedProblem, setSolvedProblem] = useState({})
   // const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -26,6 +31,34 @@ export default function ProblemDescription( { problem } ) {
     }
   , [problem.difficulty])
   // console.log(problem)
+  useEffect(() => {
+    const fetchUserSubmissionData = async (config) => {
+      try {
+        const { data } = await apiUserSubmissionItems(config)
+        if (data.length) {
+          const transformedData = data.reduce((acc, item) => {
+          const key = item.statuses.includes('AC') ? 'solved' : 'attempt'
+          acc[key].push(item.problem_id)
+          return acc;
+          }, { solved: [], attempt: [] })
+          setSolvedProblem(transformedData)
+        }
+      } catch (err) {
+        console.error('Error fetching user submission data', err)
+        setIsLogin(false)
+        setUserProfile(null)
+        setSolvedProblem({})
+      } 
+    }
+    if (isLogin) {
+      const token = getAuthToken()
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+      fetchUserSubmissionData(config)
+    }
+  }, [isLogin, setSolvedProblem, setIsLogin, setUserProfile])
+  console.log(solvedProblem)
 
 
 	return (
@@ -46,9 +79,19 @@ export default function ProblemDescription( { problem } ) {
 							>
 								{problem.difficulty}
 							</div>
-              <div className='rounded p-[3px] ml-4 text-lg text-dark-green-s'>
-								<BsCheck2Circle />
-							</div>
+              {isLogin && (
+                  solvedProblem?.solved && solvedProblem.solved.includes(problem.id) ? (
+                    <div className='rounded p-[3px] ml-4 text-lg text-dark-green-s'>
+                      <BsCheck2Circle />
+                    </div>
+                  ) : (
+                    solvedProblem?.attempt && solvedProblem.attempt.includes(problem.id) ? (
+                      <div className='rounded p-[3px] ml-4 text-lg text-gray-400'>
+                        <BsCircle />
+                      </div>
+                    ) : null
+                  )
+                )}
 						</div>
 
 						{/* Problem Statement(paragraphs) */}

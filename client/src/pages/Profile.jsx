@@ -5,15 +5,59 @@ import { CircularProgressbarWithChildren } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import { HiMiniClipboardDocumentList } from "react-icons/hi2"
 import { BiSolidChat } from "react-icons/bi"
-import { useState } from "react"
+import { useState, useEffect, useContext } from "react"
+import { apiUserProfileDetail } from "../api"
+import { getAuthToken } from "../utils"
+import { AuthContext } from "../context"
+import { useNavigate } from "react-router-dom"
+import { TEXT_COLOR, COMPILE_LANGUAGE, STATUS } from "../constant"
+import { formatTimestamp } from "../dateconfig"
 
 Profile.propTypes = {
   userProfile: PropTypes.object.isRequired,
 }
 
 
-function Profile({userProfile}) {
+function Profile({ userProfile }) {
+  const navigate = useNavigate()
+  const { isLogin, setUserProfile } = useContext(AuthContext)
   const [activeTab, setActiveTab] = useState('recentSubmit') 
+  const [userSubmission, setUserSubmission] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  const handleOnClick = (problemId, submissionId) => {
+    navigate(`/problems/${problemId}/submission/${submissionId}`)
+  }
+
+  useEffect(() => {
+    const fetchData = async() => {
+      try {
+        const token = getAuthToken()
+        const config = {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+        const { data } = await apiUserProfileDetail(config)
+        setUserSubmission(data)
+      } catch (err) {
+        console.error('Error fetching data', err)
+        setUserSubmission(null)
+      } finally {
+        setLoading(false)
+      }
+    }
+    if (isLogin) {
+      fetchData()
+    } else {
+      setUserProfile(null)
+      navigate('/problems')
+    }
+  }, [isLogin, navigate, setUserProfile])
+  
+
+  // 計算總共解出的題數
+  const totalSolved = userSubmission ? Object.values(userSubmission.difficultyACRatio).reduce((acc, difficulty) => acc + difficulty.solved, 0) : 0
+  // 計算總題數
+  const totalProblems = userSubmission ? Object.values(userSubmission.difficultyACRatio).reduce((acc, difficulty) => acc + difficulty.total, 0) : 0
 
   return (
     <main className='bg-dark-layer-2 min-h-screen'>
@@ -41,43 +85,33 @@ function Profile({userProfile}) {
               <div className="text-gray-900 dark:text-white mb-2">
                 Languages
               </div>
-
-              <div className="flex text-sm justify-between items-center mb-2">
-                <span className="px-2 py-1 rounded-full bg-zinc-700 text-gray-400">
-                  {'Python'}
-                </span>
-                <div className="text-dark-gray-6">
-                  <strong className="text-white">19</strong> problem solved
-                </div>
-              </div>
-              <div className="flex text-sm justify-between items-center mb-2">
-                <span className="px-2 py-1 rounded-full bg-zinc-700 text-gray-400">
-                  {'Javascript'}
-                </span>
-                <div className="text-dark-gray-6">
-                  <strong className="text-white">19</strong> problem solved
-                </div>
-              </div>
-              
+              { userSubmission?.languageAC && Object.keys(userSubmission.languageAC).length > 0 && Object.keys(userSubmission.languageAC).map((key, index) => (
+                <div className="flex text-sm justify-between items-center mb-2" key={index}>
+                  <span className="px-2 py-1 rounded-full bg-zinc-700 text-gray-400">
+                    {COMPILE_LANGUAGE[key]}
+                  </span>
+                  <div className="text-dark-gray-6">
+                    <strong className="text-white">{userSubmission.languageAC[key].length}</strong> problem solved
+                  </div>
+                </div>         
+              ))}
             </div>
           </div>
         </div>
 
-      
-
         </div>
         <div className="pl-5 w-auto flex flex-col">
-          {/* 解題狀況 [難中易]*/}
+          {/* 解題難度狀況 [難中易]*/}
           <div aria-label="Sidebar" className="w-full bg-dark-layer-1 rounded-lg mb-5">
             <div className="h-full overflow-y-auto overflow-x-hidden py-4 px-3">
               <div className="text-sm text-gray-900 dark:text-white">Solved Problem</div>
 
-              {/* 圖表區 */}
+              {/* 圓形Progress */}
               <div className="flex flex-rol items-center justify-center">
                 <div className="w-[80px] h-[80px] mt-2 mr-5 text-white">
                   <CircularProgressbarWithChildren 
                     className="w-[80px]"
-                    value={66}
+                    value={ ((isNaN(totalSolved)? 0: totalSolved) /totalProblems)*100 }
                     styles={{
                       path: {
                         strokeWidth: 6,
@@ -92,24 +126,26 @@ function Profile({userProfile}) {
                       }
                     }}
                   >
-                  {/* Put any JSX content in here that you'd like. It'll be vertically and horizonally centered. */}
                     <div style={{ fontSize: 20 }}>
-                      <strong>66</strong>
+                      <strong>{isNaN(totalSolved)? 0: totalSolved}</strong>
                     </div>
                     <div className='text-dark-gray-7' style={{ fontSize: 11 }}>
                       Solved
                     </div>
                   </CircularProgressbarWithChildren>
                 </div>
+                {/* 線條區 */}
                 <div className="w-full">
                   <div className="pb-1">
                     <div className="text-xs text-dark-gray-6 pb-1"> 
                       <span className="pr-4 text-dark-gray-7 font-medium">Easy</span> 
-                      <span> <strong className="text-white text-sm">8</strong> /739 </span>
+                      <span> 
+                        <strong className="text-white text-sm">{userSubmission?.difficultyACRatio.easy?.solved ?? 0}</strong> /{userSubmission?.difficultyACRatio.easy?.total ?? 0}
+                      </span>
                     </div>
                     <Progress 
                       size="sm" 
-                      progress={45} 
+                      progress={(userSubmission?.difficultyACRatio.easy?.solved ?? 0) / (userSubmission?.difficultyACRatio.easy?.total ?? 1) * 100}
                       color="green"
                       theme={{
                         base: 'w-full overflow-hidden rounded-full bg-[#2cbb5d40]'
@@ -119,12 +155,14 @@ function Profile({userProfile}) {
                   </div>
                   <div className="pb-1">
                     <div className="text-xs text-dark-gray-6 pb-1"> 
-                      <span className="pr-4 text-dark-gray-7 font-medium">Medium</span> 
-                      <span> <strong className="text-white text-sm">8</strong> /739 </span>
+                      <span className="pr-4 text-dark-gray-7 font-medium">Medium</span>
+                      <span> 
+                        <strong className="text-white text-sm">{userSubmission?.difficultyACRatio.medium?.solved ?? 0}</strong> /{userSubmission?.difficultyACRatio.medium?.total ?? 0}
+                      </span>
                     </div>
                     <Progress 
                       size="sm" 
-                      progress={45} 
+                      progress={(userSubmission?.difficultyACRatio.medium?.solved ?? 0) / (userSubmission?.difficultyACRatio.medium?.total ?? 1) * 100}
                       color="yellow"
                       theme={{
                         base: 'w-full overflow-hidden rounded-full bg-[#ffc01e40]'
@@ -135,11 +173,13 @@ function Profile({userProfile}) {
                   <div className="pb-1">
                     <div className="text-xs text-dark-gray-6 pb-1"> 
                       <span className="pr-4 text-dark-gray-7 font-medium">Hard</span> 
-                      <span> <strong className="text-white text-sm">8</strong> /739 </span>
+                      <span> 
+                        <strong className="text-white text-sm">{userSubmission?.difficultyACRatio.hard?.solved ?? 0}</strong> /{userSubmission?.difficultyACRatio.hard?.total ?? 0}
+                      </span>
                     </div>
                     <Progress 
                       size="sm" 
-                      progress={45} 
+                      progress={(userSubmission?.difficultyACRatio.hard?.solved ?? 0) / (userSubmission?.difficultyACRatio.hard?.total ?? 1) * 100}
                       color="red" 
                       theme={{
                         base: 'w-full overflow-hidden rounded-full bg-[#ef474340]'
@@ -198,39 +238,37 @@ function Profile({userProfile}) {
                     <Table.HeadCell>Status</Table.HeadCell>
                     <Table.HeadCell>Language</Table.HeadCell>
                     <Table.HeadCell>Runtime</Table.HeadCell>
-                    <Table.HeadCell>Time Submitted</Table.HeadCell>
+                    <Table.HeadCell>Time</Table.HeadCell>
                   </Table.Head>
-
-                  <Table.Body className="divide-y">
-                    <Table.Row className="bg-white border-dark-fill-3 dark:bg-dark-layer-1 hover:bg-dark-fill-3">
-                      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white ">
-                        {'A + B'}
-                      </Table.Cell>
-                      <Table.Cell>Accepted</Table.Cell>
-                      <Table.Cell>Javascript</Table.Cell>
-                      <Table.Cell>35.6 ms</Table.Cell>
-                      <Table.Cell>2023/1/2</Table.Cell>
-                    </Table.Row>
-                    <Table.Row className="bg-white border-dark-fill-3 dark:bg-dark-layer-1 hover:bg-dark-fill-3">
-                      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white ">
-                        括號合法
-                      </Table.Cell>
-                      <Table.Cell>Wrong Answer</Table.Cell>
-                      <Table.Cell>Python</Table.Cell>
-                      <Table.Cell>N/A</Table.Cell>
-                      <Table.Cell>2023/1/2</Table.Cell>
-                    </Table.Row>
-                    <Table.Row className="bg-white dark:border-dark-fill-3 dark:bg-dark-layer-1 hover:bg-dark-fill-3">
-                      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white hover:bg-dark-fill-3">
-                        自定費氏數列
-                      </Table.Cell>
-                      <Table.Cell>Time Limit Exceeded</Table.Cell>
-                      <Table.Cell>Python</Table.Cell>
-                      <Table.Cell>N/A</Table.Cell>
-                      <Table.Cell>2023/1/2</Table.Cell>
-                    </Table.Row>
-                  </Table.Body>
+                  { userSubmission?.submissions?.length > 0 && (
+                    <Table.Body className="divide-y">
+                      {userSubmission.submissions.map((submission, index) => {
+                        if (submission.status !== 'pending') {
+                          return (
+                            <Table.Row 
+                              className="bg-white border-dark-fill-3 dark:bg-dark-layer-1 hover:bg-dark-fill-3 hover:cursor-pointer" 
+                              key={index}
+                              onClick={() => handleOnClick(submission.problem_id, submission.id)}>
+                              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                {submission.title}
+                              </Table.Cell>
+                              <Table.Cell className={`${TEXT_COLOR[submission.status]}`}>{STATUS[submission.status]}</Table.Cell>
+                              <Table.Cell>{COMPILE_LANGUAGE[submission.language]}</Table.Cell>
+                              <Table.Cell><strong>{submission.runtime ?? 'N/A'}</strong> ms</Table.Cell>
+                              <Table.Cell><small>{formatTimestamp(submission.submitted_at)}</small></Table.Cell>
+                            </Table.Row>
+                          );
+                        }
+                        return null; // or an alternative content if needed
+                      })}
+                    </Table.Body>
+                  )}
                 </Table>
+                { !userSubmission?.submissions?.length && (
+                    <div className="p-2 text-dark-gray-7">
+                      {`You don't have any submission yet`}
+                    </div>
+                )}
               </div>
             </div>
             )}
@@ -254,55 +292,33 @@ function Profile({userProfile}) {
                     <Table.HeadCell>Comments</Table.HeadCell>
                     <Table.HeadCell>Time Posted</Table.HeadCell>
                   </Table.Head>
-
-                  <Table.Body className="divide-y">
-                    <Table.Row className=" border-dark-fill-3 dark:bg-dark-layer-1 hover:bg-dark-fill-3">
-                      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                        {'A + B'}
-                      </Table.Cell>
-                      <Table.Cell>這題的解法</Table.Cell>
-                      <Table.Cell>20</Table.Cell>
-                      <Table.Cell>2023/1/2</Table.Cell>
-                    </Table.Row>
-                    <Table.Row className="bg-white border-dark-fill-3 dark:bg-dark-layer-1 hover:bg-dark-fill-3">
-                      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                        括號合法
-                      </Table.Cell>
-                      <Table.Cell>這題好難喔</Table.Cell>
-                      <Table.Cell>400</Table.Cell>
-                      <Table.Cell>2023/1/2</Table.Cell>
-                    </Table.Row>
-                    <Table.Row className="bg-white dark:border-dark-fill-3 dark:bg-dark-layer-1 hover:bg-dark-fill-3">
-                      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                        自定費氏數列
-                      </Table.Cell>
-                      <Table.Cell>Time Limit Exceeded</Table.Cell>
-                      <Table.Cell>這題不會寫</Table.Cell>
-                      <Table.Cell>2023/1/2</Table.Cell>
-                    </Table.Row>
-                  </Table.Body>
+                  {
+                    userSubmission?.posts?.length && (
+                      <Table.Body className="divide-y">
+                        { userSubmission.posts.map((post, index)=> (
+                          <Table.Row className=" border-dark-fill-3 dark:bg-dark-layer-1 hover:bg-dark-fill-3" key={index}>
+                            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                              {post.problem_title}
+                            </Table.Cell>
+                            <Table.Cell>{post.title}</Table.Cell>
+                            <Table.Cell>{post.message_count}</Table.Cell>
+                            <Table.Cell><small>{formatTimestamp(post.created_at)}</small></Table.Cell>
+                          </Table.Row>
+                        ))}
+                      </Table.Body>
+                    )
+                  }
                 </Table>
+                { !userSubmission?.posts?.length && (
+                    <div className="p-2 text-dark-gray-7">
+                      {`You don't have any post yet`}
+                    </div>
+                )}
               </div>
             </div>
             )}
-            
-            
           </div>
         </div>
-        
-        
-         
-        
-
-      
-          
-
- 
-
-      
-
-    
-
       </div>
     </main>
   )
