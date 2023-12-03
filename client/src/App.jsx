@@ -10,6 +10,7 @@ import { getAuthToken } from './utils'
 import { apiUserProfile } from './api'
 import Chat from './pages/Chat'
 import { ToastContainer } from 'react-toastify'
+import Profile from './pages/Profile'
 
 
 function App() {
@@ -49,7 +50,7 @@ function App() {
         <Route path='problems' element={<Problems />}/>
         <Route path='problems/:problemId/*' element={<Problem />}/>
         <Route path='chat' element={<Chat />} /> 
-        
+        <Route path='profile' element={<Profile userProfile={userProfile}/>}/>
       </Routes>
       <Auth />
       <ToastContainer 

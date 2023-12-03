@@ -5,10 +5,11 @@ import { useContext } from "react"
 
 EditorFooter.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  handleTestSubmit: PropTypes.func.isRequired,
   code: PropTypes.string.isRequired
 }
 
-function EditorFooter( { handleSubmit, code }) {
+function EditorFooter( { handleSubmit, handleTestSubmit, code }) {
   const { isLogin } = useContext(AuthContext)
 
   return (
@@ -24,10 +25,11 @@ function EditorFooter( { handleSubmit, code }) {
 				</div>
 				<div className='ml-auto flex items-center space-x-4 '>
 					<button
-						className='
-              px-3 py-1.5 text-sm font-medium items-center whitespace-nowrap transition-all focus:outline-none 
-              inline-flex bg-dark-fill-3  hover:bg-dark-fill-2 text-dark-label-2 rounded-lg'
-						onClick={ handleSubmit }
+						className={`
+              px-3 py-1.5 text-dark-label-2 rounded-lg text-sm font-medium items-center whitespace-nowrap transition-all focus:outline-none 
+              inline-flex ${(!isLogin || !code) ? 'bg-dark-gray-6 cursor-not-allowed': ' bg-dark-fill-3  hover:bg-dark-fill-2 '}`}
+						onClick={ handleTestSubmit }
+            disabled= { !isLogin || !code }
 					>
             <div>Run</div>
 					</button>
@@ -35,7 +37,7 @@ function EditorFooter( { handleSubmit, code }) {
           <button
             className={`
             px-3 py-1.5 font-medium items-center transition-all 
-            focus:outline-none inline-flex text-sm text-white rounded-lg
+            focus:outline-none inline-flex text-sm text-dark-label-2 rounded-lg
             ${(!isLogin || !code) ? 'bg-dark-gray-6 cursor-not-allowed' : 'bg-dark-green-s hover:bg-light-green-s'}
             `}
             onClick={ handleSubmit }

@@ -28,7 +28,7 @@ function SinglePost() {
   }
   const handleConnect = () => {
     console.log(`Connected to the socket as a consumer, ${postId}`)
-      socket.emit('joinPost', postId)
+    socket.emit('joinPost', postId)
   }
 
   useEffect(() => {

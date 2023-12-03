@@ -24,7 +24,7 @@ export const apiProblemItem = (id) => problemsRequest.get(`/${id}`)
 export const apiProblemSubmission = (id, payload, config) => problemsRequest.post(`/${id}/submit`, payload, config)
 export const apiProblemSubmissionItem = (id, submittedId, config) => problemsRequest.get(`/${id}/submissions/${submittedId}`, config)
 export const apiProblemSubmissionItems = (id, config) => problemsRequest.get(`/${id}/submissions`, config)
-
+export const apiTestSubmission = (id, payload) => problemsRequest.post(`/${id}/test`, payload)
 
 // discussion
 export const apiPostSend = (id, payload, config) => problemsRequest.post(`/${id}/discussion`, payload, config)

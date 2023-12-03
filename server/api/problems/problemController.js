@@ -1,4 +1,5 @@
 import addProblemToQueue from '../../config/problemQueue.js'
+import addProblemToTestQueue from '../../config/testQueue.js'
 
 import {
   createSubmission,
@@ -62,8 +63,23 @@ export const submitProblem = async (req, res) => {
   }
 }
 
-export const submitTest = async(req, res) => {
-
+export const submitTest = async (req, res) => {
+  const { userId } = res.locals
+  const { id: problemId } = req.params
+  const { language, code } = req.body
+  if (!code) {
+    return res.status(400).json({ success: false, error: 'Empty code body' })
+  }
+  try {
+    addProblemToTestQueue(problemId, language, code)
+    return res.status(200).json({ success: true })
+  } catch (err) {
+    console.error(err)
+    if (err instanceof Error) {
+      return res.status(500).json({ errors: err.message })
+    }
+    return res.status(500).json({ errors: 'submit test failed' })
+  }
 }
 
 export const getSubmission = async (req, res) => {

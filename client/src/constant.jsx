@@ -13,7 +13,7 @@ export const TEXT_COLOR_DIFFICULTY = {
 
 export const STATUS = {
   'AC': 'Accepted', 
-  'TLE': 'Time Limit Error', 
+  'TLE': 'Time Limit Exceeded', 
   'RE': 'Runtime Error', 
   'WA': 'Wrong Answer'
 }

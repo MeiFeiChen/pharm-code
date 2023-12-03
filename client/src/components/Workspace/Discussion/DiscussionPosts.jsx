@@ -9,6 +9,7 @@ import { useContext, useState, useEffect } from 'react'
 import { postModalState } from "../../../atoms/postModalAtom"
 import { apiPostItems } from "../../../api"
 import { PostContext } from "../../../context"
+import { Divider } from 'antd';
 
 function DiscussionPosts() {
   const { newPostId } = useContext(PostContext)
@@ -29,8 +30,8 @@ function DiscussionPosts() {
   }, [problemId, newPostId])
 
   return (
-    <div className='px-5 w-full'>
-    <div className='pb-5'>
+    <div className='w-full'>
+    <div className='px-5 pb-5'>
       <button
           className={`
           px-3 py-1.5 font-medium items-center 
@@ -49,10 +50,11 @@ function DiscussionPosts() {
 
     <div >
       {/* Posts */}
-      {posts?.map((post) => (
+      {posts?.map((post, index) => (
+        <div key={post.post_id} className="flex flex-col items-center">
         <Link
           to={`${post.post_id}`}
-          className="block p-3 mb-2 bg-white border border-transparent rounded-lg shadow hover:bg-gray-100 dark:bg-dark-fill-3 dark:hover:bg-gray-700"
+          className="w-full block p-5  border border-transparent rounded-lg shadow hover:bg-gray-100  dark:hover:bg-gray-700"
           key={post.post_id}
         >
 
@@ -73,8 +75,10 @@ function DiscussionPosts() {
             </div>
           </div>
         <div className="text-base font-bold tracking-tight text-gray-900 dark:text-white">{post.title}</div>
-      
       </Link>
+      {/* Divider */}
+      {index !== posts.length - 1 && <hr className="w-[90%] h-px border-0 dark:bg-dark-fill-3" /> }
+      </div>
       )
         
 

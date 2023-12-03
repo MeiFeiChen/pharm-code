@@ -7,9 +7,7 @@ const openai = new OpenAI({ apiKey: process.env.SECRET_KEY })
 const openAIRouter = express.Router()
 
 openAIRouter.post('/', async (req, res) => {
-  console.log(req.body)
   const { problemId, language, code } = req.body
-  console.log(language, problemId, code)
   try {
     const problem = await getProblem(problemId)
     console.log(problem)

@@ -2,6 +2,7 @@ import WorkSpaceTab from "../WorkSpaceTab"
 import { useState, useEffect } from "react"
 import { BsCheck2Circle } from "react-icons/bs"
 import PropTypes from 'prop-types'
+import MDEditor from '@uiw/react-md-editor'
 
 
 ProblemDescription.propTypes = {
@@ -69,11 +70,21 @@ export default function ProblemDescription( { problem } ) {
                 <div key={index}>
                   <p className='font-medium text-white'>Example {index + 1}: </p>
                   <div className='example-card'>
-                    <pre>
+                    <pre className="flex">
+                      <div className="w-1/2">
                       <strong className='text-white'>Input: </strong> <br />
-                      {example.test_input} <br />
+                      <MDEditor.Markdown 
+                        source={example.test_input}
+                        className="bg-transparent"
+                      />
+                      </div>
+                      <div className="w-1/2">
                       <strong className='text-white'>Output: </strong> <br />
-                      {example.expected_output} <br />
+                      <MDEditor.Markdown 
+                        source={example.expected_output}
+                        className="bg-transparent"
+                      />
+                      </div>
                     </pre>
                   </div>
                 </div>

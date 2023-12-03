@@ -11,7 +11,8 @@ import {
   createDiscussion,
   getPost,
   getPostMessage,
-  createPostMessage
+  createPostMessage,
+  submitTest
 } from './problemController.js'
 import verifyAuth from '../../middleware/auth.js'
 
@@ -33,6 +34,14 @@ problemRouter.post(
   verifyAuth,
   submitProblem
 )
+
+problemRouter.post(
+  '/:id/test',
+  param('id').isInt().not().isEmpty(),
+  handleResult,
+  submitTest
+)
+
 
 problemRouter.get(
   '/:id/submissions/:submittedId',

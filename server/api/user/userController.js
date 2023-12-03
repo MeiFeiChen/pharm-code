@@ -81,7 +81,6 @@ export const getUserSubmissions = async (req, res) => {
   const { userId } = res.locals
   try {
     const userSubmissions = await getSubmissionsByUserId(userId)
-    console.log(userSubmissions)
     return res.status(200).json(userSubmissions)
   } catch (err) {
     console.error(err)

@@ -24,4 +24,6 @@ userRouter.post('/signin', signIn)
 userRouter.get('/submissions', verifyAuth, getUserSubmissions)
 userRouter.get('/profile', verifyAuth, getUserProfile)
 
+userRouter.get('profile/submission')
+
 export default userRouter

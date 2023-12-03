@@ -34,7 +34,7 @@ export default function WorkSpace() {
   return (
     <CodeContext.Provider value={{code, setCode}}>
     <Split className='split' minSize={0}>
-      <div>
+      <div className="">
         
         <Routes>
           <Route path='' element={<ProblemDescription problem={problem}/>}/>

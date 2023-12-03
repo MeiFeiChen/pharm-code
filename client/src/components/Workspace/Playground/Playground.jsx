@@ -11,15 +11,19 @@ import EditorFooter from './EditorFooter'
 import { apiAssistanceItem, apiProblemSubmission, apiProblemSubmissionItem } from '../../../api'
 import { getAuthToken } from '../../../utils'
 import { socket } from '../../../socket'
-import { CodeContext } from '../../../context'
+import { CodeContext, AuthContext } from '../../../context'
 import { toast, Zoom } from 'react-toastify'
-import MDEditor from '@uiw/react-md-editor'
-import { Spinner } from 'flowbite-react'
+import TestCases from './TestCases'
+import CodeReview from './CodeReview'
+import TestCasesResult from './TestCasesResult'
+import { Link } from 'react-router-dom'
+import { useSetRecoilState } from "recoil"
+import { authModalState } from "../../../atoms/authModalAtom"
 
 
 const languageExtension = {
-  js: [javascript()], 
-  py: [python()]
+  js: [javascript({ jsx: true }), [EditorView.lineWrapping]], 
+  py: [python(), [EditorView.lineWrapping]]
 }
 
 Playground.propTypes = {
@@ -27,36 +31,44 @@ Playground.propTypes = {
 }
 
 function Playground({ problem }) {
+  const { isLogin } = useContext(AuthContext)
+  const setAuthModalState = useSetRecoilState(authModalState)
   const { code, setCode } = useContext(CodeContext)
   const [language, setLanguage] = useState('js')
-  const [extension, setExtension] = useState([javascript({ jsx: true }), [EditorView.lineWrapping]])
-  // const [code, setCode] = useState('')
-  const [activeTestCaseId, setActiveTestCaseId] = useState(0)
   const [activeTab, setActiveTab] = useState('testCases')
   const [aiLoading, setAiLoading] = useState(false)
   const [aiReview, setAiReview] = useState(null)
-
+  const [testResult, setTestResult] = useState(null)
+  const [testLoading, setTestIsLoading] = useState(false)
   const navigate = useNavigate()
 
+  // Auth
+  const handleClick = (type) => {
+    setAuthModalState((prev) => ({ ...prev, isOpen: true, type }))
+  }
+
+  // set default language
   useEffect(() => {
     const defaultLang = localStorage.getItem('default-language') || 'js'
     setLanguage(defaultLang)
   }, [])
 
+  // select language
   const handleLanguageExtension = (language) => {
     setLanguage(language)
-    setExtension(languageExtension[language], [EditorView.lineWrapping])
   }
+  // set default language
   const setDefaultLanguage = () => {
     localStorage.setItem("default-language", language)
     console.log(`${language} set as default!`)
-  };
+  }
   
+  // track code change
   const onCodeChange = useCallback((val) => {
-    console.log(val)
     setCode(val)
   }, [setCode])
 
+  // ai review
   const handleAiReview = async() => {
     const requestBody = { problemId: problem.id, language, code }
     const token = getAuthToken()
@@ -67,16 +79,32 @@ function Playground({ problem }) {
       setAiLoading(true)
       const { data } = await apiAssistanceItem(requestBody)
       console.log(data)
+      setActiveTab('codeReview')
       setAiReview(data.content)
       setAiLoading(false)
     } catch (error) {
       console.error(error)
       setAiReview(error.message)
+      setActiveTab('codeReview')
       setAiLoading(false)
     }
   }
+  const handleTestSubmit = () => {
+    socket.emit('test_data', {
+      problemId: problem.id, language, code, 
+    })
+    setTestIsLoading(true)
+    
+    socket.on('result', (result) => {
+      console.log(result)
+      setActiveTab('result')
+      setTestIsLoading(false)
+      setTestResult(result)
+      socket.off('result')
+    })
+  }
 
-
+  // submit code
   const handleSubmit = async() => {
     const requestBody = { language, code }
     const token = getAuthToken()
@@ -92,7 +120,17 @@ function Playground({ problem }) {
         console.log(submittedId)
         const pollTimeOut = setTimeout(() => {
           console.log('Timeout reached. Stopping poll.');
-          clearInterval(pollInterval);
+          clearInterval(pollInterval)
+          toast.update(id, { 
+            render: "Error", 
+            type: "error", 
+            isLoading: false, 
+            autoClose: 1000,
+            theme: 'dark',
+            hideProgressBar: true,
+            closeOnClick: true,
+            draggable: true
+            })
         }, 15000)
         const id = toast.loading("Please wait...", {
           draggable: true,
@@ -150,8 +188,6 @@ function Playground({ problem }) {
       console.error('Error submitting problem:', error)
     }
     
-  console.log('aiReivew', aiReview)
-    
   }
   return (
     <div className='flex flex-col bg-dark-layer-1 relative overflow-x-hidden overflow-hidden'>
@@ -160,24 +196,41 @@ function Playground({ problem }) {
         setDefaultLanguage={setDefaultLanguage}
         language={language}/>
       <Split className='h-[calc(100vh-94px)]' direction='vertical' sizes={[60, 40]} minSize={60}>
-        <div className='w-full overflow-auto'>
-        <CodeMirror
-						value={code}
-						theme={vscodeDark}
-						extensions={extension}
-						style={{fontSize:16}}
-            onChange={onCodeChange}
-					/>
+        <div className='flex flex-col h-full w-full overflow-auto'>
+          { !isLogin && (
+            <div className='text-sm text-white p-2' style={{backgroundColor: '#0a84ff2e'}}>
+              <Link className='text-blue-500 hover:underline' onClick={() => handleClick('login')}>Register / Sign in</Link> to run or submit or code review
+            </div>
+          )}
+          <CodeMirror
+              value={code}
+              theme={vscodeDark}
+              extensions={languageExtension[language]}
+              style={{fontSize:16}}
+              onChange={onCodeChange}
+            />
+      
         </div>
         <div className='w-full px-5 pb-[52px] overflow-auto'>
-          {/* testCase heading */}
-          <div className='flex h-10 items-center space-x-6'>
+          {/* heading */}
+          <div className='flex h-8 items-center space-x-6'>
 						<div className='relative flex h-full flex-col justify-center cursor-pointer'>
 							<div 
                 className={`text-sm font-medium leading-5 ${activeTab === 'testCases' ? 'text-white' : 'text-gray-500'} `}
                 onClick={() => setActiveTab('testCases')}>Test cases
               </div>
 							{ activeTab === 'testCases' && (
+                <hr 
+                  className='absolute bottom-0 h-0.5 w-full rounded-full border-none bg-white'
+                />
+              )}
+						</div>
+            <div className='relative flex h-full flex-col justify-center cursor-pointer'>
+							<div 
+                className={`text-sm font-medium leading-5 ${activeTab === 'result' ? 'text-white' : 'text-gray-500'} `}
+                onClick={() => setActiveTab('result')}>Result
+              </div>
+							{ activeTab === 'result' && (
                 <hr 
                   className='absolute bottom-0 h-0.5 w-full rounded-full border-none bg-white'
                 />
@@ -195,72 +248,28 @@ function Playground({ problem }) {
               )}
 						</div>
 					</div>
+          {/* test cases */}
           { activeTab === 'testCases' && (
-            <>
-             <div className='flex'>
-             {problem.exampleCases?.map((example, index) => (
-               <div
-                 className='mr-2 items-start mt-2 '
-                 key={index}
-                 onClick={() => setActiveTestCaseId(index)}
-               >
-                 <div className='flex flex-wrap items-center gap-y-4'>
-                   <div
-                     className={`font-medium items-center transition-all focus:outline-none inline-flex bg-dark-fill-3 hover:bg-dark-fill-2 relative rounded-lg px-4 py-1 cursor-pointer whitespace-nowrap
-                     ${activeTestCaseId === index ? "text-white" : "text-gray-500"}
-                   `}
-                   >
-                     Case {index + 1}
-                   </div>
-                 </div>
-               </div>
-             ))}
-           </div>
-           <div className='font-semibold my-4'>
-             <p className='text-sm font-medium mt-4 text-white'>Input:</p>
-             <div className='w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2'>
-               {problem.exampleCases && problem.exampleCases[activeTestCaseId].test_input}
-             </div>
-             <p className='text-sm font-medium mt-4 text-white'>Output:</p>
-             <div className='w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2'>
-               {problem.exampleCases && problem.exampleCases[activeTestCaseId].expected_output}
-             </div>
-           </div>
-           </>
-            
+            <TestCases testCases={ problem.exampleCases }/>
           )}
-          {activeTab === 'codeReview' && aiReview !== null && !aiLoading &&(
-            <div className='p-2 text-sm'>
-              <MDEditor.Markdown 
-                source={aiReview}
-                className="bg-transparent text-sm text-white" />
-            </div>
+          { activeTab === 'result' && (
+            <TestCasesResult testResult={ testResult } testLoading={ testLoading } />
           )}
-
-          {activeTab === 'codeReview' && aiReview === null && aiLoading &&(
-            <div className='flex items-center justify-center p-2 text-sm h-full pb-[26px]'>
-              <Spinner color="gray" size="xl"/>
-              
-            </div>
-          )}
-
-          {activeTab === 'codeReview' && aiReview === null && (
-            <div className='flex items-center justify-center h-full pb-[26px] text-dark-gray-8'>
-              <button
-                className='bg-dark-fill-3 py-1 px-3 cursor-pointer rounded 
-                hover:text-white hover:bg-brand-orange hover:border-2 hover:border-brand-orange border-2 border-transparent
-                transition duration-300 ease-in-out'
-                onClick={handleAiReview}
-              >
-                AI Code Review
-              </button>
-            </div>
+          {/* AI review */}
+          {activeTab === 'codeReview' && (
+            <CodeReview 
+              handleAiReview={ handleAiReview }
+              aiReview={ aiReview }
+              aiLoading={ aiLoading }
+            />
           )}
          
         </div>
       </Split>
-      <EditorFooter handleSubmit={ handleSubmit } code={ code }/>
-      
+      <EditorFooter 
+        handleSubmit={ handleSubmit } 
+        handleTestSubmit={ handleTestSubmit }
+        code={ code }/>
     </div>
   )
 }

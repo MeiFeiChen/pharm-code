@@ -11,33 +11,35 @@ export default function WorkSpaceTab() {
   const isDiscussionTabActive = location.pathname.startsWith(`/problems/${problemId}/discussion`)
 
   return (
-    <div className='flex h-11 w-full pt-2 bg-dark-layer-2 text-white justify-around overflow-x-hidden  overflow-y-hidden'>
-      <Link to={`/problems/${problemId}`} className="flex-1">
+    <div className='w-full bg-dark-layer-2'>
+      <div className="flex h-[35px] w-full bg-[#373637] text-dark-gray-6 overflow-x-hidden  mt-2 overflow-y-hidden rounded-t-lg border-b border-b-dark-fill-3">
+      <Link to={`/problems/${problemId}`} className="">
         <div className={`
           ${
-            isDescriptionTabActive ? 'bg-dark-layer-1' : 'bg-dark-layer-2'
+            isDescriptionTabActive ? 'text-white border-b-[2px]' : ''
           }
-          bg-dark-layer-1  rounded-t-[5px] px-5 py-[10px] text-sm cursor-pointer`}>
+          bg-[#373637] px-5 py-[6px] text-sm text-dark-gray-6 `}>
           Description
         </div>
       </Link>
      
-      <Link to={`/problems/${problemId}/discussion`} className="flex-1">
+      <Link to={`/problems/${problemId}/discussion`} className="">
       <div className={`
           ${
-            isDiscussionTabActive ? 'bg-dark-layer-1' : 'bg-dark-layer-2'
+            isDiscussionTabActive ? 'text-white border-b-[2px]' : ''
           }
-          bg-dark-layer-1  rounded-t-[5px] px-5 py-[10px] text-sm cursor-pointer`}>
+          bg-[#373637] px-5 py-[6px] text-sm text-dark-gray-6 `}>
           Discussion   
       </div>
       </Link>
-      <Link to={`/problems/${problemId}/submission`} className={`flex-1`}>
+      <Link to={`/problems/${problemId}/submission`} className=''>
         <div className={`
-          ${ isSubmissionTabActive ? 'bg-dark-layer-1' : 'bg-dark-layer-2'}
-        bg-dark-layer-1 rounded-t-[5px] px-5 py-[10px] text-sm`}>
+          ${ isSubmissionTabActive ? 'text-white border-b-[2px]' : ''}
+          bg-[#373637]  px-5 py-[6px] text-sm text-dark-gray-6 `}>
           Submission
         </div>
       </Link>
+      </div>
     </div>
   )
 }

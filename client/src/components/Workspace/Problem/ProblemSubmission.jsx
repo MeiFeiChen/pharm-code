@@ -92,7 +92,7 @@ export default function ProblemSubmission() {
          { headerResult && (
            <>
              {/* The newest submission result */}
-             <div className='flex items-center mt-3'>
+             <div className='flex items-center'>
                <div className={`rounded p-[3px] text-lg mr-1 ${TEXT_COLOR[headerResult.status]}`}>
                  {headerResult.status === 'AC' ? <BsCheck2Circle /> : <IoIosCloseCircleOutline />}
                </div>
@@ -141,15 +141,15 @@ export default function ProblemSubmission() {
                   { headerResult.status === 'RE' && (
                    <>
                      <div className="flex-1">
-                       <div className='example-card'>
-                         <pre>
-                           <div className="flex items-center pb-1">
+                       <div className='example-card '>
+                         <pre style={{ backgroundColor:'#ef47431f'}}>
+                           <div className="flex items-center pb-1 text-dark-pink">
                              <div className='rounded p-[3px] text-lg mr-1'>
                                <IoBugOutline />
                              </div>
                              <div>Error</div>
                            </div>
-                           <div className="whitespace-pre-line">
+                           <div className="whitespace-pre-line text-dark-pink">
                              <small>{headerResult.error.trim()}</small>
                            </div>
                          </pre>
@@ -163,58 +163,37 @@ export default function ProblemSubmission() {
                      <div className="flex-1">
                       <div className='example-card'>
                         {headerResult.error.map((item, index) => (
-                          <React.Fragment key={index}>
-                            {item.WA && (
-                              <pre style={{ backgroundColor: "hsla(0, 100%, 50%, 0.1)" }}>
-                                <div className='px-3'>
+             
+                              <pre 
+                                // style={{ backgroundColor: item.status === 'WA' ? 'hsla(0, 100%, 50%, 0.1)' : 'hsla(168, 100%, 50%, 0.1)' }} 
+                                className="flex flex-wrap"
+                                key={index}
+                              >
+                                <div className='w-1/3'>
                                   <small>Input:</small>
                                   <MDEditor.Markdown 
-                                    source={item.WA.testInput}
+                                    source={item.testInput}
                                     className="bg-transparent"
                                   />
                                 </div>
-                                <div className="px-3">
+                                <div className="w-2/3">
                                   <small>Expected Output:</small>
                                   <MDEditor.Markdown 
-                                    source={item.WA.expectedOutput}
-                                    className="bg-transparent"
+                                    source={item.expectedOutput}
+                                    className={`bg-transparent ${item.status === 'WA' ? 'text-dark-pink': 'text-dark-green-s'}`}
                                   />
                                 </div>
-                                <div className="px-3">
+                                <div className="w-1/3">
+                          
+                                </div>
+                                <div className="w-2/3">
                                   <small>Your Output:</small>
                                   <MDEditor.Markdown 
-                                    source={item.WA.realOutput}
-                                    className="bg-transparent"
-                                  />
-                                </div>
-                                </pre>
-                              )}
-                            {item.AC && (
-                              <pre style={{ backgroundColor: "hsla(168,100%,50%,0.1)" }}>
-                                <div className='px-3'>
-                                  <small>Input:</small>
-                                  <MDEditor.Markdown 
-                                    source={item.AC.testInput}
-                                    className="bg-transparent"
-                                  />
-                                </div>
-                                <div className="px-3">
-                                  <small>Expected Output:</small>
-                                  <MDEditor.Markdown 
-                                    source={item.AC.expectedOutput}
-                                    className="bg-transparent"
-                                  />
-                                </div>
-                                <div className="px-3">
-                                  <small>Your Output:</small>
-                                  <MDEditor.Markdown 
-                                    source={item.AC.realOutput}
-                                    className="bg-transparent"
+                                    source={item.realOutput}
+                                    className={`bg-transparent ${item.status === 'WA' ? 'text-dark-pink': 'text-dark-green-s'}`}
                                   />
                                 </div>
                               </pre>
-                            )}
-                          </React.Fragment>
                         ))}
                       </div>
 
@@ -242,10 +221,10 @@ export default function ProblemSubmission() {
           <table className=' table-fixed text-left text-gray-500 dark:text-gray-400 sm:w-7/12 w-full max-w-[1200px] mx-auto'>
             <thead className='text-sm text-gray-700 dark:text-gray-400 border-y border-gray-400'>
               <tr>
-                <th scope='col' className='px-4 py-3 w-32 font-medium'>
+                <th scope='col' className='px-4 py-3 w-40 font-medium'>
                   Status
                 </th>
-                <th scope='col' className='px-5 py-3 w-32 font-medium'>
+                <th scope='col' className='px-5 py-3 w-28 font-medium'>
                   Language
                 </th>
                 <th scope='col' className='px-1 py-3 w-24 font-medium'>

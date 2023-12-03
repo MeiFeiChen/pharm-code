@@ -51,7 +51,7 @@ const execFile = async (submittedId, language, filepath, index, input, timeLimit
 
 // process problem
 problemQueue.process(NUM_WORKERS, async ({ data }) => {
-  const { id: submittedId, language, code } = data
+  const { submittedId, language, code } = data
   // generate a file
   const filepath = generateFile(language, code)
   console.log(filepath)
@@ -74,7 +74,9 @@ problemQueue.process(NUM_WORKERS, async ({ data }) => {
       console.log('expectedOutput', expectedOutput, 'output.stdout', output)
       const realOutput = output.stdout.replace(/\n/g, '')
       if (expectedOutput !== realOutput) {
-        return { WA: { testInput, expectedOutput, realOutput } }
+        return {
+          status: 'WA', testInput, expectedOutput, realOutput
+        }
       }
       console.log(output.stderr.split(/[\s\n]+/))
       const timeAndMemory = output.stderr.split(/[\s\n]+/)
@@ -88,19 +90,19 @@ problemQueue.process(NUM_WORKERS, async ({ data }) => {
         })
 
       return {
-        AC: {
-          time: timeAndMemory[0],
-          memory: timeAndMemory[1],
-          testInput,
-          expectedOutput,
-          realOutput
-        }
+        status: 'AC',
+        time: timeAndMemory[0],
+        memory: timeAndMemory[1],
+        testInput,
+        expectedOutput,
+        realOutput
       }
     })
     // calculate the average time and memory
     const results = await Promise.all(execFilePromises)
     // Check if there are any WA results
-    const hasWaResults = results.some((result) => Object.keys(result)[0] === 'WA')
+    console.log(results)
+    const hasWaResults = results.some((result) => result.status === 'WA')
 
     if (hasWaResults) {
       const error = new WrongAnswerError()
@@ -110,7 +112,7 @@ problemQueue.process(NUM_WORKERS, async ({ data }) => {
     console.log(hasWaResults)
     console.log(results)
     const { totalTime, totalMemory } = results.reduce((acc, cur) => {
-      const { time, memory } = cur.AC
+      const { time, memory } = cur
       acc.totalTime += time
       acc.totalMemory += memory
       return acc
@@ -144,8 +146,8 @@ problemQueue.process(NUM_WORKERS, async ({ data }) => {
 })
 
 // add problem
-const addProblemToQueue = async (problemId, language, code) => {
-  await problemQueue.add({ id: problemId, language, code })
+const addProblemToQueue = async (submittedId, language, code) => {
+  await problemQueue.add({ submittedId, language, code })
 }
 
 export default addProblemToQueue

@@ -9,7 +9,7 @@ PreferenceNav.propTypes = {
 
 function PreferenceNav({ handleLanguageExtension, setDefaultLanguage, language}) {
   return (
-    <div className='flex items-center justify-between bg-dark-layer-2 h-11 w-full '>
+    <div className='flex items-center justify-between bg-dark-layer-2 h-12 w-full '>
       {/* language */}
 			<div className='flex items-center text-white'>
         <select

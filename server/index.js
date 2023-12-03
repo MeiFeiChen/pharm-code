@@ -9,6 +9,7 @@ import { createServer } from 'http'
 import problemRouter from './api/problems/problemRouter.js'
 import userRouter from './api/user/userRouter.js'
 import openAIRouter from './api/openai/openAIRouter.js'
+import { processProblem } from './config/testQueue.js'
 
 dotenv.config()
 
@@ -31,6 +32,16 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log('user disconnect')
+  })
+  socket.on('task', (data) => {
+    console.log('server side received', data)
+  })
+  socket.on('test_data', async (data) => {
+    socket.join(socket.id)
+    const { problemId, language, code } = data
+    const result = await processProblem(problemId, language, code)
+    console.log(result)
+    io.to(socket.id).emit('result', result)
   })
 })
 
