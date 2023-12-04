@@ -89,7 +89,7 @@ export default function ProblemTable() {
                     {problem.title}
                   </Link>
                 </td>
-                <td className={`px-6 py-4 ${TEXT_COLOR_DIFFICULTY[problem.difficulty]}`}>{problem.difficulty}</td>
+                <td className={`px-6 py-4 capitalize ${TEXT_COLOR_DIFFICULTY[problem.difficulty]}`}>{problem.difficulty}</td>
                 {/* 通過率 */}
                 <td className='px-6 py-4 text-[10px]'>
                 { problem.pass_rate ? (

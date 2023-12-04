@@ -24,9 +24,7 @@ const testQueue = new Bull('test-queue', {
   }
 })
 
-const socket = io('http://localhost:3000')
 
-const NUM_WORKERS = 5
 const execFile = async (language, filepath, index, input, timeLimit) => {
   // generate a temporary file
   const { imageName, containerName, runtimeCommand } = languageRuntime[language]
@@ -48,72 +46,6 @@ const execFile = async (language, filepath, index, input, timeLimit) => {
     })
   })
 }
-
-// process problem
-testQueue.process(NUM_WORKERS, async ({ data }) => {
-  const { problemId, language, code } = data
-  // generate a file
-  const filepath = generateFile(language, code)
-  console.log(filepath)
-  try {
-    // get the test cases
-    const problem = await getProblem(problemId)
-    const testCases = await getTestCases(problemId, 'example')
-
-    const execFilePromises = testCases.map(async (testCase, index) => {
-      const { test_input: testInput, expected_output: expectedOutput } = testCase
-      const output = await execFile(
-        language,
-        filepath,
-        index,
-        testInput,
-        problem.time_limit
-      )
-      // compare result with test case
-      console.log('expectedOutput', expectedOutput, 'output.stdout', output)
-      const realOutput = output.stdout.replace(/\n/g, '')
-      if (expectedOutput !== realOutput) {
-        return {
-          status: 'WA', testInput, expectedOutput, realOutput
-        }
-      }
-      console.log(realOutput)
-
-      return {
-        status: 'AC',
-        testInput,
-        expectedOutput,
-        realOutput
-      }
-    })
-    // calculate the average time and memory
-    const results = await Promise.all(execFilePromises)
-    // Check if there are any WA results
-    const hasWaResults = results.some((result) => result.status === 'WA')
-
-    if (hasWaResults) {
-      const error = new WrongAnswerError()
-      error.message = results
-      throw error
-    }
-    console.log(results)
-    socket.emit('task', (results))
-  } catch (err) {
-    console.log(err)
-    console.error(err.message)
-    if (err instanceof RunTimeError) {
-      console.log('RunTimeError')
-    }
-    if (err instanceof WrongAnswerError) {
-      console.log('WrongAnswerError')
-    }
-    if (err instanceof TimeLimitExceededError) {
-      console.log('TimeLimitExceededError')
-    }
-  }
-  // delete the file
-  removeFile(filepath)
-})
 
 export const processProblem = async (problemId, language, code) => {
   const filepath = generateFile(language, code)
@@ -162,7 +94,6 @@ export const processProblem = async (problemId, language, code) => {
     removeFile(filepath)
 
     return { status: 'AC', results }
-    socket.emit('task', (results))
   } catch (err) {
     console.log(err)
     console.error(err.message)
@@ -179,12 +110,12 @@ export const processProblem = async (problemId, language, code) => {
       removeFile(filepath)
       return { status: 'TLE', results: [] }
     }
+    return { status: err.message }
   }
 }
 
 // add problem
-const addProblemToTestQueue = async (problemId, language, code) => {
+export const addProblemToTestQueue = async (problemId, language, code) => {
   await testQueue.add({ problemId, language, code })
 }
 
-export default addProblemToTestQueue

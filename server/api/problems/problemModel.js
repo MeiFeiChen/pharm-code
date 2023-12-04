@@ -32,7 +32,11 @@ export async function getProblems() {
 /* ---- Problem ---- */
 export async function getProblem(problemId) {
   const { rows } = await pool.query(`
-    SELECT * FROM problems
+    SELECT 
+      problems.*,
+      LAG(id) OVER (ORDER BY id) AS last_problem_id,
+      LEAD(id) OVER (ORDER BY id) AS next_problem_id
+      FROM problems
     WHERE id = $1
   `, [problemId])
   const problem = rows[0]

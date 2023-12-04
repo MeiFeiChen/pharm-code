@@ -143,7 +143,6 @@ function Playground({ problem }) {
     
           const { data, errors } = await apiProblemSubmissionItem(problem.id, submittedId, config)
           console.log('response', data)
-          
 
           if (errors) {
             clearInterval(pollInterval)
