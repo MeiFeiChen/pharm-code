@@ -10,6 +10,7 @@ import problemRouter from './api/problems/problemRouter.js'
 import userRouter from './api/user/userRouter.js'
 import openAIRouter from './api/openai/openAIRouter.js'
 import { processProblem } from './config/testQueue.js'
+import processMysqlProblem from './config/mysqlTestQueue.js'
 
 dotenv.config()
 
@@ -39,9 +40,13 @@ io.on('connection', (socket) => {
   socket.on('test_data', async (data) => {
     socket.join(socket.id)
     const { problemId, language, code } = data
-    const result = await processProblem(problemId, language, code)
-    console.log(result)
-    io.to(socket.id).emit('result', result)
+    if (language !== 'mysql') {
+      const result = await processProblem(problemId, language, code)
+      io.to(socket.id).emit('result', result)
+    } else {
+      const result = await processMysqlProblem(problemId, language, code)
+      io.to(socket.id).emit('result', result)
+    }
   })
 })
 

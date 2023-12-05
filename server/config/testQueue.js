@@ -24,7 +24,6 @@ const testQueue = new Bull('test-queue', {
   }
 })
 
-
 const execFile = async (language, filepath, index, input, timeLimit) => {
   // generate a temporary file
   const { imageName, containerName, runtimeCommand } = languageRuntime[language]
@@ -71,8 +70,6 @@ export const processProblem = async (problemId, language, code) => {
           status: 'WA', testInput, expectedOutput, realOutput
         }
       }
-      console.log(realOutput)
-
       return {
         status: 'AC',
         testInput,
@@ -118,4 +115,3 @@ export const processProblem = async (problemId, language, code) => {
 export const addProblemToTestQueue = async (problemId, language, code) => {
   await testQueue.add({ problemId, language, code })
 }
-

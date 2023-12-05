@@ -10,7 +10,6 @@ import Playground from './Playground/Playground'
 import { CodeContext } from "../../context"
 
 
-
 export default function WorkSpace() {  
   const [ code, setCode ] = useState('')
   const { problemId } = useParams()
@@ -38,7 +37,7 @@ export default function WorkSpace() {
         
         <Routes>
           <Route path='' element={<ProblemDescription problem={problem}/>}/>
-          <Route path={`submission/:submittedId?`} element={<ProblemSubmission />}/>
+          <Route path={`submission/:submittedId?`} element={<ProblemSubmission problem={problem}/>}/>
           <Route path='discussion/*' element={<ProblemDiscussion />}/>
         </Routes>
         

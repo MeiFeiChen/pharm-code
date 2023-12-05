@@ -11,6 +11,12 @@ export const TEXT_COLOR_DIFFICULTY = {
   'hard': 'text-dark-pink'
 }
 
+export const TEXT_COLOR_DIFFICULTY_TAG = {
+  'easy': 'bg-olive text-olive', 
+  'medium': 'bg-dark-yellow text-dark-yellow', 
+  'hard': 'bg-dark-pink text-dark-pink'
+} 
+
 export const STATUS = {
   'AC': 'Accepted', 
   'TLE': 'Time Limit Exceeded', 
@@ -20,5 +26,6 @@ export const STATUS = {
 
 export const COMPILE_LANGUAGE = {
   'py': 'Python', 
-  'js': 'Javascript'
+  'js': 'Javascript',
+  'mysql': 'MySQL'
 }

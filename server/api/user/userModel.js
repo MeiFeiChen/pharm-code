@@ -87,8 +87,9 @@ export async function getUserDiscussionPosts(userId) {
   const { rows } = await pool.query(`
     SELECT 
       posts.id,
-      posts.title,
+      posts.title AS post_title,
       problems.title AS problem_title,
+      problems.id AS problem_id,
       posts.created_at,
       COUNT(messages.id) AS message_count
     FROM 
@@ -100,8 +101,9 @@ export async function getUserDiscussionPosts(userId) {
     WHERE 
       posts.user_id = $1
     GROUP BY 
-      posts.id, posts.title, problems.title, posts.created_at
-    ORDER BY posts.id DESC;
+      posts.id, post_title, problem_title, problems.id, posts.created_at
+    ORDER BY 
+      posts.id DESC;
   `, [userId])
   return rows
 }

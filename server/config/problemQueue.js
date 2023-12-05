@@ -7,7 +7,6 @@ import languageRuntime from '../constants/runtime.js'
 import { generateFile, removeFile } from '../generateFile.js'
 import {
   createAcSubmission,
-  createSubmissionsResult,
   createWaReSubmission,
   getProblemBySubmittedId,
   getTestCases
@@ -54,7 +53,6 @@ problemQueue.process(NUM_WORKERS, async ({ data }) => {
   const { submittedId, language, code } = data
   // generate a file
   const filepath = generateFile(language, code)
-  console.log(filepath)
   try {
     // get the test cases
     const problem = await getProblemBySubmittedId(submittedId)
@@ -122,22 +120,18 @@ problemQueue.process(NUM_WORKERS, async ({ data }) => {
     console.log(totalTime, totalMemory)
     console.log(avgTime, avgMemory)
 
-    await createSubmissionsResult(submittedId, 'AC', avgTime, avgMemory, null)
     await createAcSubmission(submittedId, 'AC', language, avgTime, avgMemory)
   } catch (err) {
     console.log(err)
     console.error(err.message)
     if (err instanceof RunTimeError) {
       const cleanedErrorMessage = err.message.replace(/(Traceback \(most recent call last\):)?\s*File "[^"]+", /g, '').replace(/\d+\.\d+ \d+$/m, '')
-      await createSubmissionsResult(submittedId, 'RE', null, null, cleanedErrorMessage)
       await createWaReSubmission(submittedId, 'RE', cleanedErrorMessage)
     }
     if (err instanceof WrongAnswerError) {
-      await createSubmissionsResult(submittedId, 'WA', null, null, null)
       await createWaReSubmission(submittedId, 'WA', err.message)
     }
     if (err instanceof TimeLimitExceededError) {
-      await createSubmissionsResult(submittedId, 'TLE', null, null, null)
       await createWaReSubmission(submittedId, 'TLE', null)
     }
   }

@@ -1,5 +1,6 @@
+import { table, getBorderCharacters } from 'table'
 import addProblemToQueue from '../../config/problemQueue.js'
-
+import addMysqlProblemToQueue from '../../config/mysqlQueue.js'
 import {
   createSubmission,
   getSubmissionResult,
@@ -31,7 +32,34 @@ export const getProblemPage = async (req, res) => {
   try {
     const problem = await getProblem(problemId)
     const exampleCases = await getTestCases(problemId, 'example')
+    if (problem.database) {
+      // handle input to table format
+      const inputData = JSON.parse(problem.input)
+      problem.input = Object.keys(inputData).reduce((acc, cur) => {
+        if (!acc[cur]) acc[cur] = table(inputData[cur], { border: getBorderCharacters('ramac') })
+        return acc
+      }, {})
+
+      exampleCases.forEach((example, index) => {
+        // handle example input to table format
+        exampleCases[index].test_input = JSON.parse(example.test_input)
+        Object.keys(example.test_input).map((key) => {
+          exampleCases[index].test_input[key] = table(example.test_input[key], { border: getBorderCharacters('ramac') })
+        })
+        // handle example output to table format
+        const exampleOutputData = JSON.parse(example.expected_output).map(
+          (row) => Object.values(row)
+        )
+        const exampleOutPutTable = ([
+          Object.keys(JSON.parse(example.expected_output)[0]), ...exampleOutputData
+        ])
+        exampleCases[index].expected_output = table(exampleOutPutTable, { border: getBorderCharacters('ramac') })
+      })
+    }
     const data = { ...problem, exampleCases }
+    console.log(problem)
+    console.log(exampleCases)
+
     return res.status(200).json({ data })
   } catch (err) {
     console.error(err)
@@ -43,6 +71,7 @@ export const submitProblem = async (req, res) => {
   const { userId } = res.locals
   const { id: problemId } = req.params
   const { language, code } = req.body
+  console.log(userId, problemId, language, code)
 
   if (!code) {
     return res.status(400).json({ success: false, error: 'Empty code body' })
@@ -50,8 +79,13 @@ export const submitProblem = async (req, res) => {
   try {
     // store data to db
     const submittedId = await createSubmission(userId, problemId, language, 'pending', code)
+    if (language === 'mysql') {
     // add job to queue
-    addProblemToQueue(submittedId, language, code)
+      addMysqlProblemToQueue(submittedId, problemId, language, code)
+    } else {
+      console.log('here')
+      addProblemToQueue(submittedId, language, code)
+    }
     return res.status(201).json({ success: true, submittedId })
   } catch (err) {
     console.error(err)
@@ -61,25 +95,6 @@ export const submitProblem = async (req, res) => {
     return res.status(500).json({ errors: 'submit failed' })
   }
 }
-
-// export const submitTest = async (req, res) => {
-//   const { userId } = res.locals
-//   const { id: problemId } = req.params
-//   const { language, code } = req.body
-//   if (!code) {
-//     return res.status(400).json({ success: false, error: 'Empty code body' })
-//   }
-//   try {
-//     addProblemToTestQueue(problemId, language, code)
-//     return res.status(200).json({ success: true })
-//   } catch (err) {
-//     console.error(err)
-//     if (err instanceof Error) {
-//       return res.status(500).json({ errors: err.message })
-//     }
-//     return res.status(500).json({ errors: 'submit test failed' })
-//   }
-// }
 
 export const getSubmission = async (req, res) => {
   const { id: problemIid, submittedId } = req.params
@@ -146,7 +161,6 @@ export const getPost = async (req, res) => {
   const { id: problemId, postId } = req.params
   try {
     const data = await getSinglePost(problemId, postId)
-    console.log(data)
     return res.status(200).json({ data })
   } catch (err) {
     if (err instanceof Error) {
@@ -173,7 +187,6 @@ export const createPostMessage = async (req, res) => {
   const { id: problemId, postId } = req.params
   const { userId } = res.locals
   const { content } = req.body
-  console.log(problemId, postId, userId, content)
   try {
     const io = req.app.get('socketio')
     const name = await getUserName(userId)

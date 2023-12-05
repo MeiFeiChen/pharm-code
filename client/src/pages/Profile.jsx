@@ -25,8 +25,11 @@ function Profile({ userProfile }) {
   const [userSubmission, setUserSubmission] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  const handleOnClick = (problemId, submissionId) => {
+  const handleSubmissionOnClick = (problemId, submissionId) => {
     navigate(`/problems/${problemId}/submission/${submissionId}`)
+  }
+  const handleDiscussionOnClick = (problemId, postId) => {
+    navigate(`/problems/${problemId}/discussion/${postId}`)
   }
 
   useEffect(() => {
@@ -40,6 +43,7 @@ function Profile({ userProfile }) {
         setUserSubmission(data)
       } catch (err) {
         console.error('Error fetching data', err)
+        navigate('/problems')
         setUserSubmission(null)
       } finally {
         setLoading(false)
@@ -52,12 +56,13 @@ function Profile({ userProfile }) {
       navigate('/problems')
     }
   }, [isLogin, navigate, setUserProfile])
+
   
 
   // 計算總共解出的題數
-  const totalSolved = userSubmission ? Object.values(userSubmission.difficultyACRatio).reduce((acc, difficulty) => acc + difficulty.solved, 0) : 0
+  const totalSolved = userSubmission ? Object.values(userSubmission.difficultyACRatio).reduce((acc, difficulty) => acc + (difficulty.solved || 0), 0) : 0
   // 計算總題數
-  const totalProblems = userSubmission ? Object.values(userSubmission.difficultyACRatio).reduce((acc, difficulty) => acc + difficulty.total, 0) : 0
+  const totalProblems = userSubmission ? Object.values(userSubmission.difficultyACRatio).reduce((acc, difficulty) => acc + (difficulty.total || 0), 0) : 0
 
   return (
     <main className='bg-dark-layer-2 min-h-screen'>
@@ -248,7 +253,7 @@ function Profile({ userProfile }) {
                             <Table.Row 
                               className="bg-white border-dark-fill-3 dark:bg-dark-layer-1 hover:bg-dark-fill-3 hover:cursor-pointer" 
                               key={index}
-                              onClick={() => handleOnClick(submission.problem_id, submission.id)}>
+                              onClick={() => handleSubmissionOnClick(submission.problem_id, submission.id)}>
                               <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                 {submission.title}
                               </Table.Cell>
@@ -296,11 +301,15 @@ function Profile({ userProfile }) {
                     userSubmission?.posts?.length && (
                       <Table.Body className="divide-y">
                         { userSubmission.posts.map((post, index)=> (
-                          <Table.Row className=" border-dark-fill-3 dark:bg-dark-layer-1 hover:bg-dark-fill-3" key={index}>
+                          <Table.Row 
+                            className=" bg-white border-dark-fill-3 dark:bg-dark-layer-1 hover:bg-dark-fill-3 hover:cursor-pointer" 
+                            key={index}
+                            onClick={() => handleDiscussionOnClick(post.problem_id, post.id)}
+                          >
                             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                               {post.problem_title}
                             </Table.Cell>
-                            <Table.Cell>{post.title}</Table.Cell>
+                            <Table.Cell>{post.post_title}</Table.Cell>
                             <Table.Cell>{post.message_count}</Table.Cell>
                             <Table.Cell><small>{formatTimestamp(post.created_at)}</small></Table.Cell>
                           </Table.Row>

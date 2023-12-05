@@ -7,23 +7,27 @@ import CodeMirror,{ EditorView } from '@uiw/react-codemirror'
 import { vscodeDark} from '@uiw/codemirror-theme-vscode'
 import { javascript } from '@codemirror/lang-javascript';
 import { python } from '@codemirror/lang-python'
+import { sql } from '@codemirror/lang-sql'
 import EditorFooter from './EditorFooter'
 import { apiAssistanceItem, apiProblemSubmission, apiProblemSubmissionItem } from '../../../api'
 import { getAuthToken } from '../../../utils'
 import { socket } from '../../../socket'
 import { CodeContext, AuthContext } from '../../../context'
 import { toast, Zoom } from 'react-toastify'
-import TestCases from './TestCases'
+import AlgorithmTestCases from './TestCases/AlgorithmTestCases'
 import CodeReview from './CodeReview'
-import TestCasesResult from './TestCasesResult'
+import AlgorithmTestCasesResult from './TestCases/AlgorithmTestCasesResult'
 import { Link } from 'react-router-dom'
 import { useSetRecoilState } from "recoil"
 import { authModalState } from "../../../atoms/authModalAtom"
+import DatabaseTestCases from './TestCases/DatabaseTestCases'
+import DatabaseTestCasesResult from './TestCases/DatabaseTestCasesResult'
 
 
 const languageExtension = {
   js: [javascript({ jsx: true }), [EditorView.lineWrapping]], 
-  py: [python(), [EditorView.lineWrapping]]
+  py: [python(), [EditorView.lineWrapping]],
+  mysql: [sql()]
 }
 
 Playground.propTypes = {
@@ -49,9 +53,14 @@ function Playground({ problem }) {
 
   // set default language
   useEffect(() => {
-    const defaultLang = localStorage.getItem('default-language') || 'js'
-    setLanguage(defaultLang)
-  }, [])
+    if (!problem.database) {
+      const defaultLang = localStorage.getItem('default-algo-language') || 'js'
+      setLanguage(defaultLang)
+    } else {
+      const defaultLang = localStorage.getItem('default-data-language') || 'mysql'
+      setLanguage(defaultLang)
+    }
+  }, [problem.database])
 
   // select language
   const handleLanguageExtension = (language) => {
@@ -59,7 +68,11 @@ function Playground({ problem }) {
   }
   // set default language
   const setDefaultLanguage = () => {
-    localStorage.setItem("default-language", language)
+    if (!problem.database) {
+      localStorage.setItem("default-algo-language", language)
+    } else {
+      localStorage.setItem("default-data-language", language)
+    }
     console.log(`${language} set as default!`)
   }
   
@@ -191,6 +204,7 @@ function Playground({ problem }) {
   return (
     <div className='flex flex-col bg-dark-layer-1 relative overflow-x-hidden overflow-hidden'>
       <PreferenceNav 
+        isDatabase={problem.database}
         handleLanguageExtension={handleLanguageExtension}
         setDefaultLanguage={setDefaultLanguage}
         language={language}/>
@@ -204,7 +218,7 @@ function Playground({ problem }) {
           <CodeMirror
               value={code}
               theme={vscodeDark}
-              extensions={languageExtension[language]}
+              extensions={[languageExtension[language]]}
               style={{fontSize:16}}
               onChange={onCodeChange}
             />
@@ -248,11 +262,17 @@ function Playground({ problem }) {
 						</div>
 					</div>
           {/* test cases */}
-          { activeTab === 'testCases' && (
-            <TestCases testCases={ problem.exampleCases }/>
+          { activeTab === 'testCases' && !problem.database && (
+            <AlgorithmTestCases testCases={ problem.exampleCases }/>
           )}
-          { activeTab === 'result' && (
-            <TestCasesResult testResult={ testResult } testLoading={ testLoading } />
+          { activeTab === 'testCases' && problem.database && (
+            <DatabaseTestCases testCases={ problem.exampleCases }/>
+          )}
+          { activeTab === 'result' && !problem.database && (
+            <AlgorithmTestCasesResult testResult={ testResult } testLoading={ testLoading } />
+          )}
+          { activeTab === 'result' && problem.database && (
+            <DatabaseTestCasesResult testResult={ testResult } testLoading={ testLoading } />
           )}
           {/* AI review */}
           {activeTab === 'codeReview' && (

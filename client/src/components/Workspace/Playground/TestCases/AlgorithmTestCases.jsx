@@ -2,12 +2,11 @@ import PropTypes from 'prop-types'
 import { useState } from 'react'
 import MDEditor from '@uiw/react-md-editor'
 
-TestCases.propTypes = {
+AlgorithmTestCases.propTypes = {
   testCases: PropTypes.array
 }
 
-
-function TestCases({ testCases }) {
+function AlgorithmTestCases({ testCases }) {
   const [activeTestCaseId, setActiveTestCaseId] = useState(0)
   return (
     <>
@@ -43,4 +42,4 @@ function TestCases({ testCases }) {
   )
 }
 
-export default TestCases
+export default AlgorithmTestCases

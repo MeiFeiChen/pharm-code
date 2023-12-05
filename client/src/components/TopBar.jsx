@@ -37,11 +37,10 @@ export default function TopBar({ problemPage }) {
       relative flex h-[50px] w-full shrink-0 items-center 
       px-20 bg-dark-layer-1 text-dark-gray-7
       `}>
-      <div className={`
-        flex w-full items-center`}>
+      <div className='flex w-full items-center'>
         {/* Logo */}
-        <Link to="/problems">
-          <img src="/logo-full.png" alt="Logo" className="h-full" />
+        <Link to="/problems" className="flex items-center">
+          <img src="/logo-full.png" alt="Logo" className="h-[38px]"/>
         </Link>
         {/* problem Page */}
         {problemPage && (

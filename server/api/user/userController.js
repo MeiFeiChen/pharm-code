@@ -143,7 +143,6 @@ export const getUserProfileDetails = async (req, res) => {
       }
       return acc
     }, {})
-    console.log(difficultyACRatio)
 
     return res.status(200).json({
       languageAC,

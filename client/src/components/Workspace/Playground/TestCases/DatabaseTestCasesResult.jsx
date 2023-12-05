@@ -2,16 +2,18 @@ import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { Spinner } from 'flowbite-react'
 import { RxDotFilled } from "react-icons/rx"
-import { STATUS } from '../../../constant'
+import { STATUS } from '../../../../constant'
 import MDEditor from '@uiw/react-md-editor'
+import { table, getBorderCharacters} from 'table'
 
-TestCasesResult.propTypes = {
-  testResult: PropTypes.array, 
+DatabaseTestCasesResult.propTypes = {
+  testResult: PropTypes.object, 
   testLoading: PropTypes.bool.isRequired
 }
 
-function TestCasesResult({ testResult, testLoading }) {
+function DatabaseTestCasesResult({ testResult, testLoading }) {
   const [activeTestResultId, setActiveTestResultId] = useState(0)
+  console.log(testResult)
   return (
     <>
     {/* Loading */}
@@ -57,21 +59,26 @@ function TestCasesResult({ testResult, testLoading }) {
      <div className='font-semibold my-4'>
        <p className='text-sm font-medium mt-4 text-white'>Input:</p>
        <div className='w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2'>
-         <MDEditor.Markdown 
-          source={testResult.results[activeTestResultId].testInput}
-          className="bg-transparent text-sm text-white" />
+       { Object.keys(testResult.results[activeTestResultId].testInput).map((key, index) => (
+        <div key={index} className="text-xs">
+          <div className="my-2">Table: <code>{key}</code></div>
+          <pre className="whitespace-pre-wrap" style={{fontSize: '1em', lineHeight:'1.2em'}}>
+          { testResult.results[activeTestResultId].testInput[key] }
+          </pre>
+        </div>
+      ))}
        </div>
        <p className='text-sm font-medium mt-4 text-white'>Your Output:</p>
        <div className='w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2'>
-         <MDEditor.Markdown 
-          source={testResult.results[activeTestResultId].realOutput || 'undefined'}
-          className={`bg-transparent text-sm ${testResult.results[activeTestResultId].status === 'WA'? 'text-dark-pink':'text-white'}`} />
+        <pre className="whitespace-pre-wrap" style={{fontSize: '1em', lineHeight:'1.2em'}}>
+          { testResult.results[activeTestResultId].realOutput  }
+        </pre>
        </div>
        <p className='text-sm font-medium mt-4 text-white'>Expected:</p>
        <div className='w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2'>
-         <MDEditor.Markdown 
-          source={testResult.results[activeTestResultId].expectedOutput}
-          className={`bg-transparent text-sm ${testResult.results[activeTestResultId].status === 'WA'? 'text-dark-green-s':'text-white'}`} />
+        <pre className="whitespace-pre-wrap" style={{fontSize: '1em', lineHeight:'1.2em'}}>
+          { testResult.results[activeTestResultId].expectedOutput  }
+        </pre>
        </div>
      </div>
      </div>
@@ -104,4 +111,4 @@ function TestCasesResult({ testResult, testLoading }) {
   )
 }
 
-export default TestCasesResult
+export default DatabaseTestCasesResult

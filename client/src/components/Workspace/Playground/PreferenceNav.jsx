@@ -4,10 +4,11 @@ import PropTypes from 'prop-types'
 PreferenceNav.propTypes = {
   handleLanguageExtension: PropTypes.func.isRequired,
   setDefaultLanguage: PropTypes.func.isRequired, 
-  language: PropTypes.string.isRequired
+  language: PropTypes.string.isRequired,
+  isDatabase: PropTypes.bool
 }
 
-function PreferenceNav({ handleLanguageExtension, setDefaultLanguage, language}) {
+function PreferenceNav({ handleLanguageExtension, setDefaultLanguage, language, isDatabase}) {
   return (
     <div className='flex items-center justify-between bg-dark-layer-2 h-12 w-full '>
       {/* language */}
@@ -21,8 +22,18 @@ function PreferenceNav({ handleLanguageExtension, setDefaultLanguage, language})
             handleLanguageExtension(e.target.value)
           }}
         >
-          <option value='js'>Javascript</option>
-          <option value='py'>Python 3</option>
+          {!isDatabase && (
+            <>
+              <option value='js'>Javascript</option>
+              <option value='py'>Python 3</option>
+            </>
+          )}
+          {isDatabase && (
+            <>
+              <option value='mysql'>MySQL</option>
+            </>
+          )}
+        
         </select>
         <button 
           className=

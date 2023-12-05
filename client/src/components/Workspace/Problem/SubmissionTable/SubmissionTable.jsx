@@ -1,8 +1,8 @@
 import { MdMemory, MdOutlineTimer } from 'react-icons/md'
 import { useNavigate, useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { TEXT_COLOR, STATUS, COMPILE_LANGUAGE } from '../../../constant'
-import { formatTimestamp } from '../../../dateconfig'
+import { TEXT_COLOR, STATUS, COMPILE_LANGUAGE } from '../../../../constant'
+import { formatTimestamp } from '../../../../dateconfig'
 
 SubmissionTable.propTypes = {
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
