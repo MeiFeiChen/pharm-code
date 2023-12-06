@@ -32,7 +32,7 @@ const mysqlPool = createPool({
 }).promise()
 
 const NUM_WORKERS = 5
-
+const sortObject = o => Object.keys(o).sort().reduce((r, k) => (r[k] = o[k], r), {})
 // process problem
 mysqlQueue.process(NUM_WORKERS, async ({ data }) => {
   const {
@@ -52,10 +52,20 @@ mysqlQueue.process(NUM_WORKERS, async ({ data }) => {
         const startTime = new Date()
         const [testResult] = await mysqlPool.query(`${code}`)
         const endTime = new Date()
+
         // compare result
+        // sorted objects in array
+        const testResultSorted = testResult.map((result) => sortObject(result))
+        const expectedOutputSorted = expectedOutput.map((result) => sortObject(result))
+        // sorted array
+        const expectedOutputSortedArray = expectedOutputSorted.map((obj) => (
+          { ...obj })).sort((a, b) => JSON.stringify(a) > JSON.stringify(b) ? 1 : -1)
+        const testResultSortedArray = testResultSorted.map((obj) => (
+          { ...obj })).sort((a, b) => JSON.stringify(a) > JSON.stringify(b) ? 1 : -1)
+
         const resultData = testResult.map((row) => Object.values(row))
         const resultTable = table([Object.keys(testResult[0]), ...resultData], { border: getBorderCharacters('ramac') })
-        if (!_.isEqual(testResult, expectedOutput)) {
+        if (!_.isEqual(expectedOutputSortedArray, testResultSortedArray)) {
           return { status: 'WA', realOutput: resultTable, runtime: endTime - startTime }
         }
         return { status: 'AC', realOutput: resultTable, runtime: endTime - startTime }

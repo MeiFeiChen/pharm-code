@@ -30,7 +30,7 @@ const mysqlPool = createPool({
 }).promise()
 
 const NUM_WORKERS = 5
-
+const sortObject = o => Object.keys(o).sort().reduce((r, k) => (r[k] = o[k], r), {})
 // // process problem
 // mysqlQueue.process(NUM_WORKERS, async ({ data }) => {
 //   const {
@@ -104,12 +104,24 @@ const processMysqlProblem = async (problemId, language, code) => {
         const startTime = new Date()
         const [testResult] = await mysqlPool.query(`${code}`)
         const endTime = new Date()
+
         // compare result
+        // sorted objects in array
+        const testResultSorted = testResult.map((data) => sortObject(data))
+        const expectedOutputSorted = expectedOutput.map((data) => sortObject(data))
+        // sorted array
+        const expectedOutputSortedArray = expectedOutputSorted.map((obj) => (
+          { ...obj })).sort((a, b) => JSON.stringify(a) > JSON.stringify(b) ? 1 : -1)
+        const testResultSortedArray = testResultSorted.map((obj) => (
+          { ...obj })).sort((a, b) => JSON.stringify(a) > JSON.stringify(b) ? 1 : -1)
+
+        // transfer data to table
         const resultData = testResult.map((row) => Object.values(row))
         const resultTable = table([Object.keys(testResult[0]), ...resultData], { border: getBorderCharacters('ramac') })
         const expectedData = expectedOutput.map((row) => Object.values(row))
         const expectedTable = table([Object.keys(expectedOutput[0]), ...expectedData], { border: getBorderCharacters('ramac') })
-        if (!_.isEqual(testResult, expectedOutput)) {
+
+        if (!_.isEqual(expectedOutputSortedArray, testResultSortedArray)) {
           return {
             status: 'WA',
             testInput,
@@ -130,7 +142,7 @@ const processMysqlProblem = async (problemId, language, code) => {
       }
     })
     const results = await Promise.all(queryPromise)
-    console.log(results)
+
     // Check if there are any WA results
     const hasWaResults = results.some((result) => result.status === 'WA')
     if (hasWaResults) {

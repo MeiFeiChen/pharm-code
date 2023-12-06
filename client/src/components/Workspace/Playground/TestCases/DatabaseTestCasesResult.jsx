@@ -3,8 +3,7 @@ import { useState } from 'react'
 import { Spinner } from 'flowbite-react'
 import { RxDotFilled } from "react-icons/rx"
 import { STATUS } from '../../../../constant'
-import MDEditor from '@uiw/react-md-editor'
-import { table, getBorderCharacters} from 'table'
+
 
 DatabaseTestCasesResult.propTypes = {
   testResult: PropTypes.object, 
