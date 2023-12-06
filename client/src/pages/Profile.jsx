@@ -31,6 +31,8 @@ function Profile({ userProfile }) {
   const handleDiscussionOnClick = (problemId, postId) => {
     navigate(`/problems/${problemId}/discussion/${postId}`)
   }
+  
+
 
   useEffect(() => {
     const fetchData = async() => {
@@ -56,6 +58,11 @@ function Profile({ userProfile }) {
       navigate('/problems')
     }
   }, [isLogin, navigate, setUserProfile])
+
+  if (!isLogin) {
+    return navigate('/problems')
+  }
+
 
   
 

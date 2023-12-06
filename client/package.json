@@ -19,7 +19,6 @@
     "@uiw/react-md-editor": "^4.0.0",
     "antd": "^5.11.5",
     "axios": "^1.6.2",
-    "deep-chat-react": "^1.4.4",
     "flowbite": "^2.2.0",
     "flowbite-react": "^0.7.0",
     "formik": "^2.4.5",
@@ -27,6 +26,7 @@
     "react-circular-progressbar": "^2.1.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.12.0",
+    "react-minimal-side-navigation": "^1.9.2",
     "react-router-dom": "^6.19.0",
     "react-simple-chatbot": "^0.6.1",
     "react-split": "^2.0.14",
@@ -36,7 +36,6 @@
     "rehype-sanitize": "^6.0.0",
     "remark-gfm": "^4.0.0",
     "socket.io-client": "^4.7.2",
-    "table": "^6.8.1",
     "yup": "^1.3.2",
     "zustand": "^4.4.6"
   },

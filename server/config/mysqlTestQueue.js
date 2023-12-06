@@ -110,7 +110,13 @@ const processMysqlProblem = async (problemId, language, code) => {
         const expectedData = expectedOutput.map((row) => Object.values(row))
         const expectedTable = table([Object.keys(expectedOutput[0]), ...expectedData], { border: getBorderCharacters('ramac') })
         if (!_.isEqual(testResult, expectedOutput)) {
-          return { status: 'WA', realOutput: resultTable, runtime: endTime - startTime }
+          return {
+            status: 'WA',
+            testInput,
+            expectedOutput: expectedTable,
+            realOutput: resultTable,
+            runtime: endTime - startTime
+          }
         }
         return {
           status: 'AC',

@@ -1,10 +1,19 @@
-import { useState } from 'react';
+import { useState } from 'react'
+import { Route, Routes } from 'react-router-dom'
 import {
   FileOutlined,
   PieChartOutlined,
   UserOutlined,
-} from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+} from '@ant-design/icons'
+import { Breadcrumb, Layout, Menu, theme } from 'antd'
+import { Navigate, useNavigate } from 'react-router-dom'
+import Dashboard from '../components/AdminComponents/Dashboard'
+import User from '../components/AdminComponents/User'
+import Submission from '../components/AdminComponents/Submission'
+import Discussion from '../components/AdminComponents/Discussion'
+import ProblemList from '../components/AdminComponents/ProblemList'
+import CreateProblem from '../components/AdminComponents/CreateProblem'
+
 
 const { Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
@@ -16,21 +25,28 @@ function getItem(label, key, icon, children) {
   };
 }
 const items = [
-  getItem('Dashboard', '1', <PieChartOutlined />),
-  getItem('General', '2', <UserOutlined />, [
-    getItem('User', '3'),
-    getItem('Submission', '4'),
-    getItem('Discussion', '5'),
+  getItem('Dashboard', 'Dashboard', <PieChartOutlined />),
+  getItem('General', 'General', <UserOutlined />, [
+    getItem('User', 'User'),
+    getItem('Submission', 'Submission'),
+    getItem('Discussion', 'Discussion'),
   ]),
-  getItem('Problem', 'sub2', <FileOutlined />, [
-    getItem('Problem List', '6'), 
-    getItem('Create Problem', '8')
+  getItem('Problem', 'Problem', <FileOutlined />, [
+    getItem('ProblemList', 'Problem List'), 
+    getItem('Create Problem', 'Create Problem')
   ])
 ];
 function Admin() {
   const [collapsed, setCollapsed] = useState(false)
   const { token: { colorBgContainer } } = theme.useToken()
-  const [sidebar, setSideBar ] = useState([])
+  const [ breadcrumb, setBreadcrumb ] = useState([null, null])
+  const navigate = useNavigate()
+
+  const handleMenuItemClick = ({ keyPath }) => {
+    setBreadcrumb(keyPath.reverse())
+    navigate(`/admin/${keyPath[0].toLowerCase()}${keyPath[1]? '/'+ keyPath[1].toLowerCase().replace(/\s/g, ''):''}`)
+  }
+
   return (
     <Layout
       style={{
@@ -39,7 +55,7 @@ function Admin() {
     >
       <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
         <div className="demo-logo-vertical" />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+        <Menu theme="dark" defaultSelectedKeys={['Dashboard']} mode="inline" items={items} onClick={handleMenuItemClick}/>
       </Sider>
       <Layout>
         <Content
@@ -52,8 +68,8 @@ function Admin() {
               margin: '16px 0',
             }}
           >
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>null</Breadcrumb.Item>
+            <Breadcrumb.Item>{breadcrumb[0]}</Breadcrumb.Item>
+            <Breadcrumb.Item>{breadcrumb[1]}</Breadcrumb.Item>
           </Breadcrumb>
           <div
             style={{
@@ -63,6 +79,15 @@ function Admin() {
             }}
             className='rounded-lg'
           >
+            <Routes>
+              <Route path='dashboard' element={<Dashboard />}/>
+              <Route path='general/user' element={<User />}/>
+              <Route path='general/submission' element={<Submission />}/>
+              <Route path='general/discussion' element={<Discussion />}/>
+              <Route path='problem/problemlist' element={<ProblemList />}/>
+              <Route path='general/createproblem' element={<CreateProblem />}/>
+            </Routes>
+            
             Bill is a cat.
           </div>
         </Content>

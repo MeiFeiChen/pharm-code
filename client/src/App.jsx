@@ -46,7 +46,7 @@ function App() {
     <AuthContext.Provider value={{isLogin, setIsLogin, userProfile, setUserProfile}}>
     <RecoilRoot>
       <Routes>
-        <Route path='admin' element={<Admin />} />
+        <Route path='admin/*' element={<Admin />} />
         <Route path='problems' element={<Problems />}/>
         <Route path='problems/:problemId/*' element={<Problem />}/>
         <Route path='chat' element={<Chat />} /> 

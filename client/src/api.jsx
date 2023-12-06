@@ -15,6 +15,10 @@ const assistanceRequest = axios.create({
   baseURL: `${domain}/api/assistance`
 })
 
+const adminRequest = axios.create({
+  baseURL: `${domain}/api/admin`
+})
+
 
 // problems
 export const apiProblemsItem = () => problemsRequest.get('')
