@@ -305,7 +305,7 @@ function Profile({ userProfile }) {
                     <Table.HeadCell>Time Posted</Table.HeadCell>
                   </Table.Head>
                   {
-                    userSubmission?.posts?.length && (
+                    userSubmission?.posts && (
                       <Table.Body className="divide-y">
                         { userSubmission.posts.map((post, index)=> (
                           <Table.Row 

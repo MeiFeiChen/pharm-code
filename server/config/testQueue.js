@@ -3,7 +3,6 @@ import dotenv from 'dotenv'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { exec } from 'child_process'
-import io from 'socket.io-client'
 import languageRuntime from '../constants/runtime.js'
 import { generateFile, removeFile } from '../generateFile.js'
 import { RunTimeError, WrongAnswerError, TimeLimitExceededError } from '../utils/errorHandler.js'
@@ -19,8 +18,7 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') })
 const testQueue = new Bull('test-queue', {
   redis: {
     port: process.env.REDIS_PORT,
-    host: process.env.REDIS_HOST,
-    password: process.env.REDIS_PASSWORD,
+    host: process.env.REDIS_HOST
   }
 })
 

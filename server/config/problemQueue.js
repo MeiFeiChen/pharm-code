@@ -17,13 +17,24 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 dotenv.config({ path: path.resolve(__dirname, '../.env') })
 
-const problemQueue = new Bull('problem-queue', {
-  redis: {
-    port: process.env.REDIS_PORT,
-    host: process.env.REDIS_HOST,
-    password: process.env.REDIS_PASSWORD,
-  }
-})
+let problemQueue
+
+if (process.env.MODE === 'develop') {
+  console.log('problem bull is on develop mode')
+  problemQueue = new Bull('problem-queue', {
+    redis: {
+      port: process.env.REDIS_PORT,
+      host: process.env.REDIS_HOST
+    }
+  })
+} else {
+  console.log('problem queue is deployed mode')
+  problemQueue = new Bull(
+    'problem-queue',
+    `rediss://:${process.env.AWS_REDIS_AUTH_TOKEN}@${process.env.AWS_REDIS_HOST}:${process.env.REDIS_PORT}`,
+    { redis: { tls: true, enableTLSForSentinelMode: false } }
+  )
+}
 
 const NUM_WORKERS = 5
 const execFile = async (submittedId, language, filepath, index, input, timeLimit) => {

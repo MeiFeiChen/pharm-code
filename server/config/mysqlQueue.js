@@ -15,13 +15,25 @@ import {
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 dotenv.config({ path: path.resolve(__dirname, '../.env') })
-const mysqlQueue = new Bull('mysql-queue', {
-  redis: {
-    port: process.env.REDIS_PORT,
-    host: process.env.REDIS_HOST,
-    password: process.env.REDIS_PASSWORD,
-  }
-})
+
+let mysqlQueue
+console.log(process.env.MODE)
+if (process.env.MODE === 'develop') {
+  console.log('mysql bull is on develop mode')
+  mysqlQueue = new Bull('mysql-queue', {
+    redis: {
+      port: process.env.REDIS_PORT,
+      host: process.env.REDIS_HOST
+    }
+  })
+} else {
+  console.log('mysql queue is deployed mode')
+  mysqlQueue = new Bull(
+    'problem-queue',
+    `rediss://:${process.env.AWS_REDIS_AUTH_TOKEN}@${process.env.AWS_REDIS_HOST}:${process.env.REDIS_PORT}`,
+    { redis: { tls: true, enableTLSForSentinelMode: false } }
+  )
+}
 
 const mysqlPool = createPool({
   host: process.env.MYSQL_HOST,

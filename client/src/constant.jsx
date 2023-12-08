@@ -29,3 +29,17 @@ export const COMPILE_LANGUAGE = {
   'js': 'Javascript',
   'mysql': 'MySQL'
 }
+
+export const STATUS_COLOR = {
+  'pending': 'geekblue', 
+  'AC': 'cyan', 
+  'TLE': 'gold', 
+  'RE':  'purple', 
+  'WA': 'red'
+}
+
+export const DIFFICULTY_COLOR = {
+  'easy': 'cyan',
+  'medium': 'gold', 
+  'hard': 'red'
+}

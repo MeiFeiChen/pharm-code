@@ -16,8 +16,7 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') })
 const mysqlQueue = new Bull('mysql-queue', {
   redis: {
     port: process.env.REDIS_PORT,
-    host: process.env.REDIS_HOST,
-    password: process.env.REDIS_PASSWORD,
+    host: process.env.REDIS_HOST
   }
 })
 

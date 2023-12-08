@@ -1,22 +1,19 @@
 import axios from "axios";
-export const domain1 = 'https://ameliachen.site'
-export const domain = 'http://localhost:3000'
-
 
 const problemsRequest = axios.create({
-  baseURL: `${domain}/api/problems`
+  baseURL: `${import.meta.env.VITE_DOMAIN}/api/problems`
 })
 
 const userRequest = axios.create({
-  baseURL: `${domain}/api/user`
+  baseURL: `${import.meta.env.VITE_DOMAIN}/api/user`
 })
 
 const assistanceRequest = axios.create({
-  baseURL: `${domain}/api/assistance`
+  baseURL: `${import.meta.env.VITE_DOMAIN}/api/assistance`
 })
 
 const adminRequest = axios.create({
-  baseURL: `${domain}/api/admin`
+  baseURL: `${import.meta.env.VITE_DOMAIN}/api/admin`
 })
 
 
@@ -48,3 +45,8 @@ export const apiUserProfileDetail = (config) => userRequest.get('/profile/detail
 
 // assistance
 export const apiAssistanceItem = (payload) => assistanceRequest.post('', payload)
+
+// admin
+export const apiAdminGetUsers = (config) => adminRequest.get('/users')
+export const apiAdminGetSubmissions = (config) => adminRequest.get('/submissions')
+export const apiAdminGetProblemList = (config) => adminRequest.get('/problemlist')

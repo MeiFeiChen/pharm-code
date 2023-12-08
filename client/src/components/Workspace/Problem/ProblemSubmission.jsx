@@ -1,18 +1,11 @@
 import PropTypes from 'prop-types'
-import { useLocation, useParams } from "react-router-dom"
+import { useLocation, useParams, useNavigate } from "react-router-dom"
 import { useState, useEffect, useContext } from "react"
 import WorkSpaceTab from "../WorkSpaceTab"
-import { MdOutlineTimer, MdMemory } from "react-icons/md"
-import { BsCheck2Circle } from "react-icons/bs"
-import { IoIosCloseCircleOutline } from "react-icons/io"
-import { IoBugOutline } from "react-icons/io5"
 import SubmissionTable from './SubmissionTable/SubmissionTable'
 import { apiProblemSubmissionItem, apiProblemSubmissionItems } from "../../../api"
-import { TEXT_COLOR, COMPILE_LANGUAGE, STATUS } from "../../../constant"
-import { formatTimestamp } from '../../../dateconfig'
 import { getAuthToken } from "../../../utils"
 import { AuthContext, CodeContext } from "../../../context"
-import MDEditor from '@uiw/react-md-editor'
 import Split from 'react-split'
 import { useSetRecoilState } from "recoil"
 import { authModalState } from "../../../atoms/authModalAtom"
@@ -23,8 +16,8 @@ ProblemSubmission.propTypes = {
   problem: PropTypes.object.isRequired,
 }
 
-
 export default function ProblemSubmission({ problem }) {
+  const navigate = useNavigate()
   const { setCode } = useContext(CodeContext)
   const { isLogin, setUserProfile } = useContext(AuthContext)
   const setAuthModalState = useSetRecoilState(authModalState)
@@ -48,7 +41,8 @@ export default function ProblemSubmission({ problem }) {
         // if (!submittedId) setHeaderResult(data.data[0])
         setResults(data.data)
       } catch(error) {
-        console.error('Error fetching data', error)
+        console.error('Error fetching submission data', error)
+        setResults([])
       } finally {
         setLoading(false)
       }
@@ -58,6 +52,7 @@ export default function ProblemSubmission({ problem }) {
     } else {
       setResults([])
       setUserProfile(null)
+      navigate(`/problems/${problemId}/submission`)
     } 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [problemId, location.state, isLogin])
@@ -76,9 +71,9 @@ export default function ProblemSubmission({ problem }) {
         }
       } catch(error) {
         console.error('Error fetching header data', error)
+        setHeaderResult(null)
       } 
     }
-    if (location.state) return setHeaderResult(location.state.submissionResult)
 
     if (isLogin) {
       fetchData()
@@ -88,6 +83,7 @@ export default function ProblemSubmission({ problem }) {
     } 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.state, submittedId, results, isLogin])
+  
   
 	return (
     <div className='bg-dark-layer-1'>

@@ -9,6 +9,7 @@ import { createServer } from 'http'
 import problemRouter from './api/problems/problemRouter.js'
 import userRouter from './api/user/userRouter.js'
 import openAIRouter from './api/openai/openAIRouter.js'
+import adminRouter from './api/admin/adminRouter.js'
 import { processProblem } from './config/testQueue.js'
 import processMysqlProblem from './config/mysqlTestQueue.js'
 
@@ -65,6 +66,7 @@ app.use(express.static('./public/dist'))
 app.use('/api/user', userRouter)
 app.use('/api/problems', problemRouter)
 app.use('/api/assistance', openAIRouter)
+app.use('/api/admin', adminRouter)
 
 // front end page
 app.get('/*', (req, res) => {

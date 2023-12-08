@@ -12,7 +12,7 @@ const { Pool } = pg;
 // eslint-disable-next-line import/no-mutable-exports
 let pool
 
-if (process.env.ENV === 'develop') {
+if (process.env.MODE === 'develop') {
   pool = new Pool({
     user: process.env.POSTGRES_USER,
     host: process.env.POSTGRES_HOST,

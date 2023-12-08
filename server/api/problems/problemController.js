@@ -43,7 +43,7 @@ export const getProblemPage = async (req, res) => {
       exampleCases.forEach((example, index) => {
         // handle example input to table format
         exampleCases[index].test_input = JSON.parse(example.test_input)
-        Object.keys(example.test_input).map((key) => {
+        Object.keys(example.test_input).forEach((key) => {
           exampleCases[index].test_input[key] = table(example.test_input[key], { border: getBorderCharacters('ramac') })
         })
         // handle example output to table format
@@ -57,8 +57,6 @@ export const getProblemPage = async (req, res) => {
       })
     }
     const data = { ...problem, exampleCases }
-    console.log(problem)
-    console.log(exampleCases)
 
     return res.status(200).json({ data })
   } catch (err) {
@@ -71,7 +69,6 @@ export const submitProblem = async (req, res) => {
   const { userId } = res.locals
   const { id: problemId } = req.params
   const { language, code } = req.body
-  console.log(userId, problemId, language, code)
 
   if (!code) {
     return res.status(400).json({ success: false, error: 'Empty code body' })
@@ -83,7 +80,6 @@ export const submitProblem = async (req, res) => {
     // add job to queue
       addMysqlProblemToQueue(submittedId, problemId, language, code)
     } else {
-      console.log('here')
       addProblemToQueue(submittedId, language, code)
     }
     return res.status(201).json({ success: true, submittedId })
@@ -117,7 +113,6 @@ export const getSubmissions = async (req, res) => {
   const { userId } = res.locals
   try {
     const data = await getSubmissionsResults(problemIid, userId)
-    if (!data.length) return res.status(400).json({ errors: "could't find data" })
     return res.status(200).json({ data })
   } catch (err) {
     if (err instanceof Error) {
