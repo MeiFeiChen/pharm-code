@@ -65,7 +65,7 @@ problemQueue.process(NUM_WORKERS, async ({ data }) => {
   // generate a file
   const filepath = generateFile(language, code)
   try {
-    console.log('---- start ---')
+    console.log(`---- ${submittedId} start ---`)
     // get the test cases
     const problem = await getProblemBySubmittedId(submittedId)
     const testCases = await getTestCases(problem.id, 'test')
@@ -81,7 +81,6 @@ problemQueue.process(NUM_WORKERS, async ({ data }) => {
         problem.time_limit
       )
       // compare result with test case
-      console.log('expectedOutput', expectedOutput, 'output.stdout', output)
       const realOutput = output.stdout.replace(/\n/g, '')
       if (expectedOutput !== realOutput) {
         return {
@@ -118,9 +117,9 @@ problemQueue.process(NUM_WORKERS, async ({ data }) => {
       error.message = results
       throw error
     }
-    console.log('----hasWaResults----')
+    console.log(`---- ${submittedId} hasWaResults----`)
     console.log(hasWaResults)
-    console.log('---results---')
+    console.log(`---- ${submittedId} results----`)
     console.log(results)
     const { totalTime, totalMemory } = results.reduce((acc, cur) => {
       const { time, memory } = cur
@@ -131,7 +130,7 @@ problemQueue.process(NUM_WORKERS, async ({ data }) => {
     const avgTime = (totalTime / results.length).toFixed(1)
     const avgMemory = (totalMemory / results.length).toFixed(1)
     console.log(totalTime, totalMemory)
-    console.log('---avgTime, avgMemory---')
+    console.log(`--- ${submittedId} avgTime, avgMemory---`)
     console.log(avgTime, avgMemory)
 
     await createAcSubmission(submittedId, 'AC', language, avgTime, avgMemory)
@@ -151,7 +150,7 @@ problemQueue.process(NUM_WORKERS, async ({ data }) => {
   }
   // delete the file
   removeFile(filepath)
-  console.log('---- end ---')
+  console.log(`----  ${submittedId} end ---`)
 })
 
 // add problem
