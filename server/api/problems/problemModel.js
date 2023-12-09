@@ -92,6 +92,7 @@ export async function createSubmissionsResult(submittedId, result, runtime, memo
 }
 
 export async function createAcSubmission(submittedId, result, language, runTime, memory) {
+  console.log(`---${submittedId} add AC database---`)
   const client = await pool.connect()
   try {
     await client.query('BEGIN')
