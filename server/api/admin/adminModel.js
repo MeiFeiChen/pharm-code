@@ -53,3 +53,36 @@ export async function getAllProblemsAndTestCases() {
   `)
   return rows
 }
+
+export async function updateProblemData(problem) {
+  const { rows } = await pool.query(`
+    UPDATE problems
+    SET
+      title = $1,
+      problem_statement = $2,
+      difficulty = $3,
+      input = $4,
+      output = $5,
+      memory_limit = $6,
+      time_limit = $7,
+      io_mode = $8,
+      database = $9,
+      updated_at = CURRENT_TIMESTAMP
+    WHERE id = $10;
+  `,
+  [
+    problem.title,
+    problem.problem_statement,
+    problem.difficulty,
+    problem.input,
+    problem.output,
+    problem.memory_limit,
+    problem.time_limit,
+    problem.io_mode,
+    problem.database,
+    problem.id
+  ]
+  )
+  console.log(rows)
+  return rows
+}

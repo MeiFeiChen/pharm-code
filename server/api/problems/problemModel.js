@@ -25,6 +25,7 @@ export async function getProblems() {
       ) AS problems_pass_rate 
     ON 
       problems_pass_rate.problem_id = problems.id
+    ORDER BY problems.id ASC
   `)
   return rows
 }

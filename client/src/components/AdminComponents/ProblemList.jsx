@@ -2,19 +2,18 @@ import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   Table,
-  AutoComplete,
   Button,
-  Cascader,
   Checkbox,
-  Col,
   Form,
   Input,
   InputNumber,
   Select,
   Tag
 } from 'antd';
-import { apiAdminGetProblemList } from '../../api';
+import { apiAdminGetProblemList, apiAdminUpdateProblem } from '../../api';
 import { DIFFICULTY_COLOR } from '../../constant';
+import { formatTimestamp } from '../../dateconfig'
+import { Zoom, toast } from "react-toastify"
 
 const { Option } = Select;
 
@@ -35,7 +34,7 @@ const formItemLayout = {
       span: 16,
     },
   },
-};
+}
 const tailFormItemLayout = {
   wrapperCol: {
     xs: {
@@ -47,57 +46,69 @@ const tailFormItemLayout = {
       offset: 8,
     },
   },
-};
+}
 
-const columns = [
-  {
-    title: 'Title',
-    dataIndex: 'title',
-    key: 'title',
-  },
-  {
-    title: 'Difficulty',
-    dataIndex: 'difficulty',
-    key: 'difficulty',
-    render: ( _, { difficulty }) => (<Tag color={DIFFICULTY_COLOR[difficulty]} key={difficulty}>{difficulty}</Tag>)
-  },
-  {
-    title: 'Type',
-    dataIndex: 'type',
-    key: 'type',
-    render: ( _, { type }) => (type? <Tag color={'geekblue'} key={type}>{type}</Tag>: '')
-  },
-  {
-    title: 'Action',
-    dataIndex: '',
-    key: 'x',
-    render: () => <a>Delete</a>,
-  },
-];
+
 
 function ProblemList() {
   const [ problemList, setProblemList ] = useState([])
+  const [ editModeId, setEditModeId] = useState(null)
+  console.log(editModeId)
+
+  const columns = [
+    {
+      title: 'Title',
+      dataIndex: 'title',
+      key: 'title',
+    },
+    {
+      title: 'Difficulty',
+      dataIndex: 'difficulty',
+      key: 'difficulty',
+      render: ( _, { difficulty }) => (<Tag color={DIFFICULTY_COLOR[difficulty]} key={difficulty}>{difficulty}</Tag>)
+    },
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      key: 'type',
+      render: ( _, { type }) => (type? <Tag color={'geekblue'} key={type}>{type}</Tag>: '')
+    },
+    {
+      title: 'Created at',
+      dataIndex: 'created_at',
+      key: 'created_at',
+    },
+    {
+      title: 'Action',
+      dataIndex: '',
+      key: 'x',
+      render: ( _, {id}) => (<Button onClick={()=> setEditModeId(id)} className='hover:text-blue-400'>Edit</Button>)
+    },
+  ]
+
+  const fetchData = async() => {
+    try {
+      const { data } = await apiAdminGetProblemList()
+      setProblemList(data.data)
+    } catch (error) {
+      console.error('Error fetching ProblemList data', error)
+      setProblemList([])
+    } 
+  }
 
   useEffect(() => {
-    const fetchData = async() => {
-      try {
-        const { data } = await apiAdminGetProblemList()
-        setProblemList(data.data)
-      } catch (error) {
-        console.error('Error fetching ProblemList data', error)
-        setProblemList([])
-      } 
-    }
+    
     fetchData()
   }, [])
-  console.log(problemList)
+  
   const data = problemList.map((item, index) => ({
     key: index,
     id: item.id,
     title: item.title,
     difficulty: item.difficulty,
     type: item.database? 'database': '',
-    description: <FormPanel problem={item}/>, // You can replace this with the actual description
+    created_at: formatTimestamp(item.created_at),
+    description: <FormPanel problem={item} editModeId={editModeId} setEditModeId={setEditModeId} fetchData={fetchData}/>, 
   }));
 
   return (
@@ -121,14 +132,46 @@ function ProblemList() {
 
 FormPanel.propTypes = {
   problem: PropTypes.object,
+  editModeId: PropTypes.string,
+  setEditModeId: PropTypes.func.isRequired,
+  fetchData: PropTypes.func.isRequired
 }
 
-function FormPanel({ problem }) {
+function FormPanel({ problem, editModeId, setEditModeId, fetchData}) {
   const [form] = Form.useForm()
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values);
+  console.log(editModeId)
+  
+  const onFinish = async (values) => {
+    console.log('Received values of form: ', values)
+    try {
+      const { data } = await apiAdminUpdateProblem({problem: values})
+      console.log(data)
+      fetchData()
+      toast.success(`Successfully update problem ${problem.id}`, {  
+        autoClose: 1000, 
+        theme: "dark",
+        hideProgressBar: true,
+        closeOnClick: true, 
+        draggable: true,
+        transition: Zoom
+      })  
+    } catch (error) {
+      console.error('error update problem')
+      toast.error(`fail to update problem ${problem.id}, ${error.message}`, {  
+        autoClose: 1000, 
+        theme: "dark",
+        hideProgressBar: true,
+        closeOnClick: true, 
+        draggable: true,
+        transition: Zoom
+      })  
+    } finally {
+      setEditModeId(null)
+    }
+    
+
   }
-  console.log(problem?.title)
+  console.log(problem)
   
   return (
     <div className='w-full'>
@@ -177,7 +220,7 @@ function FormPanel({ problem }) {
            },
          ]}
        >
-         <Input/>
+         <Input disabled={editModeId !== problem.id}/>
        </Form.Item>
        <Form.Item
          name="difficulty"
@@ -189,7 +232,7 @@ function FormPanel({ problem }) {
            },
          ]}
        >
-         <Select placeholder="select difficulty">
+         <Select placeholder="select difficulty" disabled={editModeId !== problem.id}>
            <Option value="easy">easy</Option>
            <Option value="medium">medium</Option>
            <Option value="hard">hard</Option>
@@ -206,7 +249,7 @@ function FormPanel({ problem }) {
            },
          ]}
        >
-         <Input.TextArea showCount maxLength={500} rows={5}/>
+         <Input.TextArea showCount maxLength={500} rows={5} disabled={editModeId !== problem.id} />
        </Form.Item>
        <Form.Item
          name="input"
@@ -218,7 +261,7 @@ function FormPanel({ problem }) {
            },
          ]}
        >
-         <Input/>
+         <Input disabled={editModeId !== problem.id}/>
        </Form.Item>
        <Form.Item
          name="output"
@@ -230,7 +273,7 @@ function FormPanel({ problem }) {
            },
          ]}
        >
-         <Input/>
+         <Input disabled={editModeId !== problem.id}/>
        </Form.Item>
 
        <Form.Item
@@ -247,6 +290,7 @@ function FormPanel({ problem }) {
            style={{
              width: '100%',
            }}
+           disabled={editModeId !== problem.id}
          />
        </Form.Item>
 
@@ -264,6 +308,7 @@ function FormPanel({ problem }) {
            style={{
              width: '100%',
            }}
+           disabled={editModeId !== problem.id}
          />
        </Form.Item>
 
@@ -277,25 +322,34 @@ function FormPanel({ problem }) {
            },
          ]}
        >
-          <Select placeholder="select difficulty">
+          <Select placeholder="select difficulty" disabled={editModeId !== problem.id}>
            <Option value="stdin/stdout">stdin/stdout</Option>
           </Select>
        </Form.Item>
  
-      <Form.Item name="database" label="Is database?" valuePropName="checked">
-         <Checkbox style={{ lineHeight: '32px' }}>
+      <Form.Item 
+        name="database" 
+        label="Is database?" 
+        valuePropName="checked"
+        tooltip="Is this a database problem?"
+      >
+         <Checkbox style={{ lineHeight: '32px' }} disabled={editModeId !== problem.id}>
            Database
          </Checkbox>
       </Form.Item>
  
       <Form.Item {...tailFormItemLayout}>
-         <Button type="primary" htmlType="submit">
-           Register
+         <Button 
+            type="primary" 
+            htmlType="submit" 
+            className='bg-[#0066cc]'
+            disabled={editModeId !== problem.id}>
+           Update
          </Button>
        </Form.Item>
+       <div className='text-right text-zinc-400'>Last updated at: {formatTimestamp(problem.updated_at)}</div>
       </Form>
     )}
-   
     </div>
   )
 }

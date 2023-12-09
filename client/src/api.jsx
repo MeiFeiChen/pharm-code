@@ -50,3 +50,4 @@ export const apiAssistanceItem = (payload) => assistanceRequest.post('', payload
 export const apiAdminGetUsers = (config) => adminRequest.get('/users')
 export const apiAdminGetSubmissions = (config) => adminRequest.get('/submissions')
 export const apiAdminGetProblemList = (config) => adminRequest.get('/problemlist')
+export const apiAdminUpdateProblem = (payload, config) => adminRequest.post('/problem', payload)

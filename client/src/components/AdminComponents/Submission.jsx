@@ -40,7 +40,6 @@ function Submission() {
   const sevenDaysAgo = new Date()
   sevenDaysAgo.setDate(currentDate.getDate() - 7)
 
-
   // doughnutData
   const statusCounts = {
     'pending': 0,
@@ -105,7 +104,7 @@ function Submission() {
      },
       title: {
         display: true,
-        text: 'Daily User Registration',
+        text: 'Daily User Submission',
       },
     },
     scales: {
@@ -128,7 +127,6 @@ function Submission() {
         type: 'linear', 
         min: 0,
         ticks: {
-          stepSize: 1,
           beginAtZero: true, 
           precision: 0, 
         },
@@ -157,7 +155,7 @@ function Submission() {
   const chartData = {
     datasets: [
       {
-        label: 'User number data',
+      label: 'User number data',
         data: processedData,
         borderColor: 'rgb(53, 162, 235)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',

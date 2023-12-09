@@ -1,4 +1,4 @@
-import { getAllProblemsAndTestCases, getAllSubmissions, getAllUsers } from './adminModel.js'
+import { getAllProblemsAndTestCases, getAllSubmissions, getAllUsers, updateProblemData } from './adminModel.js'
 
 export const getUserPage = async (req, res) => {
   try {
@@ -39,7 +39,20 @@ export const getProblemListPage = async (req, res) => {
   }
 }
 
-export const updateUserPage = async(req, res) => {
+export const updateProblem = async (req, res) => {
+  const { problem } = req.body
+  try {
+    await updateProblemData(problem)
+    return res.status(200).json({ success: true })
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(400).json({ errors: err.message })
+    }
+    return res.status(500).json({ errors: 'update problem failed' })
+  }
+}
+
+export const updateUserPage = async (req, res) => {
   res.send('hi')
 }
 

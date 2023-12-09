@@ -11,6 +11,7 @@ DatabaseHeader.propTypes = {
 }
 
 function DatabaseHeader({ headerResult }) {
+
   return (
     <>
       {/* The newest submission result */}
