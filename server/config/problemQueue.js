@@ -61,7 +61,7 @@ const execFile = async (submittedId, language, filepath, index, input, timeLimit
 
 // process problem
 problemQueue.process(NUM_WORKERS, async ({ data }) => {
-  console.log('----Queue begin---')
+  console.log(`----${data.submittedId} Queue begin---`)
   const { submittedId, language, code } = data
   // generate a file
   const filepath = generateFile(language, code)
