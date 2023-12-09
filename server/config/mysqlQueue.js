@@ -29,7 +29,7 @@ if (process.env.MODE === 'develop') {
 } else {
   console.log('mysql queue is deployed mode')
   mysqlQueue = new Bull(
-    'problem-queue',
+    'mysql-queue',
     `rediss://:${process.env.AWS_REDIS_AUTH_TOKEN}@${process.env.AWS_REDIS_HOST}:${process.env.REDIS_PORT}`,
     { redis: { tls: true, enableTLSForSentinelMode: false } }
   )
