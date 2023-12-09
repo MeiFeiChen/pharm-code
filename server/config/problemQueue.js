@@ -61,6 +61,7 @@ const execFile = async (submittedId, language, filepath, index, input, timeLimit
 
 // process problem
 problemQueue.process(NUM_WORKERS, async ({ data }) => {
+  console.log('----Queue begin---')
   const { submittedId, language, code } = data
   // generate a file
   const filepath = generateFile(language, code)
@@ -80,6 +81,7 @@ problemQueue.process(NUM_WORKERS, async ({ data }) => {
         testInput,
         problem.time_limit
       )
+
       // compare result with test case
       const realOutput = output.stdout.replace(/\n/g, '')
       if (expectedOutput !== realOutput) {
@@ -87,7 +89,6 @@ problemQueue.process(NUM_WORKERS, async ({ data }) => {
           status: 'WA', testInput, expectedOutput, realOutput
         }
       }
-      console.log(output.stderr.split(/[\s\n]+/))
       const timeAndMemory = output.stderr.split(/[\s\n]+/)
         .map((part) => parseFloat(part))
         .filter((number) => !Number.isNaN(number))
