@@ -23,6 +23,7 @@ import { useSetRecoilState } from "recoil"
 import { authModalState } from "../../../atoms/authModalAtom"
 import DatabaseTestCases from './TestCases/DatabaseTestCases'
 import DatabaseTestCasesResult from './TestCases/DatabaseTestCasesResult'
+import useLocalStorage from '../../../hooks/useLocalStorage'
 
 
 const languageExtension = {
@@ -45,6 +46,15 @@ function Playground({ problem }) {
   const [aiReview, setAiReview] = useState(null)
   const [testResult, setTestResult] = useState(null)
   const [testLoading, setTestIsLoading] = useState(false)
+  
+  const [fontSize, setFontSize] = useLocalStorage("lcc-fontSize", "16px")
+  
+  const [settings, setSettings] = useState({
+		fontSize: fontSize,
+		settingsModalIsOpen: false,
+		dropdownIsOpen: false,
+	});
+  
   const navigate = useNavigate()
 
   // Auth
@@ -203,11 +213,13 @@ function Playground({ problem }) {
   return (
     <div className='flex flex-col bg-dark-layer-1 relative overflow-x-hidden overflow-hidden'>
       <PreferenceNav 
+        settings={settings} 
+        setSettings={setSettings} 
         isDatabase={problem.database}
         handleLanguageExtension={handleLanguageExtension}
         setDefaultLanguage={setDefaultLanguage}
         language={language}/>
-      <Split className='h-[calc(100vh-94px)]' direction='vertical' sizes={[60, 40]} minSize={60}>
+      <Split className='h-[calc(100vh-98px)]' direction='vertical' sizes={[60, 40]} minSize={60}>
         <div className='flex flex-col h-full w-full overflow-auto'>
           { !isLogin && (
             <div className='text-sm text-white p-2' style={{backgroundColor: '#0a84ff2e'}}>
@@ -218,7 +230,7 @@ function Playground({ problem }) {
               value={code}
               theme={vscodeDark}
               extensions={[languageExtension[language]]}
-              style={{fontSize:16}}
+              style={{fontSize: settings.fontSize}}
               onChange={onCodeChange}
             />
       

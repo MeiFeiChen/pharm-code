@@ -35,12 +35,12 @@ export default function TopBar({ problemPage }) {
   return (
     <nav className={`
       relative flex h-[50px] w-full shrink-0 items-center 
-      px-20 bg-dark-layer-1 text-dark-gray-7
+      pl-10 pr-20 bg-dark-layer-1 text-dark-gray-7
       `}>
       <div className='flex w-full items-center'>
         {/* Logo */}
         <Link to="/problems" className="flex items-center">
-          <img src="/logo-new.png" alt="Logo" className="h-[52px]"/>
+          <img src="/logo-new.png" alt="Logo" className="h-[40px]"/>
         </Link>
         {/* problem Page */}
         {problemPage && (

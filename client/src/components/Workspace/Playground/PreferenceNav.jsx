@@ -1,5 +1,7 @@
 import { AiOutlineFullscreen, AiOutlineFullscreenExit, AiOutlineSetting } from "react-icons/ai"
 import PropTypes from 'prop-types'
+import { useState, useEffect } from "react"
+import SettingsModal from "../../Modals/SettingsModal"
 
 PreferenceNav.propTypes = {
   handleLanguageExtension: PropTypes.func.isRequired,
@@ -8,7 +10,33 @@ PreferenceNav.propTypes = {
   isDatabase: PropTypes.bool
 }
 
-function PreferenceNav({ handleLanguageExtension, setDefaultLanguage, language, isDatabase}) {
+function PreferenceNav({ setSettings, settings, handleLanguageExtension, setDefaultLanguage, language, isDatabase}) {
+  const [isFullScreen, setIsFullScreen] = useState(false)
+  const handleFullScreen = () => {
+		if (isFullScreen) {
+			document.exitFullscreen()
+		} else {
+			document.documentElement.requestFullscreen()
+		}
+		setIsFullScreen(!isFullScreen)
+	}
+  useEffect(() => {
+		function exitHandler(e) {
+			if (!document.fullscreenElement) {
+				setIsFullScreen(false);
+				return;
+			}
+			setIsFullScreen(true);
+		}
+
+		if (document.addEventListener) {
+			document.addEventListener("fullscreenchange", exitHandler);
+			document.addEventListener("webkitfullscreenchange", exitHandler);
+			document.addEventListener("mozfullscreenchange", exitHandler);
+			document.addEventListener("MSFullscreenChange", exitHandler);
+		}
+	}, [isFullScreen])
+
   return (
     <div className='flex items-center justify-between bg-dark-layer-2 h-12 w-full '>
       {/* language */}
@@ -51,6 +79,7 @@ function PreferenceNav({ handleLanguageExtension, setDefaultLanguage, language, 
 			<div className='flex items-center m-2'>
 				<button
 					className='preferenceBtn group'
+          onClick={() => setSettings({ ...settings, settingsModalIsOpen: true })}
 				>
 					<div className='h-4 w-4 text-dark-gray-6 font-bold text-lg'>
 						<AiOutlineSetting />
@@ -59,14 +88,14 @@ function PreferenceNav({ handleLanguageExtension, setDefaultLanguage, language, 
 				</button>
 
         {/* FullScreen */}
-				<button className='preferenceBtn group'>
+				<button className='preferenceBtn group'  onClick={handleFullScreen}>
 					<div className='h-4 w-4 text-dark-gray-6 font-bold text-lg'>
-						{<AiOutlineFullscreen /> }
+            {!isFullScreen ? <AiOutlineFullscreen /> : <AiOutlineFullscreenExit />}
 					</div>
 					<div className='preferenceBtn-tooltip'>Full Screen</div>
 				</button>
 			</div>
-			{/* {settings.settingsModalIsOpen && <SettingsModal settings={settings} setSettings={setSettings} />} */}
+			{settings.settingsModalIsOpen && <SettingsModal settings={settings} setSettings={setSettings} />}
 		</div>
   )
 }
