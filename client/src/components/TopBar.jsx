@@ -40,7 +40,7 @@ export default function TopBar({ problemPage }) {
       <div className='flex w-full items-center'>
         {/* Logo */}
         <Link to="/problems" className="flex items-center">
-          <img src="/logo-full.png" alt="Logo" className="h-[38px]"/>
+          <img src="/logo-new.png" alt="Logo" className="h-[52px]"/>
         </Link>
         {/* problem Page */}
         {problemPage && (

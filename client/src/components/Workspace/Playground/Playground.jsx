@@ -12,6 +12,7 @@ import EditorFooter from './EditorFooter'
 import { apiAssistanceItem, apiProblemSubmission, apiProblemSubmissionItem } from '../../../api'
 import { getAuthToken } from '../../../utils'
 import { socket } from '../../../socket'
+import { runTestSocket } from '../../../socket'
 import { CodeContext, AuthContext } from '../../../context'
 import { toast, Zoom } from 'react-toastify'
 import AlgorithmTestCases from './TestCases/AlgorithmTestCases'
@@ -103,17 +104,15 @@ function Playground({ problem }) {
     }
   }
   const handleTestSubmit = () => {
-    socket.emit('test_data', {
-      problemId: problem.id, language, code, 
-    })
+    runTestSocket.emit('test_data', { problemId: problem.id, language, code })
     setTestIsLoading(true)
     
-    socket.on('result', (result) => {
+    runTestSocket.on('result', (result) => {
       console.log(result)
       setActiveTab('result')
       setTestIsLoading(false)
       setTestResult(result)
-      socket.off('result')
+      runTestSocket.off('result')
     })
   }
 

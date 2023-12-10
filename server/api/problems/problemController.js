@@ -1,6 +1,5 @@
 import { table, getBorderCharacters } from 'table'
-import addProblemToQueue from '../../config/problemQueue.js'
-import addMysqlProblemToQueue from '../../config/mysqlQueue.js'
+import { addProblemToQueue, addMysqlProblemToQueue } from '../../config/bullQueue.js'
 import {
   createSubmission,
   getSubmissionResult,
@@ -73,8 +72,6 @@ export const submitProblem = async (req, res) => {
   if (!code) {
     return res.status(400).json({ success: false, error: 'Empty code body' })
   }
-  console.log(`---submit API--`)
-  console.log(userId, problemId, language, code)
   try {
     // store data to db
     const submittedId = await createSubmission(userId, problemId, language, 'pending', code)
