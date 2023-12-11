@@ -132,7 +132,7 @@ function Submission() {
         },
         title: {
           display: true,
-          text: 'Number of Users',
+          text: 'Number of Submissions',
         },
       },
     },
@@ -141,6 +141,8 @@ function Submission() {
   // Preprocess data to accumulate y values for the same date
   const processedData = submissions.reduce((acc, user) => {
     const date = user.submitted_at.split('T')[0]; // Extracting date part
+    console.log(date)
+  
     const existingData = acc.find(item => item.x === date);
 
     if (existingData) {
@@ -212,6 +214,7 @@ function Submission() {
     status: item.status,
     submitted_at: formatTimestamp(item.submitted_at)
   }))
+
 
   return (
     <>

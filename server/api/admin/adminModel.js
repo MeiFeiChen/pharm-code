@@ -28,8 +28,10 @@ export async function getAllSubmissions() {
       submissions.submitted_at
     FROM submissions
     LEFT JOIN user_details ON user_details.user_id = submissions.user_id
-    LEFT JOIN problems ON problems.id = submissions.problem_id;
+    LEFT JOIN problems ON problems.id = submissions.problem_id
+    ORDER BY submissions.id ASC
   `)
+  console.log(rows)
   return rows
 }
 
