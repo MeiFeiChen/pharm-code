@@ -4,7 +4,9 @@ import { useState, useEffect } from "react"
 import SettingsModal from "../../Modals/SettingsModal"
 
 PreferenceNav.propTypes = {
+  settings: PropTypes.object.isRequired,
   handleLanguageExtension: PropTypes.func.isRequired,
+  setSettings: PropTypes.func.isRequired,
   setDefaultLanguage: PropTypes.func.isRequired, 
   language: PropTypes.string.isRequired,
   isDatabase: PropTypes.bool

@@ -37,8 +37,9 @@ if (process.env.MODE === 'develop') {
 }
 
 const addProblemToQueue = async (submittedId, language, code) => {
+  const addToQueueTime = Date.now()
   await problemQueue.add(
-    { submittedId, language, code },
+    { submittedId, language, code, addToQueueTime },
     { removeOnComplete: true, removeOnFail: true }
   )
 }

@@ -28,4 +28,4 @@ const removeFile = (filepath) => {
   fs.unlink(filepath, (err) => err)
 }
 
-export { generateFile, removeFile } 
+export { generateFile, removeFile }
