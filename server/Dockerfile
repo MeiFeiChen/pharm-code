@@ -5,7 +5,7 @@ FROM node:18
 WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json
-COPY server/package*.json ./
+COPY package*.json .
 
 # Install dependencies
 RUN npm install
@@ -14,7 +14,7 @@ RUN npm install
 RUN npm install pm2 -g
 
 # Copy your application code
-COPY server/ ./
+COPY . .
 
 # Expose the port your app runs on
 EXPOSE 3000

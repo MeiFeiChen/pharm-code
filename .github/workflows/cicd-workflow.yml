@@ -41,5 +41,4 @@ jobs:
             docker pull abcd15523/pharmcode:latest
             docker stop myapp || true
             docker rm myapp || true
-            docker run -d --name myapp --restart unless-stopped --env-file /pharm-code/server.env -p 3000:3000 abcd15523/pharmcode:latest
-
+            docker run -d --name myapp --restart unless-stopped -v /pharm-code/server/.env:/usr/src/app -p 3000:3000 abcd15523/pharmcode:latest
