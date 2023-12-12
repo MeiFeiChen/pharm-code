@@ -6,6 +6,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { Server } from 'socket.io'
 import { createServer } from 'http'
+import { createProxyMiddleware } from 'http-proxy-middleware'
 import problemRouter from './api/problems/problemRouter.js'
 import userRouter from './api/user/userRouter.js'
 import openAIRouter from './api/openai/openAIRouter.js'
@@ -18,6 +19,17 @@ dotenv.config()
 const port = process.env.PORT
 const app = express()
 const server = createServer(app)
+
+const s3Proxy = createProxyMiddleware({
+  target: process.env.BUCKET_PUBLIC_PATH,
+  changeOrigin: true,
+  pathRewrite: (path) => path.replace('/assets', '/dist/assets'),
+})
+const indexProxy = createProxyMiddleware({
+  target: process.env.BUCKET_PUBLIC_PATH,
+  changeOrigin: true,
+  pathRewrite: () => '/dist/index.html',
+});
 
 const io = new Server(server, {
   cors: {
@@ -52,6 +64,7 @@ io.on('connection', (socket) => {
 })
 
 app.set('socketio', io)
+app.use('/assets', s3Proxy)
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -69,14 +82,7 @@ app.use('/api/assistance', openAIRouter)
 app.use('/api/admin', adminRouter)
 
 // front end page
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/dist/index.html'), (err) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send(err);
-    }
-  })
-})
+app.get('*', indexProxy)
 
 server.listen(port, () => {
   console.log(`Server is listening on port ${port}....`)

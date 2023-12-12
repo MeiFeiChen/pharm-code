@@ -10,9 +10,6 @@ COPY package*.json .
 # Install dependencies
 RUN npm install
 
-# Install PM2 globally
-RUN npm install pm2 -g
-
 # Copy your application code
 COPY . .
 
@@ -20,5 +17,5 @@ COPY . .
 EXPOSE 3000
 
 # Use PM2 to start your app using index.js as the entry point
-CMD ["pm2-runtime", "index.js"]
+CMD ["node", "index.js"]
 
