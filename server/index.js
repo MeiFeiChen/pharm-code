@@ -16,6 +16,8 @@ import processMysqlProblem from './config/mysqlTestQueue.js'
 
 dotenv.config()
 
+console.log('==index.js==')
+console.log(process.env.BUCKET_PUBLIC_PATH)
 const port = process.env.PORT
 const app = express()
 const server = createServer(app)
@@ -64,7 +66,6 @@ io.on('connection', (socket) => {
 })
 
 app.set('socketio', io)
-app.use('/assets', s3Proxy)
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -74,6 +75,7 @@ app.use(cors('*'))
 app.options('*', cors())
 
 app.use(express.json())
+app.use('/assets', s3Proxy)
 app.use(express.static('./public/dist'))
 
 app.use('/api/user', userRouter)
