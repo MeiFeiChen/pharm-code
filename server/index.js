@@ -25,7 +25,7 @@ const server = createServer(app)
 const s3Proxy = createProxyMiddleware({
   target: process.env.BUCKET_PUBLIC_PATH,
   changeOrigin: true,
-  pathRewrite: (path) => path.replace('/assets', '/dist/'),
+  pathRewrite: (path) => path.replace('/assets', '/dist/assets'),
 })
 const indexProxy = createProxyMiddleware({
   target: process.env.BUCKET_PUBLIC_PATH,
