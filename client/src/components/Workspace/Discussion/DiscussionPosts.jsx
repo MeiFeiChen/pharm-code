@@ -17,6 +17,7 @@ function DiscussionPosts() {
   const { isLogin } = useContext(AuthContext)
   const { problemId } = useParams()
   const [ posts, setPosts] = useState(null)
+  console.log(posts)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -59,7 +60,7 @@ function DiscussionPosts() {
         >
 
           <div  className='flex items-center pb-2'>
-            <img className="w-6 h-6 rounded mr-2" src="/avatar.png" alt="Default avatar" />
+            <img className="w-6 h-6 rounded-full mr-2" src={`https://api.dicebear.com/7.x/identicon/svg?seed=${post.name}`} alt="Default avatar" />
             <div className='text-sm font-bold dark:text-white'>
               {post.name}
             </div>

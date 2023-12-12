@@ -15,8 +15,8 @@ TopBar.propTypes = {
 export default function TopBar({ problemPage }) {
   const setAuthModalState = useSetRecoilState(authModalState)
   const { isLogin, userProfile } = useContext(AuthContext)
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-  const [isToggleOpen, setIsToggleOpen] = useState(false)
+  const [ windowWidth, setWindowWidth ] = useState(window.innerWidth)
+  const [ isToggleOpen, setIsToggleOpen ] = useState(false)
 
   useEffect(() => {
     const handleResize = () => {
@@ -85,7 +85,7 @@ export default function TopBar({ problemPage }) {
           <>
           <div className='cursor-pointer group relative ml-3 flex-shrink-0'>
             <Link to='/profile'>
-            <img src='/avatar.png' alt='Avatar' width={30} height={30} className='rounded-full' />
+            <img src={`https://api.dicebear.com/7.x/identicon/svg?seed=${userProfile.name}`} alt='Avatar' width={30} height={30} className='rounded-full' />
             </Link>
             <div
               className='

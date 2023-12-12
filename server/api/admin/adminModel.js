@@ -11,7 +11,7 @@ export async function getAllUsers() {
     FROM users
     LEFT JOIN user_details
     ON users.id = user_details.user_id
-    ORDER BY users.created_at DESC
+    ORDER BY users.id DESC
   `)
   return rows
 }

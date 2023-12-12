@@ -93,15 +93,6 @@ function User() {
       key: 'email',
     },
   ]
-  const tableData = users.map((item, index) => ({
-    key: index,
-    provider: item.provider || 'N/A',
-    id: item.id,
-    name: item.name || 'N/A',
-    email: item.email || 'N/A',
-  }))
-
-  console.log(tableData)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -115,7 +106,7 @@ function User() {
     };
 
     fetchData();
-  }, []);
+  }, [])
 
   // Preprocess data to accumulate y values for the same date
   const processedData = users.reduce((acc, user) => {
@@ -130,13 +121,28 @@ function User() {
 
     return acc;
   }, [])
+
+  const startDate = new Date(sevenDaysAgo);
+  const endDate = new Date(currentDate);
+
+  for (let currentDate = new Date(startDate); currentDate <= endDate; currentDate.setDate(currentDate.getDate() + 1)) {
+    const dateStr = currentDate.toISOString().split('T')[0]
+    const existingData = processedData.find(item => item.x === dateStr)
+
+    if (!existingData) {
+      processedData.push({ x: dateStr, y: 0 });
+    }
+  }
+
+  // 按日期排序
+  const sortedData = processedData.sort((a, b) => new Date(a.x) - new Date(b.x))
   
 
   const chartData = {
     datasets: [
       {
         label: 'User number data',
-        data: processedData,
+        data: sortedData,
         borderColor: 'rgb(53, 162, 235)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },

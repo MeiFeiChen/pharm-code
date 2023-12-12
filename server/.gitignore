@@ -1,4 +1,5 @@
 .env
+server/.DS_Store
 node_modules
 dockerfile
 codes

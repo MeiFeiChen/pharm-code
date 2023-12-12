@@ -15,7 +15,7 @@ import processMysqlProblem from './config/mysqlTestQueue.js'
 
 dotenv.config()
 
-const port = 3000
+const port = process.env.PORT
 const app = express()
 const server = createServer(app)
 

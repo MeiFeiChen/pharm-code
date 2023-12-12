@@ -106,7 +106,7 @@ function SinglePost() {
         {post &&(
         <>
           <div  className='flex items-center pb-2'>
-            <img className="w-6 h-6 rounded mr-2" src="/avatar.png" alt="Default avatar" />
+            <img className="w-6 h-6 rounded mr-2" src={`https://api.dicebear.com/7.x/identicon/svg?seed=${post.name}`} alt="Default avatar" />
             <div className='text-sm font-bold dark:text-white'>
               {post.name}
             </div>
@@ -173,7 +173,7 @@ function SinglePost() {
             className={`rounded-lg p-3 ${index % 2 === 1 ? 'bg-dark-fill-3' : ''}`}
           >
             <div  className='flex items-center pb-2'>
-              <img className="w-6 h-6 rounded mr-2" src="/avatar.png" alt="Default avatar" />
+              <img className="w-6 h-6 rounded-full mr-2" src={`https://api.dicebear.com/7.x/identicon/svg?seed=${message.name}`} alt="Default avatar" />
               <div className='text-sm font-bold dark:text-white'>
                 {message.name}
               </div>

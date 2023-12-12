@@ -40,7 +40,7 @@ function Submission() {
   const sevenDaysAgo = new Date()
   sevenDaysAgo.setDate(currentDate.getDate() - 7)
 
-  // doughnutData
+  /*----- doughnutData-----*/
   const statusCounts = {
     'pending': 0,
     'AC': 0,
@@ -94,7 +94,7 @@ function Submission() {
     }
   }
 
-  // line chart
+  /*----- line chart -----*/
   const lineChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -141,8 +141,6 @@ function Submission() {
   // Preprocess data to accumulate y values for the same date
   const processedData = submissions.reduce((acc, user) => {
     const date = user.submitted_at.split('T')[0]; // Extracting date part
-    console.log(date)
-  
     const existingData = acc.find(item => item.x === date);
 
     if (existingData) {
@@ -154,17 +152,32 @@ function Submission() {
     return acc;
   }, [])
 
+  const startDate = new Date(sevenDaysAgo);
+  const endDate = new Date(currentDate);
+
+  for (let currentDate = new Date(startDate); currentDate <= endDate; currentDate.setDate(currentDate.getDate() + 1)) {
+    const dateStr = currentDate.toISOString().split('T')[0]
+    const existingData = processedData.find(item => item.x === dateStr)
+
+    if (!existingData) {
+      processedData.push({ x: dateStr, y: 0 });
+    }
+  }
+
+  // 按日期排序
+  const sortedData = processedData.sort((a, b) => new Date(a.x) - new Date(b.x))
+
   const chartData = {
     datasets: [
       {
       label: 'User number data',
-        data: processedData,
+        data: sortedData,
         borderColor: 'rgb(53, 162, 235)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
     ],
   }
-  // table
+  /*----- table -----*/
   const columns = [
     {
       title: 'ID',
