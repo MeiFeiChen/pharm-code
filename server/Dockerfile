@@ -20,5 +20,5 @@ COPY . .
 EXPOSE 3000
 
 # Use PM2 to start your app using index.js as the entry point
-CMD ["pm2", "start", "index.js"]
+CMD ["pm2-runtime", "index.js"]
 
