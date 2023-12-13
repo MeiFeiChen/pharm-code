@@ -76,7 +76,7 @@ function CreatePost() {
     {/* body */}
     <form className="p-4 md:p-5">
       <div className="grid gap-4 mb-4 grid-cols-1">
-        <div>
+        <div className="container w-full">
           <input 
             type="text" 
             name="name" 

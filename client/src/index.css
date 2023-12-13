@@ -200,3 +200,12 @@ code {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+.hover-shadow:hover {
+  -webkit-filter: drop-shadow(5px 5px 5px rgba(255, 255, 255, 0.6));
+  filter: drop-shadow(5px 5px 5px rgba(255, 255, 255, 0.6));
+  }
+  
+.hover-shadow {
+  transition: filter 0.3s ease;
+}  

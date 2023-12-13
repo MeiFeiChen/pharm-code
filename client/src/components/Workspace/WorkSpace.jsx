@@ -33,7 +33,7 @@ export default function WorkSpace() {
   return (
     <CodeContext.Provider value={{code, setCode}}>
     <Split className='split' minSize={0}>
-      <div className="">
+      <div className="bg-[#1A1A1A]">
         
         <Routes>
           <Route path='' element={<ProblemDescription problem={problem}/>}/>

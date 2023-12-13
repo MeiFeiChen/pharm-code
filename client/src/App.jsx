@@ -12,6 +12,7 @@ import Chat from './pages/Chat'
 import { ToastContainer } from 'react-toastify'
 import Profile from './pages/Profile'
 import Admin from './pages/Admin'
+import Index from './pages/Index'
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
     <AuthContext.Provider value={{isLogin, setIsLogin, userProfile, setUserProfile}}>
     <RecoilRoot>
       <Routes>
+        <Route path='/' element={<Index/> }></Route>
         <Route path='admin/*' element={<Admin />} />
         <Route path='problems' element={<Problems />}/>
         <Route path='problems/:problemId/*' element={<Problem />}/>

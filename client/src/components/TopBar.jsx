@@ -40,26 +40,28 @@ export default function TopBar({ problemPage }) {
       `}>
       <div className='flex w-full items-center'>
         {/* Logo */}
-        <Link to="/problems" className="flex items-center">
-          <img src={`${S3_DOMAIN}/logo-new.png`} alt="Logo" className="h-[40px]"/>
+        <Link to="/" className="flex items-center">
+          <img src={`/logo-circle.png`} alt="Logo" className="h-[36px] opacity-80 hover:opacity-100 transition-opacity"/>
         </Link>
+        
+        <Link to="/problems" className="px-2 py-1 ml-3 flex items-center hover:bg-dark-fill-2 rounded-lg">
+          <div className="text-xl text-dark-gray-6  hover:text-white ">
+            Problems
+          </div>
+        </Link>
+        
+   
         {/* problem Page */}
         {problemPage && (
-					<div className='flex items-center gap-4 flex-1 justify-center'>
+					<div className='flex items-center gap-4 flex-1 ml-4'>
 						<div
-							className='flex items-center justify-center rounded bg-dark-fill-3 hover:bg-dark-fill-2 h-8 w-8 cursor-pointer'
+							className='flex items-center justify-center rounded bg-dark-fill-3 hover:bg-dark-fill-2 h-7 w-8 cursor-pointer'
 							onClick={() => handleProblemChange(false)}
 						>
 							<FaChevronLeft />
 						</div>
-						<Link
-							to='/problems'
-							className='flex items-center gap-2 font-medium max-w-[170px] text-dark-gray-8 cursor-pointer w-[100px]'
-						>
-							<p>Problem List</p>
-						</Link>
 						<div
-							className='flex items-center justify-center rounded bg-dark-fill-3 hover:bg-dark-fill-2 h-8 w-8 cursor-pointer'
+							className='flex items-center justify-center rounded bg-dark-fill-3 hover:bg-dark-fill-2 h-7 w-8 cursor-pointer'
 							onClick={() => handleProblemChange(true)}
 						>
 							<FaChevronRight />
@@ -77,7 +79,6 @@ export default function TopBar({ problemPage }) {
           hover:text-white hover:bg-brand-orange hover:border-2 hover:border-brand-orange border-2 border-transparent
           transition duration-300 ease-in-out'
           onClick={() => setAuthModalState((prev) => ({ ...prev, isOpen: true, type: "login" }))}>Sign In</button>
-        // </Link>
         )}
         
   

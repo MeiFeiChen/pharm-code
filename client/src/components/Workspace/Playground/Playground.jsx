@@ -235,7 +235,7 @@ function Playground({ problem }) {
             />
       
         </div>
-        <div className='w-full px-5 pb-[52px] overflow-auto'>
+        <div className='w-full pl-5'>
           {/* heading */}
           <div className='flex h-8 items-center space-x-6'>
 						<div className='relative flex h-full flex-col justify-center cursor-pointer'>
@@ -272,6 +272,7 @@ function Playground({ problem }) {
               )}
 						</div>
 					</div>
+          <div className='h-full px-5 overflow-auto pb-[80px]'>
           {/* test cases */}
           { activeTab === 'testCases' && !problem.database && (
             <AlgorithmTestCases testCases={ problem.exampleCases }/>
@@ -293,6 +294,7 @@ function Playground({ problem }) {
               aiLoading={ aiLoading }
             />
           )}
+          </div>
          
         </div>
       </Split>
