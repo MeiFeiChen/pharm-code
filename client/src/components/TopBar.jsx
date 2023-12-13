@@ -7,6 +7,7 @@ import { AuthContext } from "../context"
 import PropTypes from 'prop-types'
 import { useSetRecoilState } from "recoil"
 import { authModalState } from "../atoms/authModalAtom"
+import { S3_DOMAIN } from "../constant"
 
 TopBar.propTypes = {
   problemPage: PropTypes.bool,
@@ -40,7 +41,7 @@ export default function TopBar({ problemPage }) {
       <div className='flex w-full items-center'>
         {/* Logo */}
         <Link to="/problems" className="flex items-center">
-          <img src="/logo-new.png" alt="Logo" className="h-[40px]"/>
+          <img src={`${S3_DOMAIN}/logo-new.png`} alt="Logo" className="h-[40px]"/>
         </Link>
         {/* problem Page */}
         {problemPage && (

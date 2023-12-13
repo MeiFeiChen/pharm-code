@@ -2,8 +2,6 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
-import path from 'path'
-import { fileURLToPath } from 'url'
 import { Server } from 'socket.io'
 import { createServer } from 'http'
 import { createProxyMiddleware } from 'http-proxy-middleware'
@@ -16,8 +14,6 @@ import processMysqlProblem from './config/mysqlTestQueue.js'
 
 dotenv.config()
 
-console.log('==index.js==')
-console.log(process.env.BUCKET_PUBLIC_PATH)
 const port = process.env.PORT
 const app = express()
 const server = createServer(app)
@@ -25,7 +21,7 @@ const server = createServer(app)
 const s3Proxy = createProxyMiddleware({
   target: process.env.BUCKET_PUBLIC_PATH,
   changeOrigin: true,
-  pathRewrite: (path) => path.replace('/assets', '/dist/assets'),
+  pathRewrite: (path) => `/dist${path}`
 })
 const indexProxy = createProxyMiddleware({
   target: process.env.BUCKET_PUBLIC_PATH,
@@ -67,16 +63,13 @@ io.on('connection', (socket) => {
 
 app.set('socketio', io)
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
 app.use(morgan('dev'))
 app.use(cors('*'))
 app.options('*', cors())
 
 app.use(express.json())
 app.use('/assets', s3Proxy)
-app.use(express.static('./public/dist'))
+// app.use(express.static('./public/dist'))
 
 app.use('/api/user', userRouter)
 app.use('/api/problems', problemRouter)

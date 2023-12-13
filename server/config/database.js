@@ -8,8 +8,6 @@ const dirname = path.dirname(filename);
 dotenv.config({ path: path.resolve(dirname, '../.env') });
 
 const { Pool } = pg;
-console.log('==config/database.jd==')
-console.log(process.env.POSTGRES_USER)
 // eslint-disable-next-line import/no-mutable-exports
 let pool
 

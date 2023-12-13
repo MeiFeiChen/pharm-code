@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { BsCheck2Circle } from "react-icons/bs"
 import { IoIosCloseCircleOutline } from "react-icons/io"
 import { IoBugOutline } from "react-icons/io5"
-import { TEXT_COLOR, COMPILE_LANGUAGE, STATUS } from "../../../../constant"
+import { TEXT_COLOR, COMPILE_LANGUAGE, STATUS, S3_DOMAIN } from "../../../../constant"
 import { formatTimestamp } from '../../../../dateconfig'
 import { MdOutlineTimer, MdMemory } from "react-icons/md"
 import MDEditor from '@uiw/react-md-editor'
@@ -126,7 +126,7 @@ function AlgorithmHeader({ headerResult }) {
           )}
           { headerResult.status === 'TLE' && (
             <div className="rounded-lg py-4 flex items-center justify-center">
-              <img src='/timelimiterror.jpeg' className="rounded-lg w-2/3" />
+              <img src={`${S3_DOMAIN}/timelimiterror.jpeg`} className="rounded-lg w-2/3" />
               
             </div>
           )}
