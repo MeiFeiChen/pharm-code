@@ -17,12 +17,13 @@ function CreatePost() {
   const { problemId } = useParams()
   const closeModal = useCloseModal()
   const setPostModal = useSetRecoilState(postModalState)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const isButtonDisabled = !title.trim() || !content.trim()
+  const isButtonDisabled = !title.trim() || !content.trim() || isSubmitting
 
   const handleSubmit = async(event) => {
     event.preventDefault()
-    console.log(title, content)
+    setIsSubmitting(true)
     const requestBody = { problemId, title, content }
     const token = getAuthToken()
     const config = {
@@ -30,28 +31,29 @@ function CreatePost() {
     }
     try {
       const { data } = await apiPostSend(problemId, requestBody, config)
-      console.log(data)
+      setPostModal((prev) => ({ ...prev, isOpen: false }))
       setNewPostId(data.postId)
       toast.success('Successfully posted', {  
-        autoClose: 1000, 
+        autoClose: 500, 
         theme: "dark",
         hideProgressBar: true,
         closeOnClick: true, 
         draggable: true,
         transition: Zoom
       })  
-      setPostModal((prev) => ({ ...prev, isOpen: false }))
+      setIsSubmitting(false)
+      
     } catch (error) {
       console.error(error)
       toast.error('failed to post', {  
-        autoClose: 1000, 
+        autoClose: 500, 
         theme: "dark",
         hideProgressBar: true,
         closeOnClick: true, 
         draggable: true,
         transition: Zoom
       }) 
-    }
+    } 
   }
 
 
@@ -81,10 +83,10 @@ function CreatePost() {
             type="text" 
             name="name" 
             id="name" 
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-              focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-zinc-700 
-              dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 
-              dark:focus:border-primary-500 " 
+            className="border text-sm rounded-lg 
+              focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-zinc-700 
+              border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 
+              focus:border-primary-500 " 
             placeholder="Enter your title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -99,21 +101,25 @@ function CreatePost() {
           />
         </div>
       </div>
-      <div className="flex justify-end">
+      <div className="flex justify-end createPostBtn group">
         <button
           className={`
           px-3 py-1.5 font-medium items-center 
-          focus:outline-none inline-flex text-sm text-white rounded-lg
-          ${isButtonDisabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-dark-green-s hover:bg-light-green-s'}
+          focus:outline-none inline-flex text-sm  rounded-lg
+          ${isButtonDisabled ? 'bg-dark-gray-6 cursor-not-allowed text-dark-label-2': 'bg-dark-green-s hover:bg-light-green-s text-white'}
           `}
           onClick={handleSubmit}
           disabled={isButtonDisabled}
         >
           <div className=''>
-            <BsSend className='fill-gray-6 mr-1 fill-dark-gray-6'/>
+            <BsSend className='mr-1 fill-dark-gray-8'/>
           </div>
           Send
-      </button>
+        </button>
+        { isButtonDisabled && (
+          <div className='createPostBtn-tooltip'>Both the title and content must be filled out</div>
+        )}
+        
     </div>
 
     </form>

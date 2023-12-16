@@ -1,5 +1,5 @@
 import { IoClose } from "react-icons/io5"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams, Link } from "react-router-dom"
 import { formatTimestamp } from "../../../dateconfig"
 import { BiMessage } from "react-icons/bi"
 import { useEffect, useState } from "react"
@@ -12,6 +12,9 @@ import { Zoom, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { socket } from "../../../socket"
 import rehypeSanitize from "rehype-sanitize"
+import { useSetRecoilState } from "recoil"
+import { authModalState } from "../../../atoms/authModalAtom"
+
 
 
 function SinglePost() {
@@ -21,6 +24,7 @@ function SinglePost() {
   const navigate = useNavigate()
   const [ post, setPost ] =  useState(null)
   const [ messages, setMessages ] = useState(null)
+  const setAuthModalState = useSetRecoilState(authModalState)
 
   const handleMessage = (newMessage) => {
     console.log('Received message:', newMessage)
@@ -62,8 +66,12 @@ function SinglePost() {
   const handleButtonClick = () => {
     navigate(`/problems/${problemId}/discussion`)
   }
+  const handleClick = (type) => {
+    setAuthModalState((prev) => ({ ...prev, isOpen: true, type }))
+  }
 
   const handleSubmit = async() => {
+    setContent('') 
     const requestBody = { content }
     const token = getAuthToken()
     const config = {
@@ -80,7 +88,7 @@ function SinglePost() {
         draggable: true,
         transition: Zoom
       })  
-      setContent('') 
+      
     } catch (error) {
       console.error(error)
       setIsLogin(false)
@@ -106,7 +114,7 @@ function SinglePost() {
         {post &&(
         <>
           <div  className='flex items-center pb-2'>
-            <img className="w-6 h-6 rounded mr-2" src={`https://api.dicebear.com/7.x/identicon/svg?seed=${post.name}`} alt="Default avatar" />
+            <img className="w-6 h-6 rounded-full mr-2" src={`https://api.dicebear.com/7.x/identicon/svg?seed=${post.name}&backgroundColor=546e7a`} alt="Default avatar" />
             <div className='text-sm font-bold dark:text-white'>
               {post.name}
             </div>
@@ -138,7 +146,7 @@ function SinglePost() {
       <div className="container w-full">
         <div className="flex flex-col">
           <MDEditor
-            value={content}
+            value={isLogin? content: ''}
             onChange={setContent}
             highlightEnable={false}
             preview="edit"
@@ -150,7 +158,7 @@ function SinglePost() {
           />
         </div>
 
-        <div className="flex justify-end mt-3">
+        <div className="createPostBtn group flex justify-end mt-3">
           <button
             className={`
               px-3 py-1.5 font-medium transition-all 
@@ -162,6 +170,14 @@ function SinglePost() {
           >
             Comment
           </button>
+          { !isLogin ? (
+              <div className='createPostBtn-tooltip'>
+                Please <Link className='text-blue-500 hover:underline' onClick={() => handleClick('login')}>Register / Sign in</Link> to comment
+              </div>
+            ) : (
+              !content.trim() && <div className='createPostBtn-tooltip'>Content must be entered to comment</div>
+          )}
+          
        
         </div>
      </div>
@@ -173,7 +189,7 @@ function SinglePost() {
             className={`rounded-lg p-3 ${index % 2 === 1 ? 'bg-dark-fill-3' : ''}`}
           >
             <div  className='flex items-center pb-2'>
-              <img className="w-6 h-6 rounded-full mr-2" src={`https://api.dicebear.com/7.x/identicon/svg?seed=${message.name}`} alt="Default avatar" />
+              <img className="w-6 h-6 rounded-full mr-2" src={`https://api.dicebear.com/7.x/identicon/svg?seed=${message.name}&backgroundColor=546e7a`} alt="Default avatar" />
               <div className='text-sm font-bold dark:text-white'>
                 {message.name}
               </div>

@@ -66,7 +66,7 @@ function AlgorithmHeader({ headerResult }) {
             <>
               <div className="flex-1">
                 <div className='example-card '>
-                  <pre style={{ backgroundColor:'#ef47431f'}}>
+                  <pre>
                     <div className="flex items-center pb-1 text-dark-pink">
                       <div className='rounded p-[3px] text-lg mr-1'>
                         <IoBugOutline />

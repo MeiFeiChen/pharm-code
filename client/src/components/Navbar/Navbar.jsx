@@ -33,7 +33,7 @@ function Navbar() {
         <>
         <div className='cursor-pointer group relative m-3 flex-shrink-0'>
           <Link to='/profile'>
-          <img src={`https://api.dicebear.com/7.x/identicon/svg?seed=${userProfile.name}`} alt='Avatar' width={30} height={30} className='rounded-full' />
+          <img src={`https://api.dicebear.com/7.x/identicon/svg?seed=${userProfile.name}&backgroundColor=546e7a`} alt='Avatar' width={30} height={30} className='rounded-full' />
           </Link>
           <div
             className='

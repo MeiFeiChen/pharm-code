@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
 import Logout from "./Buttons/Logout"
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa"
@@ -13,11 +13,12 @@ TopBar.propTypes = {
   problemPage: PropTypes.bool,
 }
 
-export default function TopBar({ problemPage }) {
+export default function TopBar({ problemPage, lastProblemId, nextProblemId }) {
   const setAuthModalState = useSetRecoilState(authModalState)
   const { isLogin, userProfile } = useContext(AuthContext)
   const [ windowWidth, setWindowWidth ] = useState(window.innerWidth)
   const [ isToggleOpen, setIsToggleOpen ] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handleResize = () => {
@@ -41,7 +42,7 @@ export default function TopBar({ problemPage }) {
       <div className='flex w-full items-center'>
         {/* Logo */}
         <Link to="/" className="flex items-center">
-          <img src={`/logo-circle.png`} alt="Logo" className="h-[36px] opacity-80 hover:opacity-100 transition-opacity"/>
+          <img src={`${S3_DOMAIN}/logo-circle.png`} alt="Logo" className="h-[36px] opacity-80 hover:opacity-100 transition-opacity"/>
         </Link>
         
         <Link to="/problems" className="px-2 py-1 ml-3 flex items-center hover:bg-dark-fill-2 rounded-lg">
@@ -54,18 +55,26 @@ export default function TopBar({ problemPage }) {
         {/* problem Page */}
         {problemPage && (
 					<div className='flex items-center gap-4 flex-1 ml-4'>
-						<div
-							className='flex items-center justify-center rounded bg-dark-fill-3 hover:bg-dark-fill-2 h-7 w-8 cursor-pointer'
-							onClick={() => handleProblemChange(false)}
-						>
-							<FaChevronLeft />
-						</div>
-						<div
-							className='flex items-center justify-center rounded bg-dark-fill-3 hover:bg-dark-fill-2 h-7 w-8 cursor-pointer'
-							onClick={() => handleProblemChange(true)}
-						>
-							<FaChevronRight />
-						</div>
+					{lastProblemId ? (
+              <div
+                className='flex items-center justify-center rounded bg-dark-fill-3 hover:bg-dark-fill-2 h-7 w-8 cursor-pointer'
+                onClick={() => navigate(`/problems/${lastProblemId}`)}
+              >
+                <FaChevronLeft />
+              </div>
+            ) : (
+              <div className='flex items-center justify-center rounded bg-dark-layer-1 h-7 w-8' />
+          )}
+					{nextProblemId ? (
+              <div
+                className='flex items-center justify-center rounded bg-dark-fill-3 hover:bg-dark-fill-2 h-7 w-8 cursor-pointer'
+                onClick={() => navigate(`/problems/${nextProblemId}`)}
+              >
+                <FaChevronRight />
+              </div>
+            ) : (
+              <div className='flex items-center justify-center rounded bg-dark-layer-1 h-7 w-8' />
+          )}
 					</div>
 				)}
 
@@ -85,22 +94,23 @@ export default function TopBar({ problemPage }) {
         {/* Avatar && Sign out*/}
         {isLogin && (
           <>
-          <div className='cursor-pointer group relative ml-3 flex-shrink-0'>
-            <Link to='/profile'>
-            <img src={`https://api.dicebear.com/7.x/identicon/svg?seed=${userProfile.name}`} alt='Avatar' width={30} height={30} className='rounded-full' />
-            </Link>
-            <div
-              className='
-              absolute top-10 left-2/4 -translate-x-2/4  
-              mx-auto bg-dark-layer-1 text-brand-orange p-2 rounded shadow-lg
-              z-40 group-hover:scale-100 scale-0 
-              transition-all duration-300 ease-in-out'
-            >
-              <p className="text-sm">{userProfile?.email}</p>
+            <div className='cursor-pointer group relative ml-3 flex-shrink-0'>
+              <Link to='/profile'>
+              <img src={`https://api.dicebear.com/7.x/identicon/svg?seed=${userProfile?.name}&backgroundColor=546e7a`} alt='Avatar' width={30} height={30} className='rounded-full' />
+              
+              <div
+                className='
+                absolute top-10 left-2/4 -translate-x-2/4  
+                mx-auto bg-dark-layer-3 text-brand-orange p-2 rounded shadow-lg
+                z-40 group-hover:scale-100 scale-0 
+                transition-all duration-300 ease-in-out'
+              >
+                <p className="text-sm">{userProfile?.email}</p>
+              </div>
+              </Link>
             </div>
-          </div>
-          <Logout />
-              </>
+            <Logout />
+          </>
         )}
 
         </div>

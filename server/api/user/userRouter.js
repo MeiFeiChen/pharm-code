@@ -13,9 +13,9 @@ import verifyAuth from '../../middleware/auth.js'
 const userRouter = express.Router()
 
 userRouter.post('/signup', [
-  body('email').isEmail().normalizeEmail(),
+  body('email').notEmpty().isEmail().normalizeEmail(),
   body('name').exists().notEmpty().trim(),
-  body('password').isLength({ min: 6 }).notEmpty(),
+  body('password').notEmpty().isLength({ min: 6 }),
   handleResult,
   signUp,
 ])

@@ -71,7 +71,7 @@ function Index() {
                     <img src={`${S3_DOMAIN}/js.png`} className="w-16 hover-shadow"/>
                   </div>
                   <div className="mr-5">
-                    <img src={`${S3_DOMAIN}/mysql.png`} className="w-16 hover-shadow"/>
+                    <img src={`/SQL.png`} className="w-16 hover-shadow"/>
                   </div>
                 </div>
               </div>

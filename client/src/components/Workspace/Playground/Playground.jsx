@@ -46,8 +46,11 @@ function Playground({ problem }) {
   const [aiReview, setAiReview] = useState(null)
   const [testResult, setTestResult] = useState(null)
   const [testLoading, setTestIsLoading] = useState(false)
-  
+  const [disabledButton, setDisabledButton] = useState(false)
   const [fontSize, setFontSize] = useLocalStorage("lcc-fontSize", "16px")
+
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [originalHeight, setOriginalHeight] = useState(null)  
   
   const [settings, setSettings] = useState({
 		fontSize: fontSize,
@@ -56,6 +59,13 @@ function Playground({ problem }) {
 	});
   
   const navigate = useNavigate()
+
+  // adjust the height of bottom region
+  const handleToggleHeight = () => {
+    setIsExpanded(!isExpanded)
+  }
+  const codingRegionHeight = isExpanded ? 95 : (originalHeight !== null ? originalHeight : 60)
+
 
   // Auth
   const handleClick = (type) => {
@@ -116,11 +126,13 @@ function Playground({ problem }) {
   const handleTestSubmit = () => {
     runTestSocket.emit('test_data', { problemId: problem.id, language, code })
     setTestIsLoading(true)
+    setDisabledButton(true)
     
     runTestSocket.on('result', (result) => {
       console.log(result)
       setActiveTab('result')
       setTestIsLoading(false)
+      setDisabledButton(false)
       setTestResult(result)
       runTestSocket.off('result')
     })
@@ -128,6 +140,8 @@ function Playground({ problem }) {
 
   // submit code
   const handleSubmit = async() => {
+    setDisabledButton(true)
+
     const requestBody = { language, code }
     const token = getAuthToken()
     const config = {
@@ -139,12 +153,11 @@ function Playground({ problem }) {
       console.log('data', data)
     
       if ( submittedId ) {
-        console.log(submittedId)
         const pollTimeOut = setTimeout(() => {
           console.log('Timeout reached. Stopping poll.');
           clearInterval(pollInterval)
           toast.update(id, { 
-            render: "Error", 
+            render: "Network error. Please try again later", 
             type: "error", 
             isLoading: false, 
             autoClose: 1000,
@@ -197,9 +210,11 @@ function Playground({ problem }) {
             draggable: true
             })
             setCode('')
+            setDisabledButton(false)
           return navigate(`/problems/${[problem.id]}/submission`, {state: { submissionResult: data.data}})
                   
         }, 1000)
+        
         
 
       } else {
@@ -207,7 +222,8 @@ function Playground({ problem }) {
       }
     } catch (error) {
       console.error('Error submitting problem:', error)
-    }
+      setDisabledButton(false)
+    } 
     
   }
   return (
@@ -219,7 +235,13 @@ function Playground({ problem }) {
         handleLanguageExtension={handleLanguageExtension}
         setDefaultLanguage={setDefaultLanguage}
         language={language}/>
-      <Split className='h-[calc(100vh-98px)]' direction='vertical' sizes={[60, 40]} minSize={60}>
+      <Split 
+        className='h-[calc(100vh-98px)]' 
+        direction='vertical' 
+        sizes={[codingRegionHeight, 100-codingRegionHeight]} 
+        minSize={60}
+      >
+        {/* Coding Region */}
         <div className='flex flex-col h-full w-full overflow-auto'>
           { !isLogin && (
             <div className='text-sm text-white p-2' style={{backgroundColor: '#0a84ff2e'}}>
@@ -272,7 +294,8 @@ function Playground({ problem }) {
               )}
 						</div>
 					</div>
-          <div className='h-full px-5 overflow-auto pb-[80px]'>
+          {/* Button Region */}
+          <div className='h-full px-5 overflow-auto pb-[80px]' >
           {/* test cases */}
           { activeTab === 'testCases' && !problem.database && (
             <AlgorithmTestCases testCases={ problem.exampleCases }/>
@@ -299,8 +322,11 @@ function Playground({ problem }) {
         </div>
       </Split>
       <EditorFooter 
+        isExpanded={isExpanded}
+        handleToggleHeight={ handleToggleHeight }
         handleSubmit={ handleSubmit } 
         handleTestSubmit={ handleTestSubmit }
+        disabledButton = { disabledButton }
         code={ code }/>
     </div>
   )

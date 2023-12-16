@@ -16,7 +16,6 @@ export async function getAllUsers() {
   return rows
 }
 
-
 export async function getAllSubmissions() {
   const { rows } = await pool.query(`
     SELECT 

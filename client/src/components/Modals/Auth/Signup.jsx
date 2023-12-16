@@ -7,7 +7,7 @@ import { Zoom, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { setAuthToken } from "../../../utils"
 import { AuthContext } from "../../../context"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 
 const validate = yup.object({
   name: yup.string().required('Field cannot be empty'),
@@ -19,11 +19,14 @@ const validate = yup.object({
 function Signup() {
   const { setIsLogin, setUserProfile } = useContext(AuthContext)
   const setAuthModalState = useSetRecoilState(authModalState)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   const handleClick = (type) => setAuthModalState((prev) => ({ ...prev, type }))
-  const submitHandler = async (payload) => {
+  const submitHandler = async (payload, { setErrors }) => {
     try {
+      setIsSubmitting(true)
       const { data } = await apiUserSignUp(payload)
-      // 跳轉頁面(關閉視窗和換Navbar的內容？)
+     
       setAuthToken(data.data.access_token) // 存jwt至local storage
       setIsLogin(true)
       setUserProfile(data.data.user)
@@ -39,15 +42,9 @@ function Signup() {
       })  
     } catch (error) {
       console.error(error)
-      toast.error(error.response.data.errors, { 
-        position: "top-center", 
-        autoClose: 500, 
-        theme: "dark",
-        hideProgressBar: true,
-        closeOnClick: true, 
-        draggable: true,
-        transition: Zoom
-      })  
+      setErrors({ password: error.response.data.errors })
+    } finally {
+      setIsSubmitting(false)
     }
   }
   return (
@@ -63,7 +60,7 @@ function Signup() {
 
     >
     <Form className='space-y-6 px-6 py-4'>
-      <h3 className='text-xl font-medium text-white'>Register to PharmCode</h3>
+      <h3 className='text-xl font-medium text-white'>Register</h3>
       <div> 
         <label  htmlFor='name' className='text-sm font-medium block mb-2 text-gray-300'>
           Name
@@ -109,6 +106,7 @@ function Signup() {
 				className='w-full text-white focus:ring-blue-300 font-medium rounded-lg
                 text-sm px-5 py-2.5 text-center bg-brand-orange hover:bg-brand-orange-s
             '
+        disabled={isSubmitting}
 			>
 				Register
 			</button>

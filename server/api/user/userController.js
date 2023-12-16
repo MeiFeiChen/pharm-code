@@ -43,7 +43,7 @@ export const signUp = async (req, res) => {
   } catch (err) {
     console.error(err)
     if (err.message.includes('duplicate key value')) {
-      return res.status(400).json({ errors: 'email already exist. Please log in.' })
+      return res.status(400).json({ errors: 'Email already exist. Please log in.' })
     }
     return res.status(500).json({ errors: 'sign up failed' })
   }

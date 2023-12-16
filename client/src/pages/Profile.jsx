@@ -81,7 +81,7 @@ function Profile({ userProfile }) {
         <div aria-label="Sidebar" className="w-full bg-dark-layer-1 rounded-lg">
           <div className="h-full overflow-y-auto overflow-x-hidden py-4 px-3">
             <div className="flex flex-row items-center">
-              <img alt="avatar" height="70" src={`https://api.dicebear.com/7.x/identicon/svg?seed=${userProfile?.name}`} width="60" className="mr-3 rounded-full shadow-lg"/>
+              <img alt="avatar" height="70" src={`https://api.dicebear.com/7.x/identicon/svg?seed=${userProfile?.name}&backgroundColor=546e7a`} width="60" className="mr-3 rounded-full shadow-lg"/>
               <div className="flex flex-col">
                 <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{userProfile?.name}</h5>
                 <span className="text-sm text-gray-500 dark:text-gray-400">{userProfile?.email}</span>

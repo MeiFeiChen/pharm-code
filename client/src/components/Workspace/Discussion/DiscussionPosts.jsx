@@ -9,14 +9,18 @@ import { useContext, useState, useEffect } from 'react'
 import { postModalState } from "../../../atoms/postModalAtom"
 import { apiPostItems } from "../../../api"
 import { PostContext } from "../../../context"
-import { Divider } from 'antd';
+import { authModalState } from "../../../atoms/authModalAtom"
 
 function DiscussionPosts() {
   const { newPostId } = useContext(PostContext)
   const setPostModalState = useSetRecoilState(postModalState)
+  const setAuthModalState = useSetRecoilState(authModalState)
   const { isLogin } = useContext(AuthContext)
   const { problemId } = useParams()
   const [ posts, setPosts] = useState(null)
+  const handleClick = (type) => {
+    setAuthModalState((prev) => ({ ...prev, isOpen: true, type }))
+  }
   console.log(posts)
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +36,7 @@ function DiscussionPosts() {
 
   return (
     <div className='w-full'>
-    <div className='px-5 pb-5'>
+    <div className='px-5 pb-5 addPostBtn group'>
       <button
           className={`
           px-3 py-1.5 font-medium items-center 
@@ -47,6 +51,12 @@ function DiscussionPosts() {
         </div>
         Posts
       </button>
+      { !isLogin && (
+        <div className='addPostBtn-tooltip'>
+          <Link className='text-blue-500 hover:underline' onClick={() => handleClick('login')}>Register / Sign in</Link> to post
+        </div>
+      )}
+      
     </div>
 
     <div >
@@ -60,7 +70,7 @@ function DiscussionPosts() {
         >
 
           <div  className='flex items-center pb-2'>
-            <img className="w-6 h-6 rounded-full mr-2" src={`https://api.dicebear.com/7.x/identicon/svg?seed=${post.name}`} alt="Default avatar" />
+            <img className="w-6 h-6 rounded-full mr-2" src={`https://api.dicebear.com/7.x/identicon/svg?seed=${post.name}&backgroundColor=546e7a`} alt="Default avatar" />
             <div className='text-sm font-bold dark:text-white'>
               {post.name}
             </div>

@@ -90,7 +90,7 @@ export default SettingsModal;
 
 const SettingsListItem = ({ fontSize, selectedOption, handleFontSizeChange }) => {
 	return (
-		<li className='relative flex h-8 cursor-pointer select-none py-1.5 pl-2 text-label-2 dark:text-dark-label-2 hover:bg-dark-fill-3 rounded-lg'>
+		<li className='relative flex h-8 cursor-pointer select-none py-1.5 pl-2 text-label-2 text-dark-label-2 hover:bg-dark-fill-3 rounded-lg'>
 			<div
 				className={`flex h-5 flex-1 items-center pr-2 ${selectedOption === fontSize ? "font-medium" : ""}`}
 				onClick={() => handleFontSizeChange(fontSize)}
@@ -98,7 +98,7 @@ const SettingsListItem = ({ fontSize, selectedOption, handleFontSizeChange }) =>
 				<div className='whitespace-nowrap'>{fontSize}</div>
 			</div>
 			<span
-				className={`text-blue dark:text-dark-blue flex items-center pr-2 ${
+				className={`text-dark-blue flex items-center pr-2 ${
 					selectedOption === fontSize ? "visible" : "invisible"
 				}`}
 			>

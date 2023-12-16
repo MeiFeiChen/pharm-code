@@ -13,8 +13,8 @@ import { AuthContext } from "../../../context"
 
 
 const validate = yup.object({
-  email: yup.string().email('Invalid email format').required('Field cannot be empty'), 
-  password: yup.string().min(6, 'Length cannot be less than 6').required('Field cannot be empty')
+  email: yup.string().required('Field cannot be empty').email('Invalid email format'), 
+  password: yup.string().required('Field cannot be empty').min(6, 'Length cannot be less than 6')
 })
 
 
@@ -22,16 +22,14 @@ function Login() {
   const { setIsLogin, setUserProfile } = useContext(AuthContext)
   const setAuthModalState = useSetRecoilState(authModalState)
 
-
   // change page to register or forget password
   const handleClick = (type) => {
     setAuthModalState((prev) => ({ ...prev, type }))
   }
 
-  const submitHandler = async (payload) => {
+  const submitHandler = async (payload, { setErrors }) => {
     try {
       const { data } = await apiUserSignIn(payload)
-      // 跳轉頁面(關閉視窗和換Navbar的內容？)
       setAuthToken(data.data.access_token) // 存jwt至local storage
       setUserProfile(data.data.user)
       setIsLogin(true)
@@ -45,19 +43,12 @@ function Login() {
         transition: Zoom
       })  
     } catch (error) {
+      setErrors({ password: error.response.data.errors })
       setAuthToken(null)
       console.error(error)
-      toast.error(error.response.data.errors, { 
-        position: "top-center", 
-        autoClose: 500, 
-        theme: "dark",
-        hideProgressBar: true,
-        closeOnClick: true, 
-        draggable: true,
-        transition: Zoom
-      })  
     }
   }
+
   return (
     <>
     <Formik
@@ -69,8 +60,13 @@ function Login() {
       validationSchema={validate}
       onSubmit={submitHandler}
     >
-    <Form className='space-y-6 px-6 py-4'>
-      <h3 className='text-xl font-medium text-white'>Sign in to PharmCode</h3>
+     {({ isSubmitting }) => (<Form className='space-y-6 px-6 py-4'>
+ 
+      <h3 className='text-xl font-medium text-white'>
+        Sign in
+      </h3>
+        
+ 
       <div> 
         <label  htmlFor='email' className='text-sm font-medium block mb-2 text-gray-300'>
           Email
@@ -103,6 +99,7 @@ function Login() {
 				className='w-full text-white focus:ring-blue-300 font-medium rounded-lg
                 text-sm px-5 py-2.5 text-center bg-brand-orange hover:bg-brand-orange-s
             '
+        disabled={isSubmitting}
 			>
 				Log In
 			</button>
@@ -120,6 +117,7 @@ function Login() {
 				</a>
 			</div>
     </Form>
+    )}
     </Formik>
     </>
 

@@ -1,6 +1,4 @@
-import { useParams } from "react-router-dom"
-import { useState, useEffect } from "react"
-import { apiProblemItem } from "../../api"
+import { useState } from "react"
 import Split from 'react-split'
 import ProblemDescription from './Problem/ProblemDescription'
 import ProblemSubmission from './Problem/ProblemSubmission'
@@ -8,27 +6,15 @@ import ProblemDiscussion from './Problem/ProblemDiscussion'
 import { Route, Routes } from 'react-router-dom'
 import Playground from './Playground/Playground'
 import { CodeContext } from "../../context"
+import PropTypes from 'prop-types'
+
+WorkSpace.propTypes = {
+  problem: PropTypes.object.isRequired
+}
 
 
-export default function WorkSpace() {  
+export default function WorkSpace({ problem }) {  
   const [ code, setCode ] = useState('')
-  const { problemId } = useParams()
-  const [problem, setProblem] = useState({})
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data }  = await apiProblemItem(problemId)
-        setProblem(data.data)
-      } catch (error) {
-        console.error('Error fetching data', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [problemId])
 
   return (
     <CodeContext.Provider value={{code, setCode}}>

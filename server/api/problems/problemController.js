@@ -18,7 +18,6 @@ import {
 export const getProblemsPage = async (req, res) => {
   try {
     const problems = await getProblems()
-    // const passRate = await getProblemsPassRate()
     return res.status(200).json(problems)
   } catch (err) {
     console.error(err.message);
