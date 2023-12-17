@@ -1,0 +1,49 @@
+name: cicd-s3-workflow
+
+on:
+  push: 
+    branches: [feature]
+    paths:
+      - 'client/**'
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    env: 
+      BUCKET: pharm-code-cdn
+      DIST: dist
+      REGION: ap-southeast-2
+      DIST_ID: E2HB53RMIHF7VZ
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Configure AWS Crendentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.REGION }}
+          
+      - name: Change to Project Directory
+        run: cd client
+      
+      - name: Install Dependencies
+        run: |
+          node --version
+          npm i
+
+      - name: Build Static Website
+        run: npm run build
+
+      - name: Copy files to the production website with the AWS CLI
+        run: |
+          aws s3 sync --delete ${{ env.DIST }} s3://${{ env.BUCKET }}
+
+      - name: Copy files to the production website with the AWS CLI
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ env.DIST_ID }} \
+            --paths "/*"

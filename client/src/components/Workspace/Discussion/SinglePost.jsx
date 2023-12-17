@@ -158,10 +158,17 @@ function SinglePost() {
           />
         </div>
 
-        <div className="createPostBtn group flex justify-end mt-3">
+        <div className="createPostBtn group flex justify-end items-center mt-3">
+          { !isLogin ? (
+              <div className='createPostBtn-tooltip'>
+                Please <Link className='text-blue-500 hover:underline' onClick={() => handleClick('login')}>Register / Sign in</Link> to comment
+              </div>
+            ) : (
+              !content.trim() && <div className='createPostBtn-tooltip'>Content must be entered to comment</div>
+          )}
           <button
             className={`
-              px-3 py-1.5 font-medium transition-all 
+              px-3 py-1.5 font-medium transition-all ml-2
               focus:outline-none inline-flex text-sm text-white rounded-lg
               ${(!isLogin || !content.trim()) ? 'bg-dark-gray-6 cursor-not-allowed' : 'bg-dark-green-s hover:bg-light-green-s'}
             `}
@@ -170,13 +177,7 @@ function SinglePost() {
           >
             Comment
           </button>
-          { !isLogin ? (
-              <div className='createPostBtn-tooltip'>
-                Please <Link className='text-blue-500 hover:underline' onClick={() => handleClick('login')}>Register / Sign in</Link> to comment
-              </div>
-            ) : (
-              !content.trim() && <div className='createPostBtn-tooltip'>Content must be entered to comment</div>
-          )}
+          
           
        
         </div>

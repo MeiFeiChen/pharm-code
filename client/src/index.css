@@ -45,10 +45,10 @@ body {
 	}
 
   .createPostBtn {
-		@apply relative rounded font-medium items-center transition-all focus:outline-none inline-flex  ml-auto ;
+		@apply  rounded font-medium transition-all focus:outline-none inline-flex  ml-auto;
 	}
 	.createPostBtn-tooltip {
-		@apply absolute w-auto p-2 text-sm m-2  min-w-max translate-x-2  right-24 z-10 rounded-md shadow-md
+		@apply  w-auto p-2 mx-2 text-sm min-w-max translate-x-2  right-24 z-10 rounded-md shadow-md
 		text-dark-layer-2 bg-gray-200  origin-center scale-0 transition-all duration-100 ease-linear group-hover:scale-100;
 	}
   

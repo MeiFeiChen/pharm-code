@@ -101,10 +101,13 @@ function CreatePost() {
           />
         </div>
       </div>
-      <div className="flex justify-end createPostBtn group">
+      <div className="flex justify-end items-center createPostBtn group">
+        { isButtonDisabled && (
+          <div className='createPostBtn-tooltip'>Both the title and content must be filled out</div>
+        )}
         <button
           className={`
-          px-3 py-1.5 font-medium items-center 
+          px-3 py-1.5 font-medium items-center ml-2
           focus:outline-none inline-flex text-sm  rounded-lg
           ${isButtonDisabled ? 'bg-dark-gray-6 cursor-not-allowed text-dark-label-2': 'bg-dark-green-s hover:bg-light-green-s text-white'}
           `}
@@ -116,11 +119,9 @@ function CreatePost() {
           </div>
           Send
         </button>
-        { isButtonDisabled && (
-          <div className='createPostBtn-tooltip'>Both the title and content must be filled out</div>
-        )}
         
-    </div>
+        
+      </div>
 
     </form>
     </>
