@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim"
 import { useNavigate } from 'react-router-dom'
-import { S3_DOMAIN } from "../constant";
 
 function Index() {
   const [ init, setInit ] = useState(false)
@@ -37,7 +36,7 @@ function Index() {
       
       <div className="flex-grow w-full mx-auto relative bg-[#1A1A1A]">
       <div className="relative md:absolute md:right-10 md:top-1/3 md:transform md:-translate-y-1/3 z-10 mx-auto md:mx-0">
-        <img src={`${S3_DOMAIN}/logo-large.png`} className="opacity-30 transition-opacity  md:w-auto"/>
+        <img src={`/logo-large.png`} className="opacity-30 transition-opacity  md:w-auto"/>
       </div>
         <div className="mx-auto max-w-7xl pt-16 lg:pt-32 sm:pb-24 px-2 relative">
 
@@ -65,10 +64,10 @@ function Index() {
                 </div>
                 <div className="flex flex-row items-center mt-20">
                 <div className="mr-5">
-                  <img src={`${S3_DOMAIN}/python.png`} className="w-16 hover-shadow"/>
+                  <img src={`/python.png`} className="w-16 hover-shadow"/>
                 </div>
                   <div className="mr-5">
-                    <img src={`${S3_DOMAIN}/js.png`} className="w-16 hover-shadow"/>
+                    <img src={`/js.png`} className="w-16 hover-shadow"/>
                   </div>
                   <div className="mr-5">
                     <img src={`/SQL.png`} className="w-16 hover-shadow"/>

@@ -16,7 +16,6 @@ export default function AlgorithmDescription( { problem } ) {
   const { isLogin, setIsLogin, setUserProfile } = useContext(AuthContext)
   const [solvedProblem, setSolvedProblem] = useState({})
   // const [loading, setLoading] = useState(true)
-  console.log(problem)
 
   useEffect(() => {
     const fetchUserSubmissionData = async (config) => {
@@ -45,7 +44,6 @@ export default function AlgorithmDescription( { problem } ) {
       fetchUserSubmissionData(config)
     }
   }, [isLogin, setSolvedProblem, setIsLogin, setUserProfile])
-  console.log(solvedProblem)
 
 
 	return (

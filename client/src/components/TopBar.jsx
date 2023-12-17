@@ -7,10 +7,11 @@ import { AuthContext } from "../context"
 import PropTypes from 'prop-types'
 import { useSetRecoilState } from "recoil"
 import { authModalState } from "../atoms/authModalAtom"
-import { S3_DOMAIN } from "../constant"
 
 TopBar.propTypes = {
   problemPage: PropTypes.bool,
+  lastProblemId: PropTypes.string,
+  nextProblemId: PropTypes.string
 }
 
 export default function TopBar({ problemPage, lastProblemId, nextProblemId }) {
@@ -42,7 +43,7 @@ export default function TopBar({ problemPage, lastProblemId, nextProblemId }) {
       <div className='flex w-full items-center'>
         {/* Logo */}
         <Link to="/" className="flex items-center">
-          <img src={`${S3_DOMAIN}/logo-circle.png`} alt="Logo" className="h-[36px] opacity-80 hover:opacity-100 transition-opacity"/>
+          <img src={`/logo-circle.png`} alt="Logo" className="h-[36px] opacity-80 hover:opacity-100 transition-opacity"/>
         </Link>
         
         <Link to="/problems" className="px-2 py-1 ml-3 flex items-center hover:bg-dark-fill-2 rounded-lg">
@@ -55,7 +56,7 @@ export default function TopBar({ problemPage, lastProblemId, nextProblemId }) {
         {/* problem Page */}
         {problemPage && (
 					<div className='flex items-center gap-4 flex-1 ml-4'>
-					{lastProblemId ? (
+					{ lastProblemId ? (
               <div
                 className='flex items-center justify-center rounded bg-dark-fill-3 hover:bg-dark-fill-2 h-7 w-8 cursor-pointer'
                 onClick={() => navigate(`/problems/${lastProblemId}`)}
@@ -65,7 +66,7 @@ export default function TopBar({ problemPage, lastProblemId, nextProblemId }) {
             ) : (
               <div className='flex items-center justify-center rounded bg-dark-layer-1 h-7 w-8' />
           )}
-					{nextProblemId ? (
+					{ nextProblemId ? (
               <div
                 className='flex items-center justify-center rounded bg-dark-fill-3 hover:bg-dark-fill-2 h-7 w-8 cursor-pointer'
                 onClick={() => navigate(`/problems/${nextProblemId}`)}

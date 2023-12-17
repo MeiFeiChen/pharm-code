@@ -16,8 +16,6 @@ export default function DatabaseDescription( { problem } ) {
   const [solvedProblem, setSolvedProblem] = useState({})
   // const [loading, setLoading] = useState(true)
 
-
-  // console.log(problem)
   useEffect(() => {
     const fetchUserSubmissionData = async (config) => {
       try {

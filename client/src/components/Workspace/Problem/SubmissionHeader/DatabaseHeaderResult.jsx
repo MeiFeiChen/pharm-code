@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { BsCheck2Circle } from "react-icons/bs"
 import { IoIosCloseCircleOutline } from "react-icons/io"
 import { IoBugOutline } from "react-icons/io5"
-import { TEXT_COLOR, COMPILE_LANGUAGE, STATUS, S3_DOMAIN } from "../../../../constant"
+import { TEXT_COLOR, COMPILE_LANGUAGE, STATUS} from "../../../../constant"
 import { formatTimestamp } from '../../../../dateconfig'
 import { MdOutlineTimer, MdMemory } from "react-icons/md"
 

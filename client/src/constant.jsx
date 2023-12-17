@@ -43,5 +43,3 @@ export const DIFFICULTY_COLOR = {
   'medium': 'gold', 
   'hard': 'red'
 }
-
-export const S3_DOMAIN = 'https://pharmcode.s3.ap-southeast-2.amazonaws.com/dist'

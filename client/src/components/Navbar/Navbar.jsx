@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 import { authModalState } from '../../atoms/authModalAtom'
-import { S3_DOMAIN } from '../../constant'
 import { AuthContext } from '../../context'
 import { useContext } from 'react'
 import Logout from '../Buttons/Logout'
@@ -19,7 +18,7 @@ function Navbar() {
   return (
     <div className='flex items-center justify-between sm:px-12 px-2 md:px-10'>
       <Link to='/problems' className='flex items-center justify-center h-20'>
-        <img src={`${S3_DOMAIN}/logo-new.png`} alt='PharmCode' className='max-h-16' />
+        <img src={`/logo-new.png`} alt='PharmCode' className='max-h-16' />
       </Link>
       <div className='flex items-center'>
       {!isLogin && (

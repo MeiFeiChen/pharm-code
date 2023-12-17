@@ -12,22 +12,23 @@ import adminRouter from './api/admin/adminRouter.js'
 import { processProblem } from './config/testQueue.js'
 import processMysqlProblem from './config/mysqlTestQueue.js'
 
+
 dotenv.config()
 
 const port = process.env.PORT
 const app = express()
 const server = createServer(app)
 
-const s3Proxy = createProxyMiddleware({
-  target: process.env.BUCKET_PUBLIC_PATH,
-  changeOrigin: true,
-  pathRewrite: (path) => `/dist${path}`
-})
-const indexProxy = createProxyMiddleware({
-  target: process.env.BUCKET_PUBLIC_PATH,
-  changeOrigin: true,
-  pathRewrite: () => '/dist/index.html',
-});
+// const s3Proxy = createProxyMiddleware({
+//   target: process.env.BUCKET_PUBLIC_PATH,
+//   changeOrigin: true,
+//   // pathRewrite: (path) => `/dist${path}`
+// })
+// const indexProxy = createProxyMiddleware({
+//   target: process.env.BUCKET_PUBLIC_PATH,
+//   changeOrigin: true,
+//   pathRewrite: () => '/index.html',
+// });
 
 const io = new Server(server, {
   cors: {
@@ -68,7 +69,7 @@ app.use(cors('*'))
 app.options('*', cors())
 
 app.use(express.json())
-app.use('/assets', s3Proxy)
+// app.use('/assets', s3Proxy)
 // app.use(express.static('./public/dist'))
 
 app.use('/api/user', userRouter)
@@ -77,7 +78,15 @@ app.use('/api/assistance', openAIRouter)
 app.use('/api/admin', adminRouter)
 
 // front end page
-app.get('*', indexProxy)
+// app.get('*', indexProxy)
+// app.get('/*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public/dist/index.html'), (err) => {
+//     if (err) {
+//       console.error(err);
+//       res.status(500).send(err);
+//     }
+//   })
+// })
 
 server.listen(port, () => {
   console.log(`Server is listening on port ${port}....`)
