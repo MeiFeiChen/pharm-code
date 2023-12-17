@@ -11,6 +11,7 @@ jobs:
     name: Build and Deploy
     runs-on: ubuntu-latest
     env: 
+      PROJECT_DIR: client
       BUCKET: pharm-code-cdn
       DIST: dist
       REGION: ap-southeast-2
@@ -28,20 +29,21 @@ jobs:
           aws-region: ${{ env.REGION }}
       
       - name: Install Dependencies
+        working-directory: ${{ env.PROJECT_DIR }}
         run: |
-          cd client
           pwd
           node --version
           npm ci --production
+          npm install vite
 
       - name: Build Static Website
+        working-directory: ${{ env.PROJECT_DIR }}
         run: |
-          cd client
           npm run build
 
       - name: Copy files to the production website with the AWS CLI
+        working-directory: ${{ env.PROJECT_DIR }}
         run: |
-          cd client
           aws s3 sync --delete ${{ env.DIST }} s3://${{ env.BUCKET }}
 
       - name: Copy files to the production website with the AWS CLI
