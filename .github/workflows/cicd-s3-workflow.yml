@@ -3,8 +3,8 @@ name: cicd-s3-workflow
 on:
   push: 
     branches: [feature]
-    paths:
-      - 'client/**'
+    # paths:
+    #   - 'client/**'
 
 jobs:
   build-and-deploy:
@@ -26,12 +26,13 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.REGION }}
-          
+
       - name: Change to Project Directory
         run: cd client
       
       - name: Install Dependencies
         run: |
+          pwd
           node --version
           npm i
 
