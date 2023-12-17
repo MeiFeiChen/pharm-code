@@ -26,16 +26,13 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.REGION }}
-
-      - name: Change to Project Directory
-        run: cd client
       
       - name: Install Dependencies
         run: |
           cd client
           pwd
           node --version
-          npm i
+          npm ci --production
 
       - name: Build Static Website
         run: npm run build
