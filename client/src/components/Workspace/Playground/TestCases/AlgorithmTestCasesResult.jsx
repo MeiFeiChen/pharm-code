@@ -83,7 +83,7 @@ function AlgorithmTestCasesResult({ testResult, testLoading }) {
         <div className='text-lg text-dark-pink'>{STATUS[testResult.status]}</div>
         <div className="flex-1">
           <div className='example-card' >
-            <pre style={{ backgroundColor:'#ef47431f', margin:'4px 0' }}>
+            <pre style={{ margin:'4px 0' }}>
               <div className="whitespace-pre-line text-dark-pink">
                 <small>{testResult.results[0]}</small>
               </div>

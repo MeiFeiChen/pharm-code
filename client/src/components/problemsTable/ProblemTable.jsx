@@ -29,6 +29,7 @@ export default function ProblemTable() {
     }
     fetchData()
   }, [])
+  console.log(problems)
   
 
   useEffect(() => {
@@ -76,10 +77,16 @@ export default function ProblemTable() {
                 <th className='px-2 py-4 font-medium whitespace-nowrap'>
                 {isLogin && (
                   solvedProblem?.solved && solvedProblem.solved.includes(problem.id) ? (
+                    <div className='solvedBtn group flex'>
                     <BsCheckCircle fontSize={'18'} width='18' className='text-dark-green-s' />
+                    <div className='solvedBtn-tooltip'>Solved</div>
+                    </div>
                   ) : (
                     solvedProblem?.attempt && solvedProblem.attempt.includes(problem.id) ? (
+                      <div className='solvedBtn group flex'>
                       <BsCircle fontSize={'18'} width='18' className='text-gray-400' />
+                      <div className='solvedBtn-tooltip'>Attempt</div>
+                      </div>
                     ) : null
                   )
                 )}

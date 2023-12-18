@@ -3,8 +3,8 @@ name: cicd-s3-workflow
 on:
   push: 
     branches: [feature]
-    # paths:
-    #   - 'client/**'
+    paths:
+      - 'client/**'
 
 jobs:
   build-and-deploy:

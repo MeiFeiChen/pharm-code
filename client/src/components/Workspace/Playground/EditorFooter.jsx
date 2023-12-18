@@ -48,7 +48,7 @@ function EditorFooter( { isExpanded, handleToggleHeight, handleSubmit, handleTes
             px-3 py-1.5 font-medium items-center transition-all 
             focus:outline-none inline-flex text-sm text-dark-label-2 rounded-lg
             ${(!isLogin || !code) ? 'bg-dark-gray-6 cursor-not-allowed' : 
-            (disabledButton)?'bg-[#1b7038] hover:bg-[#1b7038] cursor-not-allowed':'bg-dark-green-s hover:bg-light-green-s'}
+            (disabledButton)?'bg-[#1b7038] hover:bg-[#1b7038] cursor-not-allowed':'text-white bg-[#2CBB5D] hover:bg-light-green-s'}
             `}
             onClick={ handleSubmit }
             disabled= { !isLogin || !code || disabledButton }

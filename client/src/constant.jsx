@@ -1,12 +1,12 @@
 export const TEXT_COLOR = {
-  'AC': 'text-dark-green-s', 
+  'AC': 'text-light-green-s', 
   'WA': 'text-dark-pink',
   'TLE': 'text-dark-pink',
   'RE': 'text-dark-pink'
 }
 
 export const TEXT_COLOR_DIFFICULTY = {
-  'easy': 'text-dark-green-s', 
+  'easy': 'text-dark-olive', 
   'medium': 'text-dark-yellow', 
   'hard': 'text-dark-pink'
 }

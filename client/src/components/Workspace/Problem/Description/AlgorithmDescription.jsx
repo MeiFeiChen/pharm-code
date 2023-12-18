@@ -50,12 +50,12 @@ export default function AlgorithmDescription( { problem } ) {
 		<div className='bg-dark-layer-1'>
       <WorkSpaceTab />
 	
-			<div className='flex px-0 py-4 h-[calc(100vh-94px)] overflow-y-auto'>
+			<div className='flex flex-col px-0 py-4 h-[calc(100vh-94px)] overflow-y-auto'>
 				<div className='px-5 w-full'>
 					{/* Problem heading */}
 					
-						<div className='flex space-x-4'>
-							<div className='flex-1 mr-2 text-lg text-white font-medium'>{problem.id}. {problem.title}</div>
+						<div className='space-x-4'>
+							<div className='mr-2 text-lg text-white font-medium'>{problem.id}. {problem.title}</div>
 						</div>
             
 						<div className='flex items-center mt-3'>
@@ -64,19 +64,27 @@ export default function AlgorithmDescription( { problem } ) {
 							>
 								{problem.difficulty}
 							</div>
+              <div>
               {isLogin && (
                   solvedProblem?.solved && solvedProblem.solved.includes(problem.id) ? (
-                    <div className='rounded p-[3px] ml-4 text-lg text-dark-green-s'>
-                      <BsCheck2Circle />
+                    <div className="solvedBtn group flex">
+                    <div className='rounded px-[3px] text-lg text-dark-green-s'>
+                      <BsCheck2Circle /> 
+                    </div>
+                    <div className='solvedBtn-tooltip'>Solved</div>
                     </div>
                   ) : (
                     solvedProblem?.attempt && solvedProblem.attempt.includes(problem.id) ? (
-                      <div className='rounded p-[3px] ml-4 text-lg text-gray-400'>
+                      <div className="solvedBtn group flex">
+                      <div className='rounded px-[3px] text-lg text-gray-400'>
                         <BsCircle />
+                      </div>
+                      <div className='solvedBtn-tooltip'>Attempt</div>
                       </div>
                     ) : null
                   )
                 )}
+              </div>
 						</div>
 
 						{/* Problem Statement(paragraphs) */}

@@ -107,7 +107,7 @@ function CreatePost() {
         )}
         <button
           className={`
-          px-3 py-1.5 font-medium items-center ml-2
+          px-3 py-1.5 font-medium items-center ml-2 my-1
           focus:outline-none inline-flex text-sm  rounded-lg
           ${isButtonDisabled ? 'bg-dark-gray-6 cursor-not-allowed text-dark-label-2': 'bg-dark-green-s hover:bg-light-green-s text-white'}
           `}

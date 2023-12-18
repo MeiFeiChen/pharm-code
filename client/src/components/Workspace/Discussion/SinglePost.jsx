@@ -168,7 +168,7 @@ function SinglePost() {
           )}
           <button
             className={`
-              px-3 py-1.5 font-medium transition-all ml-2
+              px-3 py-1.5 font-medium transition-all ml-2 my-1
               focus:outline-none inline-flex text-sm text-white rounded-lg
               ${(!isLogin || !content.trim()) ? 'bg-dark-gray-6 cursor-not-allowed' : 'bg-dark-green-s hover:bg-light-green-s'}
             `}

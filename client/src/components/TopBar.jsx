@@ -102,7 +102,8 @@ export default function TopBar({ problemPage, lastProblemId, nextProblemId }) {
               <div
                 className='
                 absolute top-10 left-2/4 -translate-x-2/4  
-                mx-auto bg-dark-layer-3 text-brand-orange p-2 rounded shadow-lg
+                mx-auto bg-dark-layer-3 text-brand-orange p-1 rounded shadow-lg bg-opacity-40
+                border border-dark-fill-2
                 z-40 group-hover:scale-100 scale-0 
                 transition-all duration-300 ease-in-out'
               >

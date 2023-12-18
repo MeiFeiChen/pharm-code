@@ -59,6 +59,16 @@ body {
 		@apply absolute w-auto p-2 text-sm m-2  min-w-max translate-x-2  left-24 z-10 rounded-md shadow-md
 		text-dark-layer-2 bg-gray-200  origin-center scale-0 transition-all duration-100 ease-linear group-hover:scale-100;
 	}
+  .solvedBtn {
+		@apply relative rounded font-medium items-center transition-all focus:outline-none ml-auto px-1 mr-2;
+	}
+
+	.solvedBtn-tooltip {
+		@apply absolute w-auto p-[6px] text-xs m-1 min-w-max translate-x-3 left-4 z-10 rounded-md shadow-md 
+		text-dark-layer-2 bg-gray-200  bg-opacity-75 origin-center scale-0 transition-all duration-100 ease-linear group-hover:scale-100;
+	}
+  
+
 
 }
 
@@ -138,7 +148,7 @@ code {
 }
 
 .example-card pre {
-	background-color: hsla(0, 0%, 100%, 0.1);
+	background-color: hsla(0, 0%, 100%, 0.05);
 	border-radius: 0.5rem;
 	color: rgba(239, 241, 246, 0.75);
 	font-size: 0.98rem;
@@ -169,10 +179,25 @@ code {
 }
 
 .hover-shadow:hover {
-  -webkit-filter: drop-shadow(5px 5px 5px rgba(255, 255, 255, 0.6));
-  filter: drop-shadow(5px 5px 5px rgba(255, 255, 255, 0.6));
+  -webkit-filter: drop-shadow(4px 4px 4px rgba(255, 255, 255, 0.3));
+  filter: drop-shadow(4px 4px 4px rgba(255, 255, 255, 0.3));
   }
   
 .hover-shadow {
   transition: filter 0.3s ease;
 }  
+
+
+@layer components {
+  .blink-cursor:after {
+    content: '|';
+    @apply text-dark-yellow;
+    animation: blink 1s step-start infinite;
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+    
+  }
+}
