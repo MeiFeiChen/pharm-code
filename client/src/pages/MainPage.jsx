@@ -31,11 +31,11 @@ function MainPage() {
       <div className="z-2">
         <Navbar style={{ zIndex: 2 }}/>
       </div>
-      <div className="flex-grow w-full mx-auto relative bg-[#1A1A1A]">
-        <div className="relative md:absolute md:right-20 md:top-1/2 md:transform md:-translate-y-1/2 z-10 mx-auto ">
-          <img src={`/logo-large.png`} className="opacity-30 transition-opacity  md:w-auto "/>
+      <div className="flex-grow w-full relative bg-[#1A1A1A]">
+        <div className="relative md:absolute md:right-0 md:top-1/2 md:transform md:-translate-y-1/2 z-10">
+          <img src={`/logo-large.png`} className="opacity-30 transition-opacity  md:w-3/4 "/>
         </div>
-        <div className="p-20 h-full flex flex-col justify-center xl:ml-44 relative z-30">
+        <div className="h-full flex flex-col justify-center xl:ml-44 relative z-30">
           <h1 className="text-4xl font-bold mb-5 text-white md:text-start md:text-7xl text-center">
                   Online Judge <br /> 
                   System
