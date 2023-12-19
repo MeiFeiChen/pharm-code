@@ -11,7 +11,7 @@ import { sql } from '@codemirror/lang-sql'
 import EditorFooter from './EditorFooter'
 import { apiAssistanceItem, apiProblemSubmission, apiProblemSubmissionItem } from '../../../api'
 import { getAuthToken } from '../../../utils'
-import { socket } from '../../../socket'
+
 import { runTestSocket } from '../../../socket'
 import { CodeContext, AuthContext } from '../../../context'
 import { toast, Zoom } from 'react-toastify'
@@ -29,7 +29,7 @@ import useLocalStorage from '../../../hooks/useLocalStorage'
 const languageExtension = {
   js: [javascript({ jsx: true }), [EditorView.lineWrapping]], 
   py: [python(), [EditorView.lineWrapping]],
-  mysql: [sql()]
+  mysql: [sql(), [EditorView.lineWrapping]]
 }
 
 Playground.propTypes = {

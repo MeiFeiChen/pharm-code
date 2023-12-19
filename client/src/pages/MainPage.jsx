@@ -1,7 +1,5 @@
 import Navbar from "../components/Navbar/Navbar"
 import { useEffect, useState } from "react";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { loadSlim } from "@tsparticles/slim"
 import { useNavigate } from 'react-router-dom'
 import Particle from "../components/Particle";
 
@@ -38,11 +36,11 @@ function MainPage() {
           <img src={`/logo-large.png`} className="opacity-30 transition-opacity  md:w-auto "/>
         </div>
         <div className="p-20 h-full flex flex-col justify-center xl:ml-44 relative z-30">
-          <h1 className="text-7xl font-bold mb-5 text-white md:text-start text-center">
+          <h1 className="text-4xl font-bold mb-5 text-white md:text-start md:text-7xl text-center">
                   Online Judge <br /> 
                   System
           </h1>
-          <p className={`text-white lg:text-lg font-normal mb-6 md:text-start text-center blink-cursor`}>
+          <p className={`text-white font-normal mb-6 md:text-start text-center blink-cursor`}>
             { typeWord }
           </p>
           <div className='flex align-middle justify-center md:justify-start'>
