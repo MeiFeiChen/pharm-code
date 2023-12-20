@@ -33,30 +33,6 @@ export default function ProblemSubmission({ problem }) {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   }
-
-  useEffect(() => {
-    const fetchData = async() => {
-      try {
-        const { data } = await apiProblemSubmissionItems(problemId, config)
-        // if (!submittedId) setHeaderResult(data.data[0])
-        setResults(data.data)
-      } catch(error) {
-        console.error('Error fetching submission data', error)
-        setResults([])
-      } finally {
-        setLoading(false)
-      }
-    }
-    if (isLogin) {
-      fetchData()
-    } else {
-      setResults([])
-      setUserProfile(null)
-      navigate(`/problems/${problemId}/submission`)
-    } 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [problemId, location.state, isLogin])
-
   useEffect(() => {
     const fetchData = async() => {
       try {
@@ -83,6 +59,31 @@ export default function ProblemSubmission({ problem }) {
     } 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.state, submittedId, results, isLogin])
+
+  useEffect(() => {
+    const fetchData = async() => {
+      try {
+        const { data } = await apiProblemSubmissionItems(problemId, config)
+        // if (!submittedId) setHeaderResult(data.data[0])
+        setResults(data.data)
+      } catch(error) {
+        console.error('Error fetching submission data', error)
+        setResults([])
+      } finally {
+        setLoading(false)
+      }
+    }
+    if (isLogin) {
+      fetchData()
+    } else {
+      setResults([])
+      setUserProfile(null)
+      navigate(`/problems/${problemId}/submission`)
+    } 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [problemId, location.state, isLogin])
+
+ 
   
   
 	return (
