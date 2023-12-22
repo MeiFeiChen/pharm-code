@@ -3,72 +3,201 @@
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: rgba(255, 255, 255, 0.87); */
   background-color: #242424;
 
-  font-synthesis: none;
+  /* font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%; */
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+
+.cm-scroller { overflow: auto; min-height: 350px; min-width: 400px;}
+
+/* RESET */
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+		"Open Sans", "Helvetica Neue", sans-serif;
+	height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+@layer components {
+	.preferenceBtn {
+		@apply relative rounded px-3 py-1.5 font-medium items-center transition-all focus:outline-none inline-flex  ml-auto p-1 mr-2 hover:bg-dark-fill-3;
+	}
+
+	.preferenceBtn-tooltip {
+		@apply absolute w-auto p-2 text-sm m-2  min-w-max translate-x-3  right-0 top-5 z-10 rounded-md shadow-md
+		text-dark-layer-2 bg-gray-200  origin-center scale-0 transition-all duration-100 ease-linear group-hover:scale-100;
+	}
+
+  .createPostBtn {
+		@apply  rounded font-medium transition-all focus:outline-none inline-flex  ml-auto;
+	}
+	.createPostBtn-tooltip {
+		@apply  w-auto p-2 mx-2 text-sm min-w-max translate-x-2  right-24 z-10 rounded-md shadow-md
+		text-dark-layer-2 bg-gray-200  origin-center scale-0 transition-all duration-100 ease-linear group-hover:scale-100;
+	}
+  
+  .addPostBtn {
+		@apply relative rounded font-medium items-center transition-all focus:outline-none inline-flex  ml-auto ;
+	}
+	.addPostBtn-tooltip {
+		@apply absolute w-auto p-2 text-sm m-2  min-w-max translate-x-2  left-24 z-10 rounded-md shadow-md
+		text-dark-layer-2 bg-gray-200  origin-center scale-0 transition-all duration-100 ease-linear group-hover:scale-100;
+	}
+  .solvedBtn {
+		@apply relative rounded font-medium items-center transition-all focus:outline-none ml-auto px-1 mr-2;
+	}
+
+	.solvedBtn-tooltip {
+		@apply absolute w-auto p-[6px] text-xs m-1 min-w-max translate-x-3 left-4 z-10 rounded-md shadow-md 
+		text-dark-layer-2 bg-gray-200  bg-opacity-75 origin-center scale-0 transition-all duration-100 ease-linear group-hover:scale-100;
+	}
+  
+
+
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+
+@layer components {
+	.editorFooterBtn {
+		@apply relative rounded px-3 py-1.5 font-medium items-center transition-all focus:outline-none inline-flex  ml-auto p-1 mr-2 hover:bg-dark-fill-3;
+	}
+
+	.editorFooterBtn-tooltip {
+		@apply absolute w-auto p-2 text-sm m-2  min-w-max translate-x-3  right-0 bottom-3 z-50 rounded-md shadow-md
+		text-dark-layer-2 bg-gray-200  origin-center  transition-all duration-100 ease-linear scale-100;
+	}
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+
+/* dark  scrollbar */
+::-webkit-scrollbar {
+	width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+	background: #282828;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #4d4d4d;
+}
+
+/* CODE EDITOR*/
+.cm-scroller,
+.cm-gutters {
+	background-color: #282828 !important;
+}
+.cm-focused {
+	outline: none !important;
+}
+
+.split {
+	display: flex;
+	flex-direction: row;
+}
+
+.gutter {
+	background-color: rgb(26, 26, 26);
+	background-repeat: no-repeat;
+	background-position: 50%;
+}
+.gutter:hover {
+	background-color: #0a84ff;
+}
+
+.gutter.gutter-horizontal {
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==");
+	cursor: col-resize;
+}
+
+.gutter.gutter-vertical {
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=");
+	cursor: row-resize;
+}
+
+code {
+	border-radius: 5px;
+	border-width: 1px;
+	font-family: sans-serif;
+	font-size: 0.75rem;
+	font-weight: 500;
+	line-height: 1rem;
+	padding: 0.125rem;
+	letter-spacing: 1px;
+	white-space: pre-wrap;
+	background-color: hsla(0, 0%, 100%, 0.07);
+	border-color: rgba(247, 250, 255, 0.12);
+	color: rgba(239, 241, 246, 0.75);
+}
+
+.example-card pre {
+	background-color: hsla(0, 0%, 100%, 0.05);
+	border-radius: 0.5rem;
+	color: rgba(239, 241, 246, 0.75);
+	font-size: 0.98rem;
+	line-height: 1.25rem;
+	margin-bottom: 1rem;
+	margin-top: 1rem;
+	padding: 1rem;
+	white-space: pre-wrap;
+}
+.example-card pre strong {
+	color: white;
+	font-size: 1rem;
+}
+
+/* fix code editor style */
+.w-md-editor-text {
+  min-height: 100% !important;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* For IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.hover-shadow:hover {
+  -webkit-filter: drop-shadow(4px 4px 4px rgba(255, 255, 255, 0.3));
+  filter: drop-shadow(4px 4px 4px rgba(255, 255, 255, 0.3));
   }
-  a:hover {
-    color: #747bff;
+  
+.hover-shadow {
+  transition: filter 0.3s ease;
+}  
+
+
+@layer components {
+  .blink-cursor:after {
+    content: '|';
+    @apply text-dark-yellow;
+    animation: blink 1s step-start infinite;
   }
-  button {
-    background-color: #f9f9f9;
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+    
   }
 }
-.cm-scroller { overflow: auto; min-height: 350px; min-width: 400px;}

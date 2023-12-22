@@ -1,53 +1,67 @@
 import express from 'express'
 import cors from 'cors'
-import fs from 'fs'
-import { Job } from './models/job.js'
-import addJobToQueue from './jobQueue.js'
-import generateFile from './generateFile.js'
+import dotenv from 'dotenv'
+import morgan from 'morgan'
+import { Server } from 'socket.io'
+import { createServer } from 'http'
+import problemRouter from './api/problems/problemRouter.js'
+import userRouter from './api/user/userRouter.js'
+import openAIRouter from './api/openai/openAIRouter.js'
+import adminRouter from './api/admin/adminRouter.js'
+import { processProblem } from './config/testQueue.js'
+import processMysqlProblem from './config/mysqlTestQueue.js'
 
+dotenv.config()
+
+const port = process.env.PORT
 const app = express()
-const port= 3000
+const server = createServer(app)
 
+const io = new Server(server, {
+  cors: {
+    origin: '*'
+  }
+})
+
+io.on('connection', (socket) => {
+  console.log('a user connected')
+  socket.on('joinPost', (postId) => {
+    socket.join(postId)
+    console.log(`Server: User joined ${postId}`)
+  })
+
+  socket.on('disconnect', () => {
+    console.log('user disconnect')
+  })
+  socket.on('task', (data) => {
+    console.log('server side received', data)
+  })
+  socket.on('test_data', async (data) => {
+    socket.join(socket.id)
+    const { problemId, language, code } = data
+    if (language !== 'mysql') {
+      const result = await processProblem(problemId, language, code)
+      io.to(socket.id).emit('result', result)
+    } else {
+      const result = await processMysqlProblem(problemId, language, code)
+      io.to(socket.id).emit('result', result)
+    }
+  })
+})
+
+app.set('socketio', io)
+
+app.use(morgan('dev'))
 app.use(cors('*'))
+app.options('*', cors())
+
 app.use(express.json())
 
+app.use('/api/user', userRouter)
+app.use('/api/problems', problemRouter)
+app.use('/api/assistance', openAIRouter)
+app.use('/api/admin', adminRouter)
 
-app.get('/status', async(req, res) => {
-  const jobId = req.query.id;
-
-  if (jobId === undefined) {
-    return res
-      .status(400)
-      .json({ success: false, error: "missing id query param" });
-  }
-
-  const job = await Job.findById(jobId);
-
-  if (job === undefined) {
-    return res.status(400).json({ success: false, error: "couldn't find job" });
-  }
-
-  return res.status(200).json({ success: true, job });
-
-})
-
-app.post('/run', async(req, res) => {
-  const { language = "js", code } = req.body;
-
-  console.log(language, "Length:", code.length);
-
-  if (code === undefined) {
-    return res.status(400).json({ success: false, error: "Empty code body!" });
-  }
-  // need to generate a c++ file with content from the request
-  const filename = await generateFile(language, code)
-  // write into DB
-  const job = await new Job({ language, filename }).save()
-  const jobId = job["_id"];
-  addJobToQueue(jobId);
-  res.status(201).json({ jobId });
-})
-
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is listening on port ${port}....`)
 })

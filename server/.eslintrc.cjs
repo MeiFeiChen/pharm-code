@@ -23,5 +23,11 @@ module.exports = {
   },
   rules: {
     semi: 0,
+    'import/no-extraneous-dependencies': 'off',
+    'import/extensions': 'off',
+    'no-console': 'off',
+    'comma-dangle': 'off',
+    'no-underscore-dangle': 'off', 
+    'max-classes-per-file': 'off'
   },
 };

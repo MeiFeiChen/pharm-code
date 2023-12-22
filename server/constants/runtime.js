@@ -1,10 +1,12 @@
 const languageRuntime = {
   js: {
-    containerName: 'execJs',
+    imageName: 'online_javascript',
+    containerName: 'javascript_oj',
     runtimeCommand: 'node',
   },
   py: {
-    containerName: 'execPy',
+    imageName: 'online_python',
+    containerName: 'python_oj',
     runtimeCommand: 'python3',
   },
 };
