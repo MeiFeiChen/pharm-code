@@ -1,4 +1,4 @@
-<div style="text-align: center;">
+<div align="center">
   <h1>PharmCode</h1>
   <img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/89321d3b-54ec-485f-976c-64426e64facf" alt="logo-icon" width="60">
   <img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/524aef90-63d5-4d05-8ffe-70234a84bf4f" alt="logo" width="300">
@@ -9,20 +9,8 @@
     </span>   
   </div>
 </div>
-
 A beginner-friendly **online judge system** providing easy coding challenges and real-time discussion forums, augmented with AI code review to enhance coding and algorithmic skills.  
-<div style="display: flex; align-items: center;">
-  <div>Supports languages:&nbsp;&nbsp;</div>
-  <div style="display: flex; align-items: center;">
-  <span style="margin: 0; padding: 0;"><strong>Javascript&nbsp;&nbsp;</strong></span>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="18" /> &nbsp;&nbsp;|
-  </div>
-  <div style="display: flex; align-items: center;">
-  <span style="margin: 0; padding: 0;"><strong>&nbsp;&nbsp;Python&nbsp;&nbsp;</strong></span>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="javascript" width="18" /> &nbsp;&nbsp;|
-  </div>
-  <span style="margin: 0; padding: 0;"><strong>&nbsp;&nbsp;SQL&nbsp;&nbsp;</strong></span>
-</div>
+**Languages Supported:** JavaScript <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="18" /> &nbsp;&nbsp;| &nbsp; Python <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="18" />&nbsp;&nbsp;| &nbsp;SQL
 
 
 <div id="outlines">
@@ -32,22 +20,27 @@ A beginner-friendly **online judge system** providing easy coding challenges and
   </h2>
 </div>
 <div>
-  <span>
+
+ [Getting Started](#get-started) | [Features](#features) | [Tech Stack](#tech-stack) | [Structure](#structure) | [Database Schema](#database-schema) | [Contacts](#contacts)
+  <!-- <span>
     <a href="#get-started">Getting Started</a> | 
     <a href="#features">Feature</a> | 
     <a href="#tech-stack">Tech Stack</a> |
     <a href="#structure">Structure</a> |
     <a href="#database-schema">Database Schema</a> |
     <a href="#contacts">Contacts</a> 
-  </span>   
+  </span>    -->
 </div>
 
-<div id="get-started">
-  <h2 style="display: flex; justify-content: space-between; align-items: center;">
-    Getting Started  <a name='get-started'></a>
+
+##  Getting Started <a name='get-started'></a>
+  <!-- <h2 style="display: flex; justify-content: space-between; align-items: center;">
+    Getting Started  
     <a href="#top" style="font-size: 14px;">Back to top</a>
   </h2>
-</div>
+<div id="get-started"> -->
+
+
 
 **Step 1:** Log in and then navigate to the **Problem Set Page** and select the desired problem to solve.  
 **Step 2:** Start coding and begin solving the problem 🚀.
@@ -187,5 +180,3 @@ A beginner-friendly **online judge system** providing easy coding challenges and
   [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mei-fei-chen/)
 
 </div>
-
-https://github.com/alexandresanlim/Badges4-README.md-Profile
