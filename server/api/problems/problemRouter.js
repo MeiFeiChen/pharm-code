@@ -1,5 +1,5 @@
 import express from 'express'
-import { param } from 'express-validator'
+import { body, param } from 'express-validator'
 import handleResult from '../../middleware/validator.js'
 import {
   submitProblem,
@@ -21,14 +21,16 @@ problemRouter.get('/', getProblemsPage)
 
 problemRouter.get(
   '/:id',
-  param('id').isInt().not().isEmpty(),
+  param('id').isInt().notEmpty(),
   handleResult,
   getProblemPage
 )
 
 problemRouter.post(
   '/:id/submit',
-  param('id').isInt().not().isEmpty(),
+  param('id').isInt().notEmpty(),
+  body('language').exists().notEmpty(),
+  body('code').exists().notEmpty(),
   handleResult,
   verifyAuth,
   submitProblem
@@ -36,8 +38,8 @@ problemRouter.post(
 
 problemRouter.get(
   '/:id/submissions/:submittedId',
-  param('id').isInt().not().isEmpty(),
-  param('submittedId').isInt().not().isEmpty(),
+  param('id').isInt().notEmpty(),
+  param('submittedId').isInt().notEmpty(),
   handleResult,
   verifyAuth,
   getSubmission
@@ -45,53 +47,47 @@ problemRouter.get(
 
 problemRouter.get(
   '/:id/submissions',
-  param('id').isInt().not().isEmpty(),
+  param('id').isInt().notEmpty(),
   handleResult,
   verifyAuth,
   getSubmissions
 )
 
-// discussion
-// get all the posts in the discussion
 problemRouter.get(
   '/:id/discussion',
-  param('id').isInt().not().isEmpty(),
+  param('id').isInt().notEmpty(),
   handleResult,
   getDiscussion
 )
 
-// create a post in a discussion
 problemRouter.post(
   '/:id/discussion',
-  param('id').isInt().not().isEmpty(),
+  param('id').isInt().notEmpty(),
   handleResult,
   verifyAuth,
   createDiscussion
 )
 
-// get single post
 problemRouter.get(
   '/:id/discussion/:postId',
-  param('id').isInt().not().isEmpty(),
-  param('postId').isInt().not().isEmpty(),
+  param('id').isInt().notEmpty(),
+  param('postId').isInt().notEmpty(),
   handleResult,
   getPost
 )
 
-// get all the message of a post
 problemRouter.get(
   '/:id/discussion/:postId/messages',
-  param('id').isInt().not().isEmpty(),
-  param('postId').isInt().not().isEmpty(),
+  param('id').isInt().notEmpty(),
+  param('postId').isInt().notEmpty(),
   handleResult,
   getPostMessage
 )
 
-// create a message in a post
 problemRouter.post(
   '/:id/discussion/:postId/messages',
-  param('id').isInt().not().isEmpty(),
-  param('postId').isInt().not().isEmpty(),
+  param('id').isInt().notEmpty(),
+  param('postId').isInt().notEmpty(),
   handleResult,
   verifyAuth,
   createPostMessage

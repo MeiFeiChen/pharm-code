@@ -1,4 +1,3 @@
-import { table, getBorderCharacters } from 'table'
 import { addProblemToQueue, addMysqlProblemToQueue } from '../../config/bullQueue.js'
 import {
   createSubmission,
@@ -14,6 +13,7 @@ import {
   createMessage,
   getUserName
 } from './problemModel.js'
+import { formatToTable, processTableData } from '../../utils/tableFormat.js'
 
 export const getProblemsPage = async (req, res) => {
   try {
@@ -29,29 +29,20 @@ export const getProblemPage = async (req, res) => {
   const { id: problemId } = req.params
   try {
     const problem = await getProblem(problemId)
-    const exampleCases = await getTestCases(problemId, 'example')
+    let exampleCases = await getTestCases(problemId, 'example')
     if (problem.database) {
-      // handle input to table format
-      const inputData = JSON.parse(problem.input)
-      problem.input = Object.keys(inputData).reduce((acc, cur) => {
-        if (!acc[cur]) acc[cur] = table(inputData[cur], { border: getBorderCharacters('ramac') })
-        return acc
-      }, {})
+      problem.input = processTableData(problem.input)
 
-      exampleCases.forEach((example, index) => {
-        // handle example input to table format
-        exampleCases[index].test_input = JSON.parse(example.test_input)
-        Object.keys(example.test_input).forEach((key) => {
-          exampleCases[index].test_input[key] = table(example.test_input[key], { border: getBorderCharacters('ramac') })
-        })
-        // handle example output to table format
-        const exampleOutputData = JSON.parse(example.expected_output).map(
-          (row) => Object.values(row)
-        )
-        const exampleOutPutTable = ([
-          Object.keys(JSON.parse(example.expected_output)[0]), ...exampleOutputData
-        ])
-        exampleCases[index].expected_output = table(exampleOutPutTable, { border: getBorderCharacters('ramac') })
+      exampleCases = exampleCases.map((example) => {
+        const exampleInput = processTableData(example.test_input)
+        const exampleOutputParsed = JSON.parse(example.expected_output)
+        const exampleOutputData = exampleOutputParsed.map(Object.values)
+        const exampleOutputTable = [Object.keys(exampleOutputParsed[0]), ...exampleOutputData]
+        return {
+          ...example,
+          test_input: exampleInput,
+          expected_output: formatToTable(exampleOutputTable),
+        }
       })
     }
     const data = { ...problem, exampleCases }
@@ -68,18 +59,10 @@ export const submitProblem = async (req, res) => {
   const { id: problemId } = req.params
   const { language, code } = req.body
 
-  if (!code) {
-    return res.status(400).json({ success: false, error: 'Empty code body' })
-  }
   try {
-    // store data to db
     const submittedId = await createSubmission(userId, problemId, language, 'pending', code)
-    if (language === 'mysql') {
-    // add job to queue
-      addMysqlProblemToQueue(submittedId, problemId, language, code)
-    } else {
-      addProblemToQueue(submittedId, language, code)
-    }
+    const addToQueue = language === 'mysql' ? addMysqlProblemToQueue : addProblemToQueue
+    addToQueue(submittedId, problemId, language, code)
     return res.status(201).json({ success: true, submittedId })
   } catch (err) {
     console.error(err)
@@ -159,7 +142,7 @@ export const getPost = async (req, res) => {
     if (err instanceof Error) {
       return res.status(500).json({ errors: err.message })
     }
-    return res.status(500).json({ errors: 'get messages failed' })
+    return res.status(500).json({ errors: 'get posts failed' })
   }
 }
 
