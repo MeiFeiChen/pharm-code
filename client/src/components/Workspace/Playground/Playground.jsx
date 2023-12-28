@@ -11,14 +11,13 @@ import { sql } from '@codemirror/lang-sql'
 import EditorFooter from './EditorFooter'
 import { apiAssistanceItem, apiProblemSubmission, apiProblemSubmissionItem } from '../../../api'
 import { getAuthToken } from '../../../utils'
-
 import { runTestSocket } from '../../../socket'
 import { CodeContext, AuthContext } from '../../../context'
 import { toast, Zoom } from 'react-toastify'
 import AlgorithmTestCases from './TestCases/AlgorithmTestCases'
 import CodeReview from './CodeReview'
 import AlgorithmTestCasesResult from './TestCases/AlgorithmTestCasesResult'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useSetRecoilState } from "recoil"
 import { authModalState } from "../../../atoms/authModalAtom"
 import DatabaseTestCases from './TestCases/DatabaseTestCases'
@@ -37,6 +36,7 @@ Playground.propTypes = {
 }
 
 function Playground({ problem }) {
+  const { problemId } = useParams()
   const { isLogin } = useContext(AuthContext)
   const setAuthModalState = useSetRecoilState(authModalState)
   const { code, setCode } = useContext(CodeContext)
@@ -71,6 +71,12 @@ function Playground({ problem }) {
   const handleClick = (type) => {
     setAuthModalState((prev) => ({ ...prev, isOpen: true, type }))
   }
+  useEffect(() => {
+    setTestResult(null)
+    setCode('')
+    setActiveTab('testCases')
+    setAiReview(null)
+  }, [problemId])
 
   // set default language
   useEffect(() => {
@@ -166,6 +172,7 @@ function Playground({ problem }) {
             closeOnClick: true,
             draggable: true
             })
+            setDisabledButton(false)
         }, 15000)
         const id = toast.loading("Please wait...", {
           draggable: true,
@@ -181,6 +188,7 @@ function Playground({ problem }) {
 
           if (errors) {
             clearInterval(pollInterval)
+            setDisabledButton(false)
             toast.update(id, { 
               render: "Error", 
               type: "error", 
