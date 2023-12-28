@@ -1,7 +1,7 @@
 <div style="text-align: center;">
   <h1>PharmCode</h1>
-  <img src="./public/dist/logo-circle.png" alt="logo-icon" width="60">
-  <img src="./public/dist/logo-word.png" alt="logo" width="300">
+  <img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/89321d3b-54ec-485f-976c-64426e64facf" alt="logo-icon" width="60">
+  <img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/524aef90-63d5-4d05-8ffe-70234a84bf4f" alt="logo" width="300">
   <div>
     <span style='font-size: larger;'>
       <a href="https://phramcode.ameliachen.site/">Website</a> | 
@@ -14,14 +14,14 @@ A beginner-friendly **online judge system** providing easy coding challenges and
 <div style="display: flex; align-items: center;">
   <div>Supports languages:&nbsp;&nbsp;</div>
   <div style="display: flex; align-items: center;">
-  <p style="margin: 0; padding: 0;"><strong>Javascript&nbsp;&nbsp;</strong></p>
+  <span style="margin: 0; padding: 0;"><strong>Javascript&nbsp;&nbsp;</strong></span>
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="18" /> &nbsp;&nbsp;|
   </div>
   <div style="display: flex; align-items: center;">
-  <p style="margin: 0; padding: 0;"><strong>&nbsp;&nbsp;Python&nbsp;&nbsp;</strong></p>
+  <span style="margin: 0; padding: 0;"><strong>&nbsp;&nbsp;Python&nbsp;&nbsp;</strong></span>
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="javascript" width="18" /> &nbsp;&nbsp;|
   </div>
-  <p style="margin: 0; padding: 0;"><strong>&nbsp;&nbsp;SQL&nbsp;&nbsp;</strong></p>
+  <span style="margin: 0; padding: 0;"><strong>&nbsp;&nbsp;SQL&nbsp;&nbsp;</strong></span>
 </div>
 
 
@@ -61,7 +61,7 @@ A beginner-friendly **online judge system** providing easy coding challenges and
 <div id="features">
   <h2 style="display: flex; justify-content: space-between; align-items: center;">
     Features<a name='features'></a>
-    <a href="#top" style="font-size: 14px;">Back to top</a>
+    <a href="#top" style="font-size: 10px;">Back to top</a>
   </h2>
 </div>
 
@@ -92,7 +92,7 @@ A beginner-friendly **online judge system** providing easy coding challenges and
 <div id="tech-stack">
   <h2 style="display: flex; justify-content: space-between; align-items: center;">
     Tech Stack<a name='tech-stack'></a>
-    <a href="#top" style="font-size: 14px;">Back to top</a>
+    <a href="#top" style="font-size: 10px;">Back to top</a>
   </h2>
 </div>
 
@@ -153,7 +153,7 @@ A beginner-friendly **online judge system** providing easy coding challenges and
 <div id="structure">
   <h2 style="display: flex; justify-content: space-between; align-items: center;">
     Structure<a name='structure'></a>
-    <a href="#top" style="font-size: 14px;">Back to top</a>
+    <a href="#top" style="font-size: 10px;">Back to top</a>
   </h2>
 </div>
 
@@ -163,11 +163,11 @@ A beginner-friendly **online judge system** providing easy coding challenges and
 <div id="database-schema">
   <h2 style="display: flex; justify-content: space-between; align-items: center;">
     SQL Database Schema<a name='structure'></a>
-    <a href="#top" style="font-size: 14px;">Back to top</a>
+    <a href="#top" style="font-size: 10px;">Back to top</a>
   </h2>
 </div>
 
-![image]()
+![image](https://github.com/MeiFeiChen/pharm-code/assets/109078865/229486d9-f76f-41d6-9117-43a1f9097aa7)
 
 
 
@@ -177,7 +177,7 @@ A beginner-friendly **online judge system** providing easy coding challenges and
 <div id="contacts">
 <h2 style="display: flex; justify-content: space-between; align-items: center;">
   Contacts
-  <a href="#top" style="font-size: 14px;">Back to top</a>
+  <a href="#top" style="font-size: 10px;">Back to top</a>
 </h2>
 
 
