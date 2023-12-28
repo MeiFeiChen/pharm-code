@@ -14,39 +14,28 @@
 </div>
 A beginner-friendly **online judge system** providing easy coding challenges and real-time discussion forums, augmented with AI code review to enhance coding and algorithmic skills.
 
-**Languages Supported:** JavaScript <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="18" />| &nbsp; Python <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="18" />| &nbsp;SQL
+**Languages Supported:** JavaScript <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="18" />&nbsp;| &nbsp; Python <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="18" />&nbsp;| &nbsp;SQL
 
 
 ##  Outlines <a name='outlines'></a>
  [Getting Started](#get-started) | [Features](#features) | [Tech Stack](#tech-stack) | [Structure](#structure) | [Database Schema](#database-schema) | [Contacts](#contacts)
-  <!-- <span>
-    <a href="#get-started">Getting Started</a> | 
-    <a href="#features">Feature</a> | 
-    <a href="#tech-stack">Tech Stack</a> |
-    <a href="#structure">Structure</a> |
-    <a href="#database-schema">Database Schema</a> |
-    <a href="#contacts">Contacts</a> 
-  </span>    -->
-</div>
+
 
 
 ##  Getting Started <a name='get-started'></a>
-  <!-- <h2 style="display: flex; justify-content: space-between; align-items: center;">
-    Getting Started  
-    <a href="#top" style="font-size: 14px;">Back to top</a>
-  </h2>
-<div id="get-started"> -->
-
 
 
 **Step 1:** Log in and then navigate to the **Problem Set Page** and select the desired problem to solve.  
 **Step 2:** Start coding and begin solving the problem 🚀.
 
 
-<img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/29a2941f-c41e-40a7-ade0-86e655b70d04" alt="problemSets image" width="650"/>
-<img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/7efcfc61-44e5-470c-9a17-0c8cfb4a9dd2" alt="problemSets image" width="650"/>
+<img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/29a2941f-c41e-40a7-ade0-86e655b70d04" alt="problemSets image" width="750"/>
+<img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/7efcfc61-44e5-470c-9a17-0c8cfb4a9dd2" alt="problemSets image" width="750"/>
 <!-- 影片 -->
 
+<p align="right">
+  <small><a href="#top">Back to Top</a></small>
+</p>
 
 ##  Features <a name='features'></a>
 * ### Analyze the user-submitted code
@@ -71,6 +60,9 @@ A beginner-friendly **online judge system** providing easy coding challenges and
 
 
 
+<p align="right">
+  <small><a href="#top">Back to Top</a></small>
+</p>
 
 ##  Tech Stack <a name='tech-stack'></a>
 
@@ -125,12 +117,18 @@ A beginner-friendly **online judge system** providing easy coding challenges and
 </table>
 
 
+<p align="right">
+  <small><a href="#top">Back to Top</a></small>
+</p>
 
 ##  Structure <a name='structure'></a>
 
 
 ![image](https://github.com/MeiFeiChen/pharm-code/assets/109078865/0b25f7c2-44f6-4cd1-ab35-d213d6582a00)
 
+<p align="right">
+  <small><a href="#top">Back to Top</a></small>
+</p>
 
 ##  Database Schema <a name='database-schema'></a>
 
@@ -139,6 +137,9 @@ A beginner-friendly **online judge system** providing easy coding challenges and
 
 
 
+<p align="right">
+  <small><a href="#top">Back to Top</a></small>
+</p>
 
 ##  Contacts <a name='contacts'></a>
 
@@ -148,4 +149,6 @@ A beginner-friendly **online judge system** providing easy coding challenges and
   
   [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mei-fei-chen/)
 
-</div>
+<p align="right">
+  <small><a href="#top">Back to Top</a></small>
+</p>
