@@ -1,5 +1,8 @@
+<center>
+
+# PharmCode <a name='top'></a>
+</center>
 <div align="center">
-  <h1>PharmCode</h1>
   <img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/89321d3b-54ec-485f-976c-64426e64facf" alt="logo-icon" width="60">
   <img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/524aef90-63d5-4d05-8ffe-70234a84bf4f" alt="logo" width="300">
   <div>
@@ -9,18 +12,12 @@
     </span>   
   </div>
 </div>
-A beginner-friendly **online judge system** providing easy coding challenges and real-time discussion forums, augmented with AI code review to enhance coding and algorithmic skills.  
-**Languages Supported:** JavaScript <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="18" /> &nbsp;&nbsp;| &nbsp; Python <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="18" />&nbsp;&nbsp;| &nbsp;SQL
+A beginner-friendly **online judge system** providing easy coding challenges and real-time discussion forums, augmented with AI code review to enhance coding and algorithmic skills.
+
+**Languages Supported:** JavaScript <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="18" />| &nbsp; Python <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="18" />| &nbsp;SQL
 
 
-<div id="outlines">
-  <h2 style="display: flex; justify-content: space-between; align-items: center;">
-    Outline
-    <a href="#top" style="font-size: 14px;">Back to top</a>
-  </h2>
-</div>
-<div>
-
+##  Outlines <a name='outlines'></a>
  [Getting Started](#get-started) | [Features](#features) | [Tech Stack](#tech-stack) | [Structure](#structure) | [Database Schema](#database-schema) | [Contacts](#contacts)
   <!-- <span>
     <a href="#get-started">Getting Started</a> | 
@@ -51,13 +48,7 @@ A beginner-friendly **online judge system** providing easy coding challenges and
 <!-- 影片 -->
 
 
-<div id="features">
-  <h2 style="display: flex; justify-content: space-between; align-items: center;">
-    Features<a name='features'></a>
-    <a href="#top" style="font-size: 10px;">Back to top</a>
-  </h2>
-</div>
-
+##  Features <a name='features'></a>
 * ### Analyze the user-submitted code
 
   | Result Type | Description | Other information |
@@ -81,13 +72,7 @@ A beginner-friendly **online judge system** providing easy coding challenges and
 
 
 
-
-<div id="tech-stack">
-  <h2 style="display: flex; justify-content: space-between; align-items: center;">
-    Tech Stack<a name='tech-stack'></a>
-    <a href="#top" style="font-size: 10px;">Back to top</a>
-  </h2>
-</div>
+##  Tech Stack <a name='tech-stack'></a>
 
 <table>
     <tr>
@@ -141,24 +126,13 @@ A beginner-friendly **online judge system** providing easy coding challenges and
 
 
 
+##  Structure <a name='structure'></a>
 
-
-<div id="structure">
-  <h2 style="display: flex; justify-content: space-between; align-items: center;">
-    Structure<a name='structure'></a>
-    <a href="#top" style="font-size: 10px;">Back to top</a>
-  </h2>
-</div>
 
 ![image](https://github.com/MeiFeiChen/pharm-code/assets/109078865/0b25f7c2-44f6-4cd1-ab35-d213d6582a00)
 
 
-<div id="database-schema">
-  <h2 style="display: flex; justify-content: space-between; align-items: center;">
-    SQL Database Schema<a name='structure'></a>
-    <a href="#top" style="font-size: 10px;">Back to top</a>
-  </h2>
-</div>
+##  Database Schema <a name='database-schema'></a>
 
 ![image](https://github.com/MeiFeiChen/pharm-code/assets/109078865/229486d9-f76f-41d6-9117-43a1f9097aa7)
 
@@ -166,12 +140,7 @@ A beginner-friendly **online judge system** providing easy coding challenges and
 
 
 
-
-<div id="contacts">
-<h2 style="display: flex; justify-content: space-between; align-items: center;">
-  Contacts
-  <a href="#top" style="font-size: 10px;">Back to top</a>
-</h2>
+##  Contacts <a name='contacts'></a>
 
 
 * Author: Amelia Chen 陳玫妃
