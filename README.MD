@@ -6,6 +6,7 @@
 
 ###  <a href="https://phramcode.ameliachen.site/">Website</a> | <a href="https://youtu.be/BCews4TDr-c">Video Demo</a> 
 </div>
+
 A beginner-friendly **online judge system** providing easy coding challenges and real-time discussion forums, augmented with AI code review to enhance coding and algorithmic skills.
 
 
@@ -140,8 +141,8 @@ A beginner-friendly **online judge system** providing easy coding challenges and
 ##  Contacts <a name='contacts'></a>
 
 
-* Author: Amelia Chen 陳玫妃
-* Email: [meifeiccc@gmail.com](mailto:meifeiccc@gmail.com)
+* **Author**: Amelia Chen 陳玫妃
+* **Email**: [meifeiccc@gmail.com](mailto:meifeiccc@gmail.com)
   
   [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mei-fei-chen/)
 
