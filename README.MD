@@ -1,70 +1,39 @@
-<div style="text-align: center;">
-  <h1>PharmCode</h1>
-  <img src="./public/dist/logo-circle.png" alt="logo-icon" width="60">
-  <img src="./public/dist/logo-word.png" alt="logo" width="300">
-  <div>
-    <span style='font-size: larger;'>
-      <a href="https://phramcode.ameliachen.site/">Website</a> | 
-      <a href="https://youtu.be/BCews4TDr-c">Video Demo</a> 
-    </span>   
-  </div>
-</div>
+<div align="center">
 
-A beginner-friendly **online judge system** providing easy coding challenges and real-time discussion forums, augmented with AI code review to enhance coding and algorithmic skills.  
-<div style="display: flex; align-items: center;">
-  <div>Supports languages:&nbsp;&nbsp;</div>
-  <div style="display: flex; align-items: center;">
-  <p style="margin: 0; padding: 0;"><strong>Javascript&nbsp;&nbsp;</strong></p>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="18" /> &nbsp;&nbsp;|
-  </div>
-  <div style="display: flex; align-items: center;">
-  <p style="margin: 0; padding: 0;"><strong>&nbsp;&nbsp;Python&nbsp;&nbsp;</strong></p>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="javascript" width="18" /> &nbsp;&nbsp;|
-  </div>
-  <p style="margin: 0; padding: 0;"><strong>&nbsp;&nbsp;SQL&nbsp;&nbsp;</strong></p>
+# PharmCode <a name='top'></a>
+  <img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/89321d3b-54ec-485f-976c-64426e64facf" alt="logo-icon" width="60">
+  <img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/524aef90-63d5-4d05-8ffe-70234a84bf4f" alt="logo" width="300">
+
+###  <a href="https://phramcode.ameliachen.site/">Website</a> | <a href="https://youtu.be/BCews4TDr-c">Video Demo</a> 
 </div>
+A beginner-friendly **online judge system** providing easy coding challenges and real-time discussion forums, augmented with AI code review to enhance coding and algorithmic skills.
 
 
-<div id="outlines">
-  <h2 style="display: flex; justify-content: space-between; align-items: center;">
-    Outline
-    <a href="#top" style="font-size: 14px;">Back to top</a>
-  </h2>
-</div>
-<div>
-  <span>
-    <a href="#get-started">Getting Started</a> | 
-    <a href="#features">Feature</a> | 
-    <a href="#tech-stack">Tech Stack</a> |
-    <a href="#structure">Structure</a> |
-    <a href="#database-schema">Database Schema</a> |
-    <a href="#contacts">Contacts</a> 
-  </span>   
-</div>
 
-<div id="get-started">
-  <h2 style="display: flex; justify-content: space-between; align-items: center;">
-    Getting Started  <a name='get-started'></a>
-    <a href="#top" style="font-size: 14px;">Back to top</a>
-  </h2>
-</div>
+**Languages Supported:** JavaScript <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="18" />&nbsp;| &nbsp; Python <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="18" />&nbsp;| &nbsp;SQL
+
+
+##  Outlines <a name='outlines'></a>
+ [Getting Started](#get-started) | [Features](#features) | [Tech Stack](#tech-stack) | [Structure](#structure) | [Database Schema](#database-schema) | [Contacts](#contacts)
+
+
+
+##  Getting Started <a name='get-started'></a>
+
 
 **Step 1:** Log in and then navigate to the **Problem Set Page** and select the desired problem to solve.  
 **Step 2:** Start coding and begin solving the problem 🚀.
 
 
-<img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/29a2941f-c41e-40a7-ade0-86e655b70d04" alt="problemSets image" width="650"/>
-<img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/7efcfc61-44e5-470c-9a17-0c8cfb4a9dd2" alt="problemSets image" width="650"/>
+<img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/29a2941f-c41e-40a7-ade0-86e655b70d04" alt="problemSets image" width="750"/>
+<img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/7efcfc61-44e5-470c-9a17-0c8cfb4a9dd2" alt="problemSets image" width="750"/>
 <!-- 影片 -->
 
+<p align="right">
+  <small><a href="#top">Back to Top</a></small>
+</p>
 
-<div id="features">
-  <h2 style="display: flex; justify-content: space-between; align-items: center;">
-    Features<a name='features'></a>
-    <a href="#top" style="font-size: 14px;">Back to top</a>
-  </h2>
-</div>
-
+##  Features <a name='features'></a>
 * ### Analyze the user-submitted code
 
   | Result Type | Description | Other information |
@@ -87,14 +56,11 @@ A beginner-friendly **online judge system** providing easy coding challenges and
 
 
 
+<p align="right">
+  <small><a href="#top">Back to Top</a></small>
+</p>
 
-
-<div id="tech-stack">
-  <h2 style="display: flex; justify-content: space-between; align-items: center;">
-    Tech Stack<a name='tech-stack'></a>
-    <a href="#top" style="font-size: 14px;">Back to top</a>
-  </h2>
-</div>
+##  Tech Stack <a name='tech-stack'></a>
 
 <table>
     <tr>
@@ -147,38 +113,31 @@ A beginner-friendly **online judge system** providing easy coding challenges and
 </table>
 
 
+<p align="right">
+  <small><a href="#top">Back to Top</a></small>
+</p>
 
+##  Structure <a name='structure'></a>
 
-
-<div id="structure">
-  <h2 style="display: flex; justify-content: space-between; align-items: center;">
-    Structure<a name='structure'></a>
-    <a href="#top" style="font-size: 14px;">Back to top</a>
-  </h2>
-</div>
 
 ![image](https://github.com/MeiFeiChen/pharm-code/assets/109078865/0b25f7c2-44f6-4cd1-ab35-d213d6582a00)
 
+<p align="right">
+  <small><a href="#top">Back to Top</a></small>
+</p>
 
-<div id="database-schema">
-  <h2 style="display: flex; justify-content: space-between; align-items: center;">
-    SQL Database Schema<a name='structure'></a>
-    <a href="#top" style="font-size: 14px;">Back to top</a>
-  </h2>
-</div>
+##  Database Schema <a name='database-schema'></a>
 
-![image]()
+![image](https://github.com/MeiFeiChen/pharm-code/assets/109078865/229486d9-f76f-41d6-9117-43a1f9097aa7)
 
 
 
 
+<p align="right">
+  <small><a href="#top">Back to Top</a></small>
+</p>
 
-
-<div id="contacts">
-<h2 style="display: flex; justify-content: space-between; align-items: center;">
-  Contacts
-  <a href="#top" style="font-size: 14px;">Back to top</a>
-</h2>
+##  Contacts <a name='contacts'></a>
 
 
 * Author: Amelia Chen 陳玫妃
@@ -186,6 +145,6 @@ A beginner-friendly **online judge system** providing easy coding challenges and
   
   [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mei-fei-chen/)
 
-</div>
-
-https://github.com/alexandresanlim/Badges4-README.md-Profile
+<p align="right">
+  <small><a href="#top">Back to Top</a></small>
+</p>
