@@ -55,7 +55,7 @@ function Login() {
       initialValues={{
         provider: 'native',
         email: 'test@test.test',
-        password: 'test'
+        password: 'testtest'
       }}
       validationSchema={validate}
       onSubmit={submitHandler}
