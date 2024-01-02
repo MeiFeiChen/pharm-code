@@ -88,9 +88,9 @@ function Profile({ userProfile }) {
               </div>
             </div>
             <div className="mt-4 flex space-x-3 ">
-              <a href="#" className="w-full inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-700">
+              {/* <a href="#" className="w-full inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-700">
                 Edit Profile
-              </a>
+              </a> */}
             </div>
             <hr className="h-0.5 mx-auto mt-4 mb-2 bg-gray-100 border-0 rounded dark:bg-dark-fill-2"/>
             <div className="flex flex-col">
