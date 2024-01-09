@@ -13,17 +13,17 @@ function verifyJWT(token) {
 
 const verifyAuth = async (req, res, next) => {
   const tokenInHeaders = req.get('Authorization')
-  const token = tokenInHeaders?.replace('Bearer ', '') || req.cookies?.jwtToken;
+  const token = tokenInHeaders?.replace('Bearer ', '')
   if (!token) {
     return res.status(401).json({ errors: 'invalid token' })
   }
   try {
     const decoded = await verifyJWT(token)
     res.locals.userId = decoded.userId
+    return next()
   } catch (err) {
     return res.status(401).json({ errors: `Invalid token: ${err.message}` })
   }
-  return next()
 }
 
 export default verifyAuth

@@ -7,7 +7,7 @@
 ###  <a href="https://phramcode.ameliachen.site/">Website</a> | <a href="https://youtu.be/BCews4TDr-c">Video Demo</a> 
 </div>
 
-A beginner-friendly **online judge system** providing easy coding challenges and real-time discussion forums, augmented with AI code review to enhance coding and algorithmic skills.
+A beginner-friendly online judge system providing easy coding challenges and real-time discussion forums, augmented with AI code review to enhance coding and algorithmic skills.
 
 
 
@@ -36,23 +36,25 @@ A beginner-friendly **online judge system** providing easy coding challenges and
 
 ##  Features <a name='features'></a>
 * ### Analyze the user-submitted code
-
+  The Docker setup employs `/usr/bin/time` and `timeout` for monitoring and controlling code execution, focusing on CPU usage and memory. This approach not only tracks performance but also restricts the execution time of the submitted code. This precise analysis categorizes user submissions as follows:
+  
   | Result Type | Description | Other information |
   |-------------|-------------|-------------|
   | **AC   (Accepted)** | the program has passed all test cases.  | Shows runtime and memory usage of the program. |
   | **RE (Runtime Error)** | the program encountered an error during execution, such as division by zero or array index out of bounds. |  Shows the reason for the error and the location of the erroneous code. |
   | **WA (Wrong Answer)** | the program's output does not match the expected answer. | Shows a comparison of the expected output versus the actual output of the program.
   | **TLE (Time Limit Exceeded)** | the program did not complete execution within the specified time limit. Often implies that the code needs optimization or there might be an infinite loop. | |
-
+  
+  This setup ensures efficient and secure evaluation of code, effectively identifying performance issues, errors, and compliance with time constraints.
 
 * ### AI Code Review  <img src="https://img.shields.io/badge/ChatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white" alt="Node.js Badge" height="18" style="margin-right: 4px;"/> 
-  Utilize OpenAI API to offer code review functionality.
+  Utilize `OpenAI API` to offer code review functionality.
 
 
 
 
 * ### Real-time discussion
-  Employs Socket.IO for instant updates of forum comments in the discussion area.
+  Employs `Socket.IO` for instant updates of forum comments in the discussion area.
 
 
 
