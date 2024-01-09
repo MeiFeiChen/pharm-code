@@ -15,6 +15,7 @@ function SubmissionTable({ results }) {
   const handleClick = (result) => {
     navigate(`/problems/${result.problem_id}/submission/${result.id}`)
   }
+  console.log(results)
 
   return (
     <tbody className="rounded">

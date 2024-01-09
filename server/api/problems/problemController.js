@@ -1,6 +1,8 @@
 import { addProblemToQueue, addMysqlProblemToQueue } from '../../config/bullQueue.js'
 import {
   createSubmission,
+  createPost,
+  createMessage,
   getSubmissionResult,
   getSubmissionsResults,
   getProblems,
@@ -8,9 +10,7 @@ import {
   getTestCases,
   getPosts,
   getSinglePost,
-  createPost,
   getMessages,
-  createMessage,
   getUserName
 } from './problemModel.js'
 import { formatToTable, processTableData } from '../../utils/tableFormat.js'

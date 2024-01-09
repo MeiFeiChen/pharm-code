@@ -78,25 +78,6 @@ export async function getTestCases(problemId, fieldName) {
   return rows
 }
 
-export async function createSubmissionsResult(submittedId, result, runtime, memory, error) {
-  const client = await pool.connect()
-  // update submission
-  try {
-    await client.query('BEGIN')
-    await client.query(`
-      INSERT INTO submission_results(submission_id, result, runtime, memory, error)
-      VALUES ($1, $2, $3, $4, $5)
-    `, [submittedId, result, runtime, memory, error])
-    await client.query('COMMIT')
-    console.log('successfully inserted the submission result')
-  } catch (err) {
-    await client.query('ROLLBACK')
-    throw err
-  } finally {
-    client.release();
-  }
-}
-
 export async function createAcSubmission(submittedId, result, language, runTime, memory) {
   const client = await pool.connect()
   try {

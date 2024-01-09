@@ -54,8 +54,8 @@ function Login() {
     <Formik
       initialValues={{
         provider: 'native',
-        email: '',
-        password: ''
+        email: 'test@test.test',
+        password: 'testtest'
       }}
       validationSchema={validate}
       onSubmit={submitHandler}
@@ -78,7 +78,9 @@ function Login() {
           className='
             border-2 outline-none sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
             w-full p-2.5 bg-gray-600 border-gray-600 placeholder:-gray-400 text-white'
-          placeholder='xxx@example.com'/>
+          placeholder='xxx@example.com'
+          
+        />
       </div>
       <div> 
         <label  htmlFor='password' className='text-sm font-medium block mb-2 text-gray-300'>
@@ -91,7 +93,8 @@ function Login() {
           className='
             border-2 outline-none sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
           w-full p-2.5 bg-gray-600 border-gray-600 placeholder:-gray-400 text-white'
-          placeholder='******'/>
+          placeholder='******'
+          />
       </div>
       
 			<button
