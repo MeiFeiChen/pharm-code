@@ -45,11 +45,11 @@ body {
 	}
 
   .createPostBtn {
-		@apply  rounded font-medium transition-all focus:outline-none inline-flex  ml-auto;
+		@apply  relative rounded font-medium transition-all focus:outline-none inline-flex  ml-auto;
 	}
 	.createPostBtn-tooltip {
-		@apply  w-auto p-2 mx-2 text-sm min-w-max translate-x-2  right-24 z-10 rounded-md shadow-md
-		text-dark-layer-2 bg-gray-200  origin-center scale-0 transition-all duration-100 ease-linear group-hover:scale-100;
+		@apply absolute w-auto p-2 text-sm min-w-max  right-24 top-0 z-10 rounded-md shadow-md
+		text-dark-layer-2 bg-gray-200  origin-center scale-0 transition-all duration-100 ease-linear group-hover:scale-100
 	}
   
   .addPostBtn {
@@ -150,7 +150,7 @@ code {
 .example-card pre {
 	background-color: hsla(0, 0%, 100%, 0.05);
 	border-radius: 0.5rem;
-	color: rgba(239, 241, 246, 0.75);
+	color: rgba(239, 241, 246);
 	font-size: 0.98rem;
 	line-height: 1.25rem;
 	margin-bottom: 1rem;
