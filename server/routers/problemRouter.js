@@ -1,6 +1,6 @@
 import express from 'express'
 import { body, param } from 'express-validator'
-import handleResult from '../../middleware/validator.js'
+import handleResult from '../middleware/validator.js'
 import {
   submitProblem,
   getSubmission,
@@ -12,8 +12,8 @@ import {
   getPost,
   getPostMessage,
   createPostMessage
-} from './problemController.js'
-import verifyAuth from '../../middleware/auth.js'
+} from '../controllers/problemController.js'
+import verifyAuth from '../middleware/auth.js'
 
 const problemRouter = express.Router()
 

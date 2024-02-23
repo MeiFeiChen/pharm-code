@@ -1,4 +1,4 @@
-import { addProblemToQueue, addMysqlProblemToQueue } from '../../config/bullQueue.js'
+import { addProblemToQueue, addMysqlProblemToQueue } from '../utils/bullQueue.js'
 import {
   createSubmission,
   createPost,
@@ -12,8 +12,8 @@ import {
   getSinglePost,
   getMessages,
   getUserName
-} from './problemModel.js'
-import { formatToTable, processTableData } from '../../utils/tableFormat.js'
+} from '../models/problemModel.js'
+import { formatToTable, processTableData } from '../utils/tableFormat.js'
 
 export const getProblemsPage = async (req, res) => {
   try {

@@ -8,7 +8,7 @@ import {
   getUserSubmissionsDetails,
   getUserDiscussionPosts,
   getTotalProblemsByDifficulty
-} from './userModel.js'
+} from '../models/userModel.js'
 
 const COOKIE_OPTIONS = {
   httpOnly: true,

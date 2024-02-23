@@ -4,10 +4,10 @@ import dotenv from 'dotenv'
 import morgan from 'morgan'
 import { createServer } from 'http'
 import { ioInit, setSocketEvent } from './io.js'
-import problemRouter from './api/problems/problemRouter.js'
-import userRouter from './api/user/userRouter.js'
-import openAIRouter from './api/openai/openAIRouter.js'
-import adminRouter from './api/admin/adminRouter.js'
+import problemRouter from './routers/problemRouter.js'
+import userRouter from './routers/userRouter.js'
+import openAIRouter from './routers/openAIRouter.js'
+import adminRouter from './routers/adminRouter.js'
 
 dotenv.config()
 

@@ -15,15 +15,21 @@ A beginner-friendly online judge system providing easy coding challenges and rea
 
 
 ##  Outlines <a name='outlines'></a>
- [Getting Started](#get-started) | [Features](#features) | [Tech Stack](#tech-stack) | [Structure](#structure) | [Database Schema](#database-schema) | [Contacts](#contacts)
+ [Getting Started](#get-started) | [Features](#features) | [Tech Stack](#tech-stack) | [Architecture](#architecture) | [Database Schema](#database-schema) | [Contacts](#contacts) | [License] (#license)
 
 
 
 ##  Getting Started <a name='get-started'></a>
 
 
-**Step 1:** Log in and then navigate to the **Problem Set Page** and select the desired problem to solve.  
-**Step 2:** Start coding and begin solving the problem 🚀.
+**Step 1:** **Log in** and then navigate to the **Problem Set Page** and **select the desired problem** to solve.  
+|  | Email | Password |
+  |-------------|-------------|-------------|
+  | Testing Account | test@test.test  | testtest |
+
+**Step 2 Dive Into Coding:** Select the programming language you're most comfortable with. And then, start coding and begin solving the problem 🚀.
+
+**Step 3 Run and Submit:** Once you're confident in your solution, it's time to submit it to the online judge.
 
 
 <img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/29a2941f-c41e-40a7-ade0-86e655b70d04" alt="problemSets image" width="750"/>
@@ -47,10 +53,30 @@ A beginner-friendly online judge system providing easy coding challenges and rea
   
   This setup ensures efficient and secure evaluation of code, effectively identifying performance issues, errors, and compliance with time constraints.
 
+<iframe 
+  src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/6c6f38ba-7eea-4fa5-aab5-93b38a4cfdad" 
+  scrolling="no" 
+  border="0" 
+  frameborder="no" 
+  framespacing="0" 
+  allowfullscreen="true" 
+  height=600 
+  width=800> 
+</iframe>
+
 * ### AI Code Review  <img src="https://img.shields.io/badge/ChatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white" alt="Node.js Badge" height="18" style="margin-right: 4px;"/> 
   Utilize `OpenAI API` to offer code review functionality.
 
-
+<iframe 
+  src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/651757e6-07af-43f1-88e2-fbcf15963407" 
+  scrolling="no" 
+  border="0" 
+  frameborder="no" 
+  framespacing="0" 
+  allowfullscreen="true" 
+  height=600 
+  width=800> 
+</iframe>
 
 
 * ### Real-time discussion
@@ -120,14 +146,24 @@ A beginner-friendly online judge system providing easy coding challenges and rea
   <small><a href="#top">Back to Top</a></small>
 </p>
 
-##  Structure <a name='structure'></a>
+##  Architecture <a name='architecture'></a>
 
 
 ![image](https://github.com/MeiFeiChen/pharm-code/assets/109078865/0b25f7c2-44f6-4cd1-ab35-d213d6582a00)
 
+
+* **Docker Integration for Code Execution:** Leveraged Docker containers on the worker servers to securely run user-submitted code, ensuring both robust **security and scalability**. This setup facilitates comprehensive analysis of **memory usage and runtime**, offers detailed error diagnostics, and supports practical exercises in **JavaScript, Python, and SQL**.
+
+*  **Job Queue System with Redis:** Engineered a job queue system utilizing Redis, designed to efficiently manage code submissions. This system assigns tasks to worker servers for the execution of code, optimizing the handling and processing of user submissions.
+
+* **Real-Time Interaction via Socket.IO:** Adopted Socket.IO to enable live discussions and dynamic content updates, significantly boosting user engagement. 
+
+* **CI/CD Pipelines for Seamless Deployment:** Implemented Continuous Integration and Continuous Deployment (CI/CD) pipelines with **GitHub Actions**, coupled with **Docker Hub** for streamlined deployment of both frontend and backend components. This approach ensures rapid, reliable, and automated deployment processes, enhancing development efficiency and product reliability.
+
 <p align="right">
   <small><a href="#top">Back to Top</a></small>
 </p>
+
 
 ##  Database Schema <a name='database-schema'></a>
 
@@ -135,6 +171,17 @@ A beginner-friendly online judge system providing easy coding challenges and rea
 
 
 
+
+<p align="right">
+  <small><a href="#top">Back to Top</a></small>
+</p>
+
+
+
+## License <a name = 'license'> </a>
+
+
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/MeiFeiChen/pharm-code/blob/main/LICENSE) file for details.
 
 <p align="right">
   <small><a href="#top">Back to Top</a></small>
