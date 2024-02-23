@@ -15,7 +15,7 @@ A beginner-friendly online judge system providing easy coding challenges and rea
 
 
 ##  Outlines <a name='outlines'></a>
- [Getting Started](#get-started) | [Features](#features) | [Tech Stack](#tech-stack) | [Architecture](#architecture) | [Database Schema](#database-schema) | [Contacts](#contacts) | [License] (#license)
+ [Getting Started](#get-started) | [Features](#features) | [Tech Stack](#tech-stack) | [Architecture](#architecture) | [Database Schema](#database-schema) | [Contacts](#contacts) | [License](#license)
 
 
 
@@ -34,7 +34,6 @@ A beginner-friendly online judge system providing easy coding challenges and rea
 
 <img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/29a2941f-c41e-40a7-ade0-86e655b70d04" alt="problemSets image" width="750"/>
 <img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/7efcfc61-44e5-470c-9a17-0c8cfb4a9dd2" alt="problemSets image" width="750"/>
-<!-- 影片 -->
 
 <p align="right">
   <small><a href="#top">Back to Top</a></small>
@@ -53,35 +52,17 @@ A beginner-friendly online judge system providing easy coding challenges and rea
   
   This setup ensures efficient and secure evaluation of code, effectively identifying performance issues, errors, and compliance with time constraints.
 
-<iframe 
-  src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/6c6f38ba-7eea-4fa5-aab5-93b38a4cfdad" 
-  scrolling="no" 
-  border="0" 
-  frameborder="no" 
-  framespacing="0" 
-  allowfullscreen="true" 
-  height=600 
-  width=800> 
-</iframe>
+<video src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/6c6f38ba-7eea-4fa5-aab5-93b38a4cfdad" controls="controls" width="500" height="300"></video>
 
 * ### AI Code Review  <img src="https://img.shields.io/badge/ChatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white" alt="Node.js Badge" height="18" style="margin-right: 4px;"/> 
   Utilize `OpenAI API` to offer code review functionality.
 
-<iframe 
-  src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/651757e6-07af-43f1-88e2-fbcf15963407" 
-  scrolling="no" 
-  border="0" 
-  frameborder="no" 
-  framespacing="0" 
-  allowfullscreen="true" 
-  height=600 
-  width=800> 
-</iframe>
-
+<video src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/651757e6-07af-43f1-88e2-fbcf15963407" controls="controls" width="500" height="300"></video>
 
 * ### Real-time discussion
   Employs `Socket.IO` for instant updates of forum comments in the discussion area.
 
+<video src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/48817c41-4287-4681-991e-ba53037bcb79" controls="controls" width="500" height="300"></video>
 
 
 
@@ -152,13 +133,21 @@ A beginner-friendly online judge system providing easy coding challenges and rea
 ![image](https://github.com/MeiFeiChen/pharm-code/assets/109078865/0b25f7c2-44f6-4cd1-ab35-d213d6582a00)
 
 
-* **Docker Integration for Code Execution:** Leveraged Docker containers on the worker servers to securely run user-submitted code, ensuring both robust **security and scalability**. This setup facilitates comprehensive analysis of **memory usage and runtime**, offers detailed error diagnostics, and supports practical exercises in **JavaScript, Python, and SQL**.
+* **Docker Integration for Code Execution:** 
+  
+    Leveraged Docker containers on the worker servers to securely run user-submitted code, ensuring both robust **security and scalability**. This setup facilitates comprehensive analysis of **memory usage and runtime**, offers detailed error diagnostics, and supports practical exercises in **JavaScript, Python, and SQL**.
 
-*  **Job Queue System with Redis:** Engineered a job queue system utilizing Redis, designed to efficiently manage code submissions. This system assigns tasks to worker servers for the execution of code, optimizing the handling and processing of user submissions.
+*  **Job Queue System with Redis:** 
+  
+    Engineered a job queue system utilizing Redis, designed to efficiently manage code submissions. This system assigns tasks to worker servers for the execution of code, optimizing the handling and processing of user submissions.
 
-* **Real-Time Interaction via Socket.IO:** Adopted Socket.IO to enable live discussions and dynamic content updates, significantly boosting user engagement. 
+* **Real-Time Interaction via Socket.IO:** 
+  
+    Adopted Socket.IO to enable live discussions and dynamic content updates, significantly boosting user engagement. 
 
-* **CI/CD Pipelines for Seamless Deployment:** Implemented Continuous Integration and Continuous Deployment (CI/CD) pipelines with **GitHub Actions**, coupled with **Docker Hub** for streamlined deployment of both frontend and backend components. This approach ensures rapid, reliable, and automated deployment processes, enhancing development efficiency and product reliability.
+* **CI/CD Pipelines for Seamless Deployment:** 
+    
+    Implemented Continuous Integration and Continuous Deployment (CI/CD) pipelines with **GitHub Actions**, coupled with **Docker Hub** for streamlined deployment of both frontend and backend components. This approach ensures rapid, reliable, and automated deployment processes, enhancing development efficiency and product reliability.
 
 <p align="right">
   <small><a href="#top">Back to Top</a></small>
