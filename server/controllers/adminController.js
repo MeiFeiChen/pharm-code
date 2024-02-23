@@ -1,4 +1,4 @@
-import { getAllProblemsAndTestCases, getAllSubmissions, getAllUsers, updateProblemData } from './adminModel.js'
+import { getAllProblemsAndTestCases, getAllSubmissions, getAllUsers, updateProblemData } from '../models/adminModel.js'
 
 export const getUserPage = async (req, res) => {
   try {

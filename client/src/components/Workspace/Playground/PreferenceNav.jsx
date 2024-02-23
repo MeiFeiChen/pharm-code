@@ -54,7 +54,7 @@ function PreferenceNav({ setSettings, settings, handleLanguageExtension, setDefa
         >
           {!isDatabase && (
             <>
-              <option value='js'>Javascript</option>
+              <option value='js'>JavaScript</option>
               <option value='py'>Python 3</option>
             </>
           )}

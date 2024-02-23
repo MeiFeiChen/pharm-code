@@ -1,14 +1,14 @@
 import express from 'express'
 import { body } from 'express-validator'
-import handleResult from '../../middleware/validator.js'
+import handleResult from '../middleware/validator.js'
 import {
   signIn,
   signUp,
   getUserSubmissions,
   getUserProfile,
   getUserProfileDetails
-} from './userController.js'
-import verifyAuth from '../../middleware/auth.js'
+} from '../controllers/userController.js'
+import verifyAuth from '../middleware/auth.js'
 
 const userRouter = express.Router()
 

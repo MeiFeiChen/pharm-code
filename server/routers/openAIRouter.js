@@ -1,6 +1,6 @@
 import express from 'express'
 import OpenAI from 'openai'
-import { getProblem } from '../problems/problemModel.js'
+import { getProblem } from '../models/problemModel.js'
 
 const openai = new OpenAI({ apiKey: process.env.SECRET_KEY })
 
