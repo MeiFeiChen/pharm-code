@@ -20,7 +20,6 @@ export default function ProblemTable() {
         // fetch problem data
         const { data } = await apiProblemsItem()
         setProblems(data)
-        console.log(data)
       } catch (err) {
         console.error('Error fetching data', err)
       } finally {
@@ -29,7 +28,6 @@ export default function ProblemTable() {
     }
     fetchData()
   }, [])
-  console.log(problems)
   
 
   useEffect(() => {

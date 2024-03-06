@@ -21,7 +21,6 @@ function DiscussionPosts() {
   const handleClick = (type) => {
     setAuthModalState((prev) => ({ ...prev, isOpen: true, type }))
   }
-  console.log(posts)
   useEffect(() => {
     const fetchData = async () => {
       try {

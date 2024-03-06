@@ -111,14 +111,14 @@ export default function AlgorithmDescription( { problem } ) {
                       <strong className='text-white'>Input: </strong> <br />
                       <MDEditor.Markdown 
                         source={example.test_input}
-                        className="bg-transparent"
+                        className="bg-transparent text-gray-300"
                       />
                       </div>
                       <div className="w-1/2">
                       <strong className='text-white'>Output: </strong> <br />
                       <MDEditor.Markdown 
                         source={example.expected_output}
-                        className="bg-transparent"
+                        className="bg-transparent text-gray-300"
                       />
                       </div>
                     </pre>

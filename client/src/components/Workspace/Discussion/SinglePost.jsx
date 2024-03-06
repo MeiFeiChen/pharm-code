@@ -27,7 +27,6 @@ function SinglePost() {
   const setAuthModalState = useSetRecoilState(authModalState)
 
   const handleMessage = (newMessage) => {
-    console.log('Received message:', newMessage)
     setMessages((prevMessages) => [newMessage, ...prevMessages])
   }
   const handleConnect = () => {
