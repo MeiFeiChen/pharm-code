@@ -53,7 +53,6 @@ const tailFormItemLayout = {
 function ProblemList() {
   const [ problemList, setProblemList ] = useState([])
   const [ editModeId, setEditModeId] = useState(null)
-  console.log(editModeId)
 
   const columns = [
     {
@@ -139,10 +138,8 @@ FormPanel.propTypes = {
 
 function FormPanel({ problem, editModeId, setEditModeId, fetchData}) {
   const [form] = Form.useForm()
-  console.log(editModeId)
   
   const onFinish = async (values) => {
-    console.log('Received values of form: ', values)
     try {
       const { data } = await apiAdminUpdateProblem({problem: values})
       console.log(data)
@@ -171,7 +168,6 @@ function FormPanel({ problem, editModeId, setEditModeId, fetchData}) {
     
 
   }
-  console.log(problem)
   
   return (
     <div className='w-full'>

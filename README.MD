@@ -4,7 +4,7 @@
   <img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/89321d3b-54ec-485f-976c-64426e64facf" alt="logo-icon" width="60">
   <img src="https://github.com/MeiFeiChen/pharm-code/assets/109078865/524aef90-63d5-4d05-8ffe-70234a84bf4f" alt="logo" width="300">
 
-###  <a href="https://phramcode.ameliachen.site/">Website</a> | <a href="https://youtu.be/BCews4TDr-c">Video Demo</a> 
+###  <a href="https://pharmcode.ameliachen.site/">Website</a> | <a href="https://youtu.be/BCews4TDr-c">Video Demo</a> 
 </div>
 
 A beginner-friendly online judge system providing easy coding challenges and real-time discussion forums, augmented with AI code review to enhance coding and algorithmic skills.

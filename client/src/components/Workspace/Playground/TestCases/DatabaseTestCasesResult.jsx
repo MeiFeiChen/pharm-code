@@ -12,7 +12,6 @@ DatabaseTestCasesResult.propTypes = {
 
 function DatabaseTestCasesResult({ testResult, testLoading }) {
   const [activeTestResultId, setActiveTestResultId] = useState(0)
-  console.log(testResult)
   return (
     <>
     {/* Loading */}

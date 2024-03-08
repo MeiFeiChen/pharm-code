@@ -100,7 +100,6 @@ function Playground({ problem }) {
     } else {
       localStorage.setItem("default-data-language", language)
     }
-    console.log(`${language} set as default!`)
   }
   
   // track code change
@@ -118,7 +117,6 @@ function Playground({ problem }) {
     try {
       setAiLoading(true)
       const { data } = await apiAssistanceItem(requestBody)
-      console.log(data)
       setActiveTab('codeReview')
       setAiReview(data.content)
       setAiLoading(false)
@@ -135,7 +133,6 @@ function Playground({ problem }) {
     setDisabledButton(true)
     
     runTestSocket.on('result', (result) => {
-      console.log(result)
       setActiveTab('result')
       setTestIsLoading(false)
       setDisabledButton(false)
@@ -156,7 +153,6 @@ function Playground({ problem }) {
     try {
       const { data } = await apiProblemSubmission(problem.id, requestBody, config)
       const submittedId = data.submittedId
-      console.log('data', data)
     
       if ( submittedId ) {
         const pollTimeOut = setTimeout(() => {
@@ -181,10 +177,8 @@ function Playground({ problem }) {
     
         // Poll
         const pollInterval = setInterval(async () => {
-          console.log(problem.id, submittedId);
     
           const { data, errors } = await apiProblemSubmissionItem(problem.id, submittedId, config)
-          console.log('response', data)
 
           if (errors) {
             clearInterval(pollInterval)
@@ -202,7 +196,6 @@ function Playground({ problem }) {
           }
           
           if (data.data.status === 'pending'){
-            console.log('pending')
             return 
           } 
           clearInterval(pollInterval)

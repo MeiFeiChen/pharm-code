@@ -12,7 +12,6 @@ AlgorithmHeader.propTypes = {
 }
 
 function AlgorithmHeader({ headerResult }) {
-  console.log(headerResult)
   return (
     <>
       {/* The newest submission result */}
